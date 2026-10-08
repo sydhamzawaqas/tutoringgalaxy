@@ -1,0 +1,1 @@
+self.__SSG_MANIFEST=new Set(["\u002Fadmin\u002Fleads\u002F[leadId]","\u002Fapp\u002Fchildren\u002F[studentId]","\u002Fapp\u002Fstudents\u002F[studentId]","\u002Fcurricula\u002F[curriculum]","\u002Flocations\u002F[place]","\u002Fresources\u002F[slug]","\u002Fsubjects\u002F[subject]","\u002Ftutors\u002F[tutor]"]);self.__SSG_MANIFEST_CB&&self.__SSG_MANIFEST_CB()
