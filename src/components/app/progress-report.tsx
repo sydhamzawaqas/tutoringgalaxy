@@ -84,7 +84,7 @@ export function ProgressReport({ report, emptyAction }: { report: StudentReport;
         <h2 id="by-topic" className="text-h3">
           By topic
         </h2>
-        <div className="mt-4 overflow-x-auto">
+        <div className="relative mt-4 overflow-x-auto">
           <table className="w-full min-w-lg text-left text-small">
             <thead className="text-muted-foreground">
               <tr className="border-b border-rule">

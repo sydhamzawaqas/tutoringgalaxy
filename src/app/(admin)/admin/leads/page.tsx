@@ -62,7 +62,7 @@ async function Leads({ searchParams }: { searchParams: SearchParams }) {
           <p className="text-muted-foreground">No leads{status ? ` with status “${statusLabel(status)}”` : ""} yet.</p>
         </Panel>
       ) : (
-        <div className="mt-6 overflow-x-auto">
+        <div className="relative mt-6 overflow-x-auto">
           <table className="w-full min-w-2xl text-left text-small">
             <caption className="sr-only">Leads</caption>
             <thead className="text-muted-foreground">

@@ -20,7 +20,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   if (!isSupabaseConfigured()) {
     return (
       <AppShell nav={null}>
-        <NotConfigured />
+        <NotConfigured as="h1" />
         {/* Private area: always rendered per request, even when sign-in isn't configured. */}
         <Suspense>
           <RequestTime />

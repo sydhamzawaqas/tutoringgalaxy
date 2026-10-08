@@ -84,7 +84,7 @@ export default function PricingPage() {
       <Section>
         <Container>
           <SectionHeading title="What each plan includes" lead="A side-by-side view of the three plans." />
-          <div className="mt-8 overflow-x-auto rounded-container border border-border">
+          <div className="relative mt-8 overflow-x-auto rounded-container border border-border">
             <table className="w-full min-w-xl text-left text-small">
               <caption className="sr-only">Features included in each plan</caption>
               <thead className="bg-surface">

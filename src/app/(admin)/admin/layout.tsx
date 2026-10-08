@@ -29,7 +29,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   if (!isSupabaseConfigured()) {
     return (
       <AppShell nav={null} homeHref="/admin">
-        <NotConfigured />
+        <NotConfigured as="h1" />
         {/* Private area: always rendered per request, even when sign-in isn't configured. */}
         <Suspense>
           <RequestTime />

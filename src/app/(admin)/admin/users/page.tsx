@@ -73,7 +73,7 @@ async function Users() {
         <h2 id="accounts" className="text-h3">
           Accounts
         </h2>
-        <div className="mt-4 overflow-x-auto">
+        <div className="relative mt-4 overflow-x-auto">
           <table className="w-full min-w-2xl text-left text-small">
             <caption className="sr-only">Accounts and roles</caption>
             <thead className="text-muted-foreground">
