@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tutoring Galaxy Design Language</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --background:#FFFFFF; --surface:#F6F9FC; --foreground:#14284B; --muted-foreground:#55637A;
+  --border:#DCE4EE; --rule:#E6EDF5; --primary:#14284B; --primary-foreground:#FFFFFF;
+  --annotation:#B83227; --star:#E0A21B; --success:#1D7A4C; --destructive:#B42318; --focus:#2F6FD6;
+  --ink:#14284B; --gold:#E0A21B; --on-ink:#FFFFFF; --bg:#FFFFFF;
+  --serif:"Newsreader",Georgia,serif; --sans:"Figtree",system-ui,sans-serif;
+  --r-control:6px; --r-container:10px;
+  --shadow-float:0 1px 2px rgba(20,40,75,.06),0 8px 24px rgba(20,40,75,.10);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --background:#0D1A2E; --surface:#13243D; --foreground:#E8EEF6; --muted-foreground:#A7B4C7;
+  --border:#253957; --rule:#1C2F4B; --primary:#E8EEF6; --primary-foreground:#0D1A2E;
+  --annotation:#F08A80; --star:#F2C14E; --success:#5CC795; --destructive:#F97066; --focus:#8DB4F5;
+  --ink:#E8EEF6; --gold:#F2C14E; --on-ink:#0D1A2E; --bg:#0D1A2E;}}
+:root[data-theme="dark"]{
+  --background:#0D1A2E; --surface:#13243D; --foreground:#E8EEF6; --muted-foreground:#A7B4C7;
+  --border:#253957; --rule:#1C2F4B; --primary:#E8EEF6; --primary-foreground:#0D1A2E;
+  --annotation:#F08A80; --star:#F2C14E; --success:#5CC795; --destructive:#F97066; --focus:#8DB4F5;
+  --ink:#E8EEF6; --gold:#F2C14E; --on-ink:#0D1A2E; --bg:#0D1A2E;}
+*{box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--background);color:var(--foreground);font:16px/1.6 var(--sans)}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 16px}
+h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;margin:0}
+h1{font-size:clamp(2.25rem,5vw,3rem);line-height:1.1}
+h2{font-size:clamp(1.75rem,3.5vw,2.25rem);line-height:1.15}
+h3{font-size:1.5rem;line-height:1.25}
+p{margin:0}
+.lead{font-size:1.125rem;color:var(--muted-foreground);max-width:62ch}
+.small{font-size:.875rem}
+.muted{color:var(--muted-foreground)}
+.num{font-variant-numeric:tabular-nums}
+
+/* page frame: content + margin column, like an exam paper */
+.paper{display:grid;grid-template-columns:minmax(0,1fr) 240px;column-gap:48px}
+.paper>.margin{border-left:1px solid var(--rule);padding-left:20px;color:var(--muted-foreground);font-size:.875rem}
+.mark{font-variant-numeric:tabular-nums;color:var(--muted-foreground);white-space:nowrap}
+.note{font-family:var(--serif);font-style:italic;color:var(--annotation);font-size:1rem;line-height:1.4}
+section.block{padding:96px 0;border-top:1px solid var(--rule)}
+section.block>.paper>div>h2{margin-bottom:12px}
+.toc{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:24px;font-size:.875rem}
+.toc a{color:var(--muted-foreground);text-decoration:none;border-bottom:1px solid var(--border)}
+.toc a:hover{color:var(--foreground)}
+
+/* header */
+.top{padding:40px 0 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.top .logo{height:34px;width:auto}
+.hero-doc{padding:24px 0 72px}
+.hero-doc h1{max-width:20ch;margin-bottom:16px}
+
+/* buttons, badges, inputs */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 18px;border-radius:var(--r-control);font:600 .9375rem/1 var(--sans);text-decoration:none;border:1px solid transparent;cursor:pointer;transition:background-color .15s,border-color .15s,transform .15s}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--primary);color:var(--primary-foreground)}
+.btn-primary:hover{background:color-mix(in srgb,var(--primary) 88%,var(--background))}
+.btn-secondary{background:var(--background);color:var(--foreground);border-color:var(--foreground)}
+.btn-secondary:hover{background:var(--surface)}
+.btn-ghost{background:transparent;color:var(--foreground)}
+.btn-ghost:hover{background:var(--surface)}
+.btn svg{width:18px;height:18px}
+.badge{display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:var(--r-control);background:var(--surface);color:var(--muted-foreground);font-size:.8125rem;font-weight:500;border:1px solid var(--border)}
+.field{display:flex;flex-direction:column;gap:6px;max-width:360px}
+.field label{font-weight:600;font-size:.9375rem}
+.field input{height:44px;border-radius:var(--r-control);border:1px solid var(--border);background:var(--background);color:var(--foreground);padding:0 12px;font:inherit}
+.field input:focus{outline:2px solid var(--focus);outline-offset:0;border-color:transparent}
+.field .help{font-size:.875rem;color:var(--muted-foreground)}
+.field.err input{border-color:var(--destructive)}
+.field.err .help{color:var(--destructive)}
+
+/* the two card types */
+.sheet{background:var(--background);border:1px solid var(--border);border-radius:var(--r-container);padding:24px}
+.panel{background:var(--surface);border-radius:var(--r-container);padding:24px}
+
+/* swatches */
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;margin-top:24px}
+.sw{border:1px solid var(--border);border-radius:var(--r-container);overflow:hidden}
+.sw i{display:block;height:84px}
+.sw div{padding:10px 12px;font-size:.875rem}
+.sw b{display:block;font-size:.9375rem}
+.sw code{color:var(--muted-foreground);font-size:.8125rem}
+
+/* type specimen */
+.spec{display:grid;gap:18px;margin-top:24px}
+.spec .row{display:grid;grid-template-columns:110px 1fr;gap:16px;align-items:baseline;border-bottom:1px dashed var(--rule);padding-bottom:14px}
+.spec .lbl{font-size:.8125rem;color:var(--muted-foreground)}
+
+/* tokens table */
+table{border-collapse:collapse;width:100%;font-size:.9375rem}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-weight:600;color:var(--muted-foreground);font-size:.8125rem}
+.tablewrap{overflow-x:auto;margin-top:20px}
+
+/* motifs */
+.motifs{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin-top:24px}
+.motif{border:1px solid var(--border);border-radius:var(--r-container);padding:20px;display:flex;flex-direction:column;gap:12px}
+.motif .demo{min-height:96px;display:flex;flex-direction:column;justify-content:center;gap:8px}
+.motif h3{font-size:1.125rem}
+.lines{display:grid;gap:14px}
+.lines i{display:block;border-bottom:1px dashed var(--border);height:14px}
+.grid-paper{height:96px;border-radius:var(--r-control);background-image:linear-gradient(var(--rule) 1px,transparent 1px),linear-gradient(90deg,var(--rule) 1px,transparent 1px);background-size:16px 16px;border:1px solid var(--border)}
+.qnum{font-family:var(--serif);font-weight:600;font-size:1.5rem;line-height:1}
+.tick{width:30px;height:30px;color:var(--annotation)}
+.star{width:28px;height:28px;color:var(--star)}
+
+/* components gallery */
+.gallery{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;margin-top:24px}
+.g-6{grid-column:span 6}.g-4{grid-column:span 4}.g-8{grid-column:span 8}.g-12{grid-column:span 12}
+.tutor{display:grid;grid-template-columns:64px 1fr;gap:16px}
+.avatar{width:64px;height:64px;border-radius:var(--r-container);background:var(--surface);border:1px solid var(--border);display:grid;place-items:center;font:600 1.25rem var(--serif)}
+.tutor h3{font-size:1.25rem}
+.tutor .meta{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.tutor .foot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:16px;padding-top:16px;border-top:1px dashed var(--rule)}
+.price{font:600 1.75rem/1 var(--serif)}
+.plan ul{list-style:none;padding:0;margin:16px 0 20px;display:grid;gap:8px}
+.plan li{display:flex;gap:10px;font-size:.9375rem}
+.plan li svg{flex:none;width:18px;height:18px;color:var(--success);margin-top:3px}
+.q{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 24px}
+.q .stem{font-size:1.0625rem}
+.math{font-family:var(--serif);font-style:italic;font-size:1.125rem}
+.working{grid-column:1/-1;display:grid;gap:0;margin-top:8px}
+.working div{border-bottom:1px dashed var(--border);min-height:40px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 4px 6px;gap:12px}
+.working .hand{font-family:var(--serif);font-size:1.125rem}
+.working .ann{font-family:var(--serif);font-style:italic;color:var(--annotation);font-size:.95rem;white-space:nowrap}
+.feedback{grid-column:1/-1;display:flex;gap:12px;align-items:flex-start;margin-top:12px}
+.report td:last-child,.report th:last-child{text-align:right}
+.bar{height:8px;border-radius:4px;background:var(--rule);overflow:hidden;min-width:90px}
+.bar i{display:block;height:100%;background:var(--primary)}
+.faq details{border-bottom:1px solid var(--rule);padding:14px 0}
+.faq summary{cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:12px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-weight:400;color:var(--muted-foreground)}
+.faq details[open] summary::after{content:"\2212"}
+.faq p{margin-top:8px;color:var(--muted-foreground)}
+
+/* sample homepage */
+.browser{border:1px solid var(--border);border-radius:var(--r-container);overflow:hidden;margin-top:24px;box-shadow:var(--shadow-float)}
+.browser .chrome{height:34px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px;padding:0 12px}
+.browser .chrome i{width:10px;height:10px;border-radius:50%;background:var(--border)}
+.browser .chrome span{margin-left:12px;font-size:.8125rem;color:var(--muted-foreground)}
+.site{background:var(--background)}
+.site-nav{display:flex;align-items:center;gap:28px;padding:18px 32px;border-bottom:1px solid var(--rule)}
+.site-nav .logo{height:28px;width:auto}
+.site-nav nav{display:flex;gap:22px;margin-left:auto;font-size:.9375rem;color:var(--muted-foreground)}
+.site-hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:48px;padding:64px 32px 72px;align-items:center}
+.site-hero h1{font-size:clamp(2.25rem,4.4vw,3.5rem);line-height:1.06;max-width:16ch}
+.site-hero .lead{margin:20px 0 28px}
+.actions{display:flex;flex-wrap:wrap;gap:12px}
+.proof{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:28px;font-size:.875rem;color:var(--muted-foreground)}
+.proof span{display:inline-flex;align-items:center;gap:6px}
+.proof svg{width:16px;height:16px;color:var(--success)}
+.exam{background:var(--background);border:1px solid var(--border);border-radius:var(--r-container);padding:22px 22px 18px;box-shadow:var(--shadow-float);position:relative}
+.exam .head{display:flex;justify-content:space-between;font-size:.8125rem;color:var(--muted-foreground);border-bottom:1px solid var(--rule);padding-bottom:10px;margin-bottom:14px}
+.exam .star-stamp{position:absolute;top:-16px;right:-14px;width:44px;height:44px;color:var(--star)}
+.steps{padding:72px 32px;border-top:1px solid var(--rule)}
+.steps h2{margin-bottom:28px}
+.step{display:grid;grid-template-columns:48px minmax(0,1fr) 140px;gap:16px;padding:20px 0;border-bottom:1px dashed var(--rule);align-items:baseline}
+.step h3{font-size:1.25rem;margin-bottom:4px}
+.step .mark{text-align:right}
+
+/* inspiration */
+.insp td:first-child{font-weight:600;white-space:nowrap}
+.insp td{font-size:.9375rem}
+
+/* consistency flow */
+.flow{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin-top:24px;counter-reset:s}
+.flow div{border:1px solid var(--border);border-radius:var(--r-container);padding:16px;position:relative}
+.flow div::before{counter-increment:s;content:counter(s);font:600 1.5rem/1 var(--serif);display:block;margin-bottom:8px}
+.flow b{display:block;margin-bottom:4px}
+.flow p{font-size:.875rem;color:var(--muted-foreground)}
+.do-dont{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px}
+.do-dont ul{margin:8px 0 0;padding-left:18px;color:var(--muted-foreground)}
+.do-dont h3{font-size:1.125rem}
+.ok{color:var(--success)} .no{color:var(--destructive)}
+footer{padding:48px 0 80px;border-top:1px solid var(--rule);color:var(--muted-foreground);font-size:.875rem}
+
+@media (max-width:960px){
+  .paper{grid-template-columns:1fr}
+  .paper>.margin{border-left:0;border-top:1px dashed var(--rule);padding:16px 0 0;margin-top:24px}
+  .g-6,.g-4,.g-8{grid-column:span 12}
+  .site-hero{grid-template-columns:1fr;padding:40px 20px}
+  .site-nav{padding:14px 20px}.site-nav nav{display:none}
+  .steps{padding:48px 20px}
+  .step{grid-template-columns:36px minmax(0,1fr)}.step .mark{grid-column:2;text-align:left}
+  .flow{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .do-dont{grid-template-columns:1fr}
+  section.block{padding:64px 0}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.tick path{stroke-dasharray:40;stroke-dashoffset:40;animation:draw .5s .4s ease-out forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-wa" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 1.5Q13.4 10.6 22.5 12Q13.4 13.4 12 22.5Q10.6 13.4 1.5 12Q10.6 10.6 12 1.5Z" fill="currentColor"/></symbol>
+  <symbol id="i-tick" viewBox="0 0 32 32"><path d="M5 17.5 12.5 25 27 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<div class="wrap">
+  <div class="top"><svg class="logo" aria-label="Tutoring Galaxy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 619.44 96" width="619.44" height="96" role="img"><g transform="translate(2 64.67)"><g transform="translate(0 -62.67) scale(1.44)"><circle cx="32" cy="32" r="31" style="fill:var(--ink, #041C32)"/><g transform="translate(10.02 45.88)"><path d="M8.232 -19.544H12.908V-1.1340000000000001L15.26 -0.462V0.0H5.88V-0.462L8.232 -1.1340000000000001ZM18.788 -18.942H2.352L4.0600000000000005 -19.32L0.9380000000000001 -13.370000000000001L0.49 -13.468L1.4000000000000001 -21.098H1.666L4.284 -19.698L2.688 -20.02H18.452L16.842 -19.698L19.474 -21.098H19.740000000000002L20.650000000000002 -13.468L20.202 -13.370000000000001L17.080000000000002 -19.32ZM38.696 -1.582H40.376000000000005V-1.12Q38.738 -0.602 37.24 -0.27999999999999997Q35.742000000000004 0.042 34.391000000000005 0.189Q33.040000000000006 0.336 31.822000000000003 0.336Q29.302 0.336 27.195 -0.32199999999999995Q25.088 -0.98 23.555 -2.31Q22.022000000000002 -3.64 21.175000000000004 -5.614Q20.328000000000003 -7.588 20.328000000000003 -10.206Q20.328000000000003 -13.216000000000001 21.791000000000004 -15.505Q23.254 -17.794 25.858000000000004 -19.075000000000003Q28.462000000000003 -20.356 31.892000000000003 -20.356Q33.39 -20.356 34.587 -20.167Q35.784000000000006 -19.978 36.89 -19.656L35.21 -19.418L37.128 -20.93H37.338L38.752 -13.58L38.332 -13.482000000000001L34.818000000000005 -19.04L36.862 -16.87Q35.588 -18.158 34.286 -18.816000000000003Q32.984 -19.474 31.5 -19.474Q30.184000000000005 -19.474 29.036 -19.026Q27.888 -18.578 27.013 -17.584Q26.138 -16.59 25.648000000000003 -14.937999999999999Q25.158 -13.286 25.158 -10.864Q25.158 -7.5040000000000004 26.138 -5.187Q27.118000000000002 -2.87 28.742 -1.6660000000000001Q30.366 -0.462 32.284000000000006 -0.462Q32.872 -0.462 33.411 -0.553Q33.95 -0.644 34.419000000000004 -0.819Q34.888000000000005 -0.994 35.266000000000005 -1.232L34.258 -0.196V-7.784L31.584000000000003 -8.47V-8.96H40.474000000000004V-8.47L38.696 -7.868Z" style="fill:var(--on-ink, #F7F4EC)"/></g><path d="M47.5,10.4 Q48.84,14.66 53.1,16 Q48.84,17.34 47.5,21.6 Q46.16,17.34 41.9,16 Q46.16,14.66 47.5,10.4 Z" style="fill:var(--star, var(--gold, #C8922E))"/></g><path d="M136.816 -44.672000000000004H147.504V-2.592L152.88 -1.056V0.0H131.44V-1.056L136.816 -2.592ZM160.94400000000002 -43.296H123.376L127.28 -44.160000000000004L120.144 -30.560000000000002L119.12 -30.784L121.2 -48.224000000000004H121.808L127.792 -45.024L124.144 -45.76H160.176L156.496 -45.024L162.512 -48.224000000000004H163.12L165.2 -30.784L164.176 -30.560000000000002L157.04 -44.160000000000004ZM179.952 -10.56Q179.952 -8.768 180.54399999999998 -7.6160000000000005Q181.136 -6.464 182.304 -5.92Q183.472 -5.376 185.328 -5.376Q187.184 -5.376 188.89600000000002 -5.936Q190.608 -6.496 192.048 -7.296L192.336 -6.5280000000000005Q189.904 -4.224 188.176 -2.7840000000000003Q186.448 -1.344 185.04000000000002 -0.6080000000000001Q183.632 0.128 182.288 0.384Q180.94400000000002 0.64 179.344 0.64Q174.928 0.64 172.784 -1.792Q170.64000000000001 -4.224 170.64000000000001 -9.088000000000001V-29.6L165.936 -31.2V-32.384L180.208 -33.12L179.952 -29.92ZM190.99200000000002 1.056 190.57600000000002 -5.056V-29.632L186.032 -31.2V-32.384L200.336 -33.12L199.92000000000002 -29.888V-4.352Q200.208 -4.192 200.8 -3.888Q201.392 -3.584 202.112 -3.232Q202.832 -2.88 203.536 -2.528Q204.24 -2.176 204.752 -1.8880000000000001V-1.088L191.472 1.056ZM219.344 -9.312Q219.344 -7.104 220.704 -6.016Q222.064 -4.928 224.624 -4.928Q226.064 -4.928 227.664 -5.152Q229.26399999999998 -5.376 231.44 -5.952V-4.704Q228.176 -2.528 226.0 -1.344Q223.82399999999998 -0.16 222.144 0.32Q220.464 0.8 218.736 0.8Q216.208 0.8 214.24 -0.17600000000000005Q212.272 -1.1520000000000001 211.152 -3.216Q210.03199999999998 -5.28 210.03199999999998 -8.512V-27.296L205.392 -30.72V-31.392Q205.744 -31.616 206.736 -32.176Q207.72799999999998 -32.736000000000004 209.12 -33.536Q210.512 -34.336 212.16 -35.296Q213.808 -36.256 215.536 -37.28Q217.26399999999998 -38.304 218.832 -39.232H219.344V-31.808ZM215.856 -28.32V-32.768H230.35199999999998L229.744 -28.32ZM248.944 -1.12Q251.344 -1.12 252.88 -2.688Q254.416 -4.256 255.136 -7.5200000000000005Q255.856 -10.784 255.856 -15.808Q255.856 -21.056 255.152 -24.576Q254.44799999999998 -28.096 252.928 -29.872Q251.408 -31.648 248.976 -31.648Q246.576 -31.648 245.04 -30.08Q243.504 -28.512 242.76799999999997 -25.248Q242.03199999999998 -21.984 242.03199999999998 -16.96Q242.03199999999998 -11.744 242.736 -8.208Q243.44 -4.672 244.95999999999998 -2.896Q246.48 -1.12 248.944 -1.12ZM248.656 0.768Q243.88799999999998 0.768 240.176 -1.408Q236.464 -3.584 234.336 -7.4399999999999995Q232.208 -11.296 232.208 -16.32Q232.208 -21.408 234.44799999999998 -25.296Q236.688 -29.184 240.54399999999998 -31.36Q244.39999999999998 -33.536 249.232 -33.536Q254.096 -33.536 257.808 -31.376Q261.52 -29.216 263.616 -25.36Q265.712 -21.504 265.712 -16.448Q265.712 -11.36 263.424 -7.4719999999999995Q261.13599999999997 -3.584 257.28 -1.408Q253.42399999999998 0.768 248.656 0.768ZM292.784 -33.408Q294.44800000000004 -33.408 295.42400000000004 -32.4Q296.40000000000003 -31.392 296.40000000000003 -29.728Q296.40000000000003 -27.648 295.05600000000004 -26.224Q293.712 -24.8 291.728 -24.8Q290.608 -24.8 289.712 -25.008000000000003Q288.81600000000003 -25.216 287.92 -25.44Q287.024 -25.664 285.872 -25.664Q284.944 -25.664 284.16 -25.408Q283.37600000000003 -25.152 282.65600000000006 -24.672Q281.93600000000004 -24.192 281.2 -23.424L281.168 -24.896Q283.76 -27.776 285.536 -29.472Q287.312 -31.168 288.576 -32.016Q289.84000000000003 -32.864 290.81600000000003 -33.135999999999996Q291.79200000000003 -33.408 292.784 -33.408ZM282.03200000000004 -27.2V-1.984L286.48 -0.96V0.0H268.91200000000003V-0.96L272.72 -1.984V-25.792Q272.30400000000003 -26.176000000000002 271.79200000000003 -26.592Q271.28000000000003 -27.008 270.51200000000006 -27.68Q269.744 -28.352 268.56 -29.408V-30.208000000000002L281.616 -33.76H282.03200000000004ZM311.08799999999997 -33.76V-27.2V-1.92L314.768 -0.96V0.0H297.96799999999996V-0.96L301.77599999999995 -1.984V-25.792Q301.392 -26.112000000000002 300.79999999999995 -26.624000000000002Q300.20799999999997 -27.136 299.40799999999996 -27.84Q298.60799999999995 -28.544 297.616 -29.408V-30.208000000000002L310.67199999999997 -33.76ZM330.25600000000003 -26.528000000000002V-1.92L333.936 -0.96V0.0H317.136V-0.96L320.944 -1.984V-25.792Q320.4 -26.272000000000002 319.44 -27.184Q318.48 -28.096 316.784 -29.408V-30.208000000000002L329.84 -33.76H330.25600000000003ZM338.192 -0.96 341.872 -1.92V-21.824Q341.872 -23.712 341.264 -24.896Q340.656 -26.080000000000002 339.44 -26.656Q338.224 -27.232 336.304 -27.232Q334.384 -27.232 332.592 -26.704Q330.8 -26.176000000000002 329.232 -25.44L328.976 -26.048000000000002Q331.472 -28.448 333.264 -29.92Q335.056 -31.392 336.48 -32.144Q337.904 -32.896 339.264 -33.152Q340.624 -33.408 342.288 -33.408Q346.8 -33.408 349.00800000000004 -30.928Q351.216 -28.448 351.216 -23.488V-1.984L354.992 -0.96V0.0H338.192ZM370.25600000000003 14.88Q366.25600000000003 14.88 363.48800000000006 14.368Q360.72 13.856 359.04 12.911999999999999Q357.36 11.968 356.608 10.736Q355.856 9.504 355.856 8.096Q355.856 6.912 356.56 5.872Q357.264 4.832 358.8 3.952Q360.336 3.072 362.88 2.3200000000000003Q365.424 1.568 369.104 0.928H371.952L371.92 1.3760000000000001Q368.24 1.824 366.15999999999997 2.624Q364.08 3.424 363.216 4.544Q362.352 5.664 362.352 7.072Q362.352 8.928 363.63199999999995 10.256Q364.912 11.584 367.216 12.288Q369.52 12.992 372.688 12.992Q376.144 12.992 378.368 12.24Q380.592 11.488 381.68 10.208Q382.76800000000003 8.928 382.76800000000003 7.328Q382.76800000000003 6.048 382.0 5.216Q381.232 4.384 379.616 3.8400000000000003Q378.0 3.2960000000000003 375.472 2.944Q372.944 2.592 369.424 2.368Q366.32 2.08 364.20799999999997 1.472Q362.096 0.864 360.81600000000003 -0.12800000000000006Q359.536 -1.12 358.96000000000004 -2.4160000000000004Q358.384 -3.712 358.384 -5.344Q358.384 -8.032 360.88 -10.016Q363.376 -12.0 367.984 -12.768L368.4 -11.936Q366.192 -11.776 365.312 -11.024000000000001Q364.432 -10.272 364.432 -9.344Q364.432 -8.512 364.81600000000003 -7.952Q365.2 -7.392 366.304 -6.992000000000001Q367.408 -6.5920000000000005 369.472 -6.304Q371.536 -6.016 374.896 -5.728Q378.704 -5.408 381.36 -4.672000000000001Q384.016 -3.936 385.696 -2.768Q387.376 -1.6 388.15999999999997 -0.016000000000000014Q388.944 1.568 388.944 3.616Q388.944 6.5920000000000005 386.944 9.152000000000001Q384.944 11.712 380.81600000000003 13.296Q376.688 14.88 370.25600000000003 14.88ZM371.12 -11.52Q367.184 -11.52 364.17600000000004 -12.896Q361.168 -14.272 359.488 -16.736Q357.808 -19.2 357.808 -22.496000000000002Q357.808 -25.76 359.52 -28.240000000000002Q361.232 -30.72 364.22400000000005 -32.128Q367.216 -33.536 371.024 -33.536Q374.064 -33.536 376.528 -32.752Q378.992 -31.968 380.76800000000003 -30.496000000000002Q382.544 -29.024 383.488 -27.008000000000003Q384.432 -24.992 384.432 -22.528Q384.432 -19.296 382.736 -16.816Q381.04 -14.336 378.048 -12.928Q375.056 -11.52 371.12 -11.52ZM371.824 -13.152000000000001Q374.064 -13.376 375.04 -15.68Q376.016 -17.984 375.728 -21.792Q375.472 -26.784 374.08 -29.424Q372.688 -32.064 370.32 -31.904Q368.24 -31.744 367.24800000000005 -29.424Q366.25600000000003 -27.104 366.48 -23.296Q366.736 -18.368000000000002 368.144 -15.680000000000001Q369.552 -12.992 371.824 -13.152000000000001ZM375.504 -32.224000000000004 373.872 -33.312Q378.448 -33.024 381.28 -33.120000000000005Q384.112 -33.216 385.68 -33.504000000000005Q387.248 -33.792 388.048 -34.032Q388.848 -34.272 389.424 -34.272Q390.064 -34.272 390.512 -33.824Q390.96 -33.376 390.96 -32.256Q390.96 -30.272000000000002 389.91999999999996 -28.96Q388.88 -27.648 387.568 -27.648Q386.672 -27.648 385.76 -28.288Q384.848 -28.928 383.568 -29.792Q382.288 -30.656000000000002 380.352 -31.376000000000005Q378.416 -32.096000000000004 375.504 -32.224000000000004ZM448.11199999999997 -3.616H451.952V-2.56Q448.20799999999997 -1.3760000000000001 444.784 -0.64Q441.36 0.096 438.272 0.432Q435.18399999999997 0.768 432.4 0.768Q426.64 0.768 421.82399999999996 -0.7360000000000001Q417.008 -2.24 413.504 -5.28Q410.0 -8.32 408.06399999999996 -12.832Q406.128 -17.344 406.128 -23.328Q406.128 -30.208000000000002 409.472 -35.440000000000005Q412.816 -40.672000000000004 418.768 -43.6Q424.71999999999997 -46.528 432.56 -46.528Q435.984 -46.528 438.71999999999997 -46.096000000000004Q441.45599999999996 -45.664 443.984 -44.928000000000004L440.144 -44.384L444.52799999999996 -47.84H445.008L448.24 -31.04L447.28 -30.816L439.248 -43.52L443.91999999999996 -38.56Q441.008 -41.504 438.032 -43.007999999999996Q435.056 -44.512 431.664 -44.512Q428.656 -44.512 426.032 -43.488Q423.40799999999996 -42.464 421.40799999999996 -40.192Q419.40799999999996 -37.92 418.288 -34.144000000000005Q417.168 -30.368000000000002 417.168 -24.832Q417.168 -17.152 419.408 -11.856000000000002Q421.64799999999997 -6.5600000000000005 425.36 -3.8080000000000003Q429.072 -1.056 433.45599999999996 -1.056Q434.79999999999995 -1.056 436.032 -1.264Q437.264 -1.472 438.336 -1.872Q439.408 -2.2720000000000002 440.272 -2.816L437.96799999999996 -0.448V-17.792L431.856 -19.36V-20.48H452.176V-19.36L448.11199999999997 -17.984ZM475.408 -20.96 475.472 -19.424Q472.11199999999997 -18.272000000000002 470.01599999999996 -17.216Q467.91999999999996 -16.16 466.816 -15.056000000000001Q465.712 -13.952 465.296 -12.687999999999999Q464.88 -11.424 464.88 -9.888Q464.88 -7.232 466.11199999999997 -5.984Q467.344 -4.736 469.23199999999997 -4.736Q470.57599999999996 -4.736 471.58399999999995 -5.279999999999999Q472.592 -5.824 473.152 -6.928Q473.712 -8.032 473.712 -9.728V-24.768Q473.712 -27.584 472.24 -29.12Q470.768 -30.656000000000002 467.792 -30.656000000000002Q466.288 -30.656000000000002 464.96000000000004 -30.480000000000004Q463.632 -30.304000000000002 462.8 -29.984L464.24 -31.68Q464.048 -29.824 463.82399999999996 -28.448Q463.59999999999997 -27.072 463.29599999999994 -26.128Q462.99199999999996 -25.184 462.608 -24.672Q462.096 -24.032 461.13599999999997 -23.631999999999998Q460.176 -23.232 459.024 -23.232Q457.55199999999996 -23.232 456.784 -23.759999999999998Q456.01599999999996 -24.288 456.01599999999996 -25.28Q456.01599999999996 -26.688 457.424 -28.128Q458.832 -29.568 461.13599999999997 -30.800000000000004Q463.44 -32.032000000000004 466.24 -32.784000000000006Q469.03999999999996 -33.536 471.856 -33.536Q475.91999999999996 -33.536 478.36799999999994 -32.368Q480.816 -31.2 481.91999999999996 -29.04Q483.024 -26.88 483.024 -23.968V-6.144Q483.024 -5.248 483.312 -4.688000000000001Q483.59999999999997 -4.128 484.128 -3.872Q484.656 -3.616 485.36 -3.616Q486.256 -3.616 487.13599999999997 -3.872Q488.01599999999996 -4.128 488.94399999999996 -4.704V-3.36Q486.512 -0.864 484.464 -0.04799999999999999Q482.416 0.768 479.952 0.768Q477.68 0.768 476.336 -0.128Q474.99199999999996 -1.024 474.384 -2.832Q473.776 -4.64 473.68 -7.392L474.0 -7.2Q473.392 -4.64 472.144 -2.88Q470.89599999999996 -1.12 469.13599999999997 -0.19200000000000006Q467.376 0.736 465.23199999999997 0.736Q460.816 0.736 458.272 -1.488Q455.728 -3.712 455.728 -7.68Q455.728 -9.696 456.432 -11.296Q457.13599999999997 -12.896 459.152 -14.336Q461.168 -15.776 465.08799999999997 -17.36Q469.008 -18.944 475.408 -20.96ZM502.38399999999996 -1.984 506.192 -0.96V0.0H489.23199999999997V-0.96L493.03999999999996 -1.984V-40.096000000000004Q492.62399999999997 -40.384 491.888 -40.896Q491.152 -41.408 490.128 -42.112Q489.104 -42.816 487.856 -43.712V-44.480000000000004L501.936 -47.616H502.38399999999996V-41.472ZM528.7520000000001 -20.96 528.816 -19.424Q525.456 -18.272000000000002 523.36 -17.216Q521.264 -16.16 520.1600000000001 -15.056000000000001Q519.056 -13.952 518.6400000000001 -12.687999999999999Q518.224 -11.424 518.224 -9.888Q518.224 -7.232 519.456 -5.984Q520.688 -4.736 522.576 -4.736Q523.9200000000001 -4.736 524.9280000000001 -5.279999999999999Q525.936 -5.824 526.4960000000001 -6.928Q527.056 -8.032 527.056 -9.728V-24.768Q527.056 -27.584 525.5840000000001 -29.12Q524.1120000000001 -30.656000000000002 521.1360000000001 -30.656000000000002Q519.6320000000001 -30.656000000000002 518.3040000000001 -30.480000000000004Q516.976 -30.304000000000002 516.144 -29.984L517.5840000000001 -31.68Q517.392 -29.824 517.1680000000001 -28.448Q516.9440000000001 -27.072 516.6400000000001 -26.128Q516.336 -25.184 515.952 -24.672Q515.44 -24.032 514.48 -23.631999999999998Q513.52 -23.232 512.368 -23.232Q510.896 -23.232 510.12800000000004 -23.759999999999998Q509.36 -24.288 509.36 -25.28Q509.36 -26.688 510.76800000000003 -28.128Q512.176 -29.568 514.48 -30.800000000000004Q516.784 -32.032000000000004 519.5840000000001 -32.784000000000006Q522.384 -33.536 525.2 -33.536Q529.264 -33.536 531.712 -32.368Q534.1600000000001 -31.2 535.2640000000001 -29.04Q536.368 -26.88 536.368 -23.968V-6.144Q536.368 -5.248 536.6560000000001 -4.688000000000001Q536.9440000000001 -4.128 537.472 -3.872Q538.0 -3.616 538.7040000000001 -3.616Q539.6 -3.616 540.48 -3.872Q541.36 -4.128 542.288 -4.704V-3.36Q539.856 -0.864 537.808 -0.04799999999999999Q535.76 0.768 533.296 0.768Q531.024 0.768 529.6800000000001 -0.128Q528.336 -1.024 527.7280000000001 -2.832Q527.12 -4.64 527.024 -7.392L527.344 -7.2Q526.736 -4.64 525.488 -2.88Q524.24 -1.12 522.48 -0.19200000000000006Q520.72 0.736 518.576 0.736Q514.1600000000001 0.736 511.6160000000001 -1.488Q509.07200000000006 -3.712 509.07200000000006 -7.68Q509.07200000000006 -9.696 509.77600000000007 -11.296Q510.48 -12.896 512.4960000000001 -14.336Q514.5120000000001 -15.776 518.432 -17.36Q522.3520000000001 -18.944 528.7520000000001 -20.96ZM575.1840000000001 -2.144 578.9920000000001 -1.056V0.0H560.8480000000001V-1.056L564.784 -1.984L556.5600000000001 -13.888L556.176 -14.304L544.88 -30.432000000000002L541.0400000000001 -31.712V-32.768H558.8960000000001V-31.712L555.12 -30.752L562.576 -19.872L562.8960000000001 -19.552ZM558.288 -15.296000000000001 547.856 -1.952 551.8240000000001 -1.056V0.0H540.816V-1.056L545.008 -2.016L557.84 -17.408L560.2080000000001 -17.984L570.3520000000001 -30.816L566.192 -31.712V-32.768H577.1360000000001V-31.712L573.1360000000001 -30.752L560.688 -15.872ZM602.32 -8.128 597.6800000000001 2.2720000000000002 580.8480000000001 -30.464000000000002 577.2 -31.744V-32.768H595.344V-31.712L591.248 -30.656000000000002ZM587.056 14.752Q584.784 14.752 583.328 13.552Q581.8720000000001 12.352 581.8720000000001 10.08Q581.8720000000001 9.056000000000001 582.224 8.336Q582.576 7.6160000000000005 583.088 7.216Q583.6 6.816 584.08 6.816Q584.368 6.816 585.088 7.184Q585.808 7.5520000000000005 586.88 7.904Q587.952 8.256 589.3280000000001 8.256Q591.024 8.256 592.2560000000001 7.888Q593.488 7.5200000000000005 594.416 6.5600000000000005Q595.344 5.6000000000000005 596.144 3.84L598.096 -0.512L600.7520000000001 -6.784L609.1360000000001 -30.816L604.976 -31.712V-32.768H615.44V-31.712L611.76 -30.816L598.64 3.168Q596.912 7.5840000000000005 595.152 10.096Q593.392 12.608 591.424 13.68Q589.456 14.752 587.056 14.752Z" style="fill:var(--ink, #041C32)"/><path d="M306.19,-50.61 Q308.27,-44.04 314.83,-41.97 Q308.27,-39.9 306.19,-33.33 Q304.12,-39.9 297.55,-41.97 Q304.12,-44.04 306.19,-50.61 Z" style="fill:var(--gold, #C8922E)"/></g></svg><span class="small muted">Design language, version 1, for review</span></div>
+
+  <div class="hero-doc paper">
+    <div>
+      <h1>The Exam Paper: one design language for everything we build</h1>
+      <p class="lead">Every page of Tutoring Galaxy, from the homepage to the AI practice app to the parent report, is designed like a well-made exam paper that a great tutor has just marked. It's calm, structured and precise, with one encouraging human touch. This page shows the system in use. The rules live in <a href="DESIGN.md">DESIGN.md</a>.</p>
+      <nav class="toc" aria-label="Sections">
+        <a href="#idea">The idea</a><a href="#motifs">Motifs</a><a href="#colour">Colour</a><a href="#type">Type</a><a href="#tokens">Space and shape</a><a href="#components">Components</a><a href="#sample">Homepage sample</a><a href="#inspiration">Inspiration in detail</a><a href="#consistency">Keeping it consistent</a>
+      </nav>
+    </div>
+    <aside class="margin">
+      <p class="note">This right-hand column is the system's one bold idea: a margin, like on an exam paper, for marks, times, prices and tutor notes.</p>
+    </aside>
+  </div>
+</div>
+
+<section class="block" id="idea"><div class="wrap paper">
+  <div>
+    <h2>Why an exam paper</h2>
+    <p class="lead">Our families live inside Cambridge, Edexcel and IB papers. Parents recognise them instantly, and students trust them. So instead of space imagery or generic startup gradients, the brand borrows the most familiar, most trusted objects in education.</p>
+    <div class="do-dont">
+      <div class="sheet"><h3><span class="ok">Borrow</span> from the exam room</h3><ul>
+        <li>The question paper's structure: numbered questions, marks in the margin</li>
+        <li>Answer lines, ruled and quiet</li>
+        <li>The examiner's red-pen tick and short margin note</li>
+        <li>The teacher's gold star, given only when earned</li>
+        <li>Textbook typography: a serif for headings, a clear sans for reading</li>
+      </ul></div>
+      <div class="sheet"><h3><span class="no">Leave behind</span> from the old site</h3><ul>
+        <li>Purple and blue gradients, glass cards, glowing planets</li>
+        <li>A different card style in every section</li>
+        <li>14 differently worded buttons and three WhatsApp bubbles</li>
+        <li>Emoji subject icons and cartoon avatars</li>
+        <li>Cream "AI-default" backgrounds. Exam paper is white</li>
+      </ul></div>
+    </div>
+  </div>
+  <aside class="margin"><p><span class="mark">[Galaxy]</span> lives in the name and the gold star, not in space pictures. That keeps the brand serious enough for parents paying for A Level results.</p></aside>
+</div></section>
+
+<section class="block" id="motifs"><div class="wrap paper">
+  <div>
+    <h2>Six motifs, used the same way everywhere</h2>
+    <p class="lead">These are the only decorative devices. Each one carries meaning, so a student or parent learns it once and reads it everywhere.</p>
+    <div class="motifs">
+      <div class="motif"><div class="demo"><div style="display:flex;justify-content:space-between"><span>Online tutoring</span><span class="mark">[PKR 15,000 / month]</span></div><div style="display:flex;justify-content:space-between"><span>Match a tutor</span><span class="mark">[within 1 day]</span></div></div><h3>Margin marks</h3><p class="small muted">Right-aligned brackets for marks, time and price. Used on steps, pricing, questions and reports.</p></div>
+      <div class="motif"><div class="demo lines"><i></i><i></i><i></i></div><h3>Answer lines</h3><p class="small muted">Dashed ruled lines. They end sections, separate list items and form the working area in practice.</p></div>
+      <div class="motif"><div class="demo" style="flex-direction:row;align-items:baseline;gap:14px"><span class="qnum">1</span><span class="qnum">2</span><span class="qnum">3 (a)</span></div><h3>Question numbering</h3><p class="small muted">Newsreader numerals, only for real sequences: how it works, booking steps, questions.</p></div>
+      <div class="motif"><div class="demo" style="flex-direction:row;align-items:center;gap:12px"><svg class="tick" aria-hidden="true"><use href="#i-tick"/></svg><span class="note">Good: factorise first next time.</span></div><h3>Examiner annotation</h3><p class="small muted">Marking red, italic serif. Tutor notes, AI feedback and testimonial highlights. Never used for buttons.</p></div>
+      <div class="motif"><div class="demo" style="flex-direction:row;align-items:center;gap:12px"><svg class="star" aria-hidden="true"><use href="#i-star"/></svg><span>Topic mastered: Quadratics</span></div><h3>Gold star</h3><p class="small muted">The logo's star. It marks earned achievement only: results, mastery, top-rated tutors.</p></div>
+      <div class="motif"><div class="demo"><div class="grid-paper"></div></div><h3>Graph paper</h3><p class="small muted">A faint grid behind charts and the practice workspace. App only, never on marketing pages.</p></div>
+    </div>
+  </div>
+  <aside class="margin"><p>A motif only appears where it means something. Gold stars can't be used as bullet points, and red can't be used for a "Sale" badge.</p></aside>
+</div></section>
+
+<section class="block" id="colour"><div class="wrap paper">
+  <div>
+    <h2>Colour: paper, ink and a marking pen</h2>
+    <p class="lead">Six named colours, taken from the objects in the idea. Components never use them directly; they use semantic tokens (background, primary, annotation…), which also define dark mode.</p>
+    <div class="swatches">
+      <div class="sw"><i style="background:#FFFFFF;border-bottom:1px solid var(--border)"></i><div><b>Paper</b><code>#FFFFFF</code><br>Page background</div></div>
+      <div class="sw"><i style="background:#E6EDF5"></i><div><b>Rule</b><code>#E6EDF5</code><br>Lines, grid, quiet surfaces</div></div>
+      <div class="sw"><i style="background:#14284B"></i><div><b>Ink</b><code>#14284B</code><br>Text, primary button, logo</div></div>
+      <div class="sw"><i style="background:#55637A"></i><div><b>Graphite</b><code>#55637A</code><br>Secondary text, marks</div></div>
+      <div class="sw"><i style="background:#B83227"></i><div><b>Marking red</b><code>#B83227</code><br>Annotations only</div></div>
+      <div class="sw"><i style="background:#E0A21B"></i><div><b>Star gold</b><code>#E0A21B</code><br>The star, never text</div></div>
+    </div>
+  </div>
+  <aside class="margin"><p class="num">Contrast on white<br>Ink <span class="mark">[14.6 : 1]</span><br>Graphite <span class="mark">[6.1 : 1]</span><br>Marking red <span class="mark">[6.0 : 1]</span><br>All text passes WCAG AA. Gold is shapes only.</p></aside>
+</div></section>
+
+<section class="block" id="type"><div class="wrap paper">
+  <div>
+    <h2>Type: a textbook serif and a clear sans</h2>
+    <p class="lead">Newsreader for headings and the logo, echoing printed papers and textbooks. Figtree for everything you read or click. Both are free on Google Fonts.</p>
+    <div class="spec">
+      <div class="row"><span class="lbl">Display 60</span><span style="font:600 clamp(2.25rem,5vw,3.75rem)/1.05 var(--serif)">Grades that open doors</span></div>
+      <div class="row"><span class="lbl">H2 36</span><span style="font:600 2.25rem/1.15 var(--serif)">How a free trial works</span></div>
+      <div class="row"><span class="lbl">H3 24</span><span style="font:600 1.5rem/1.25 var(--serif)">IGCSE Mathematics (0580)</span></div>
+      <div class="row"><span class="lbl">Lead 18</span><span style="font-size:1.125rem">We match your child with a tutor who has taught their exact syllabus.</span></div>
+      <div class="row"><span class="lbl">Body 16</span><span>Lessons run online or at home. After every lesson the tutor sends a short note on what was covered and what to practise next.</span></div>
+      <div class="row"><span class="lbl">Small 14</span><span class="small muted num">Last updated 8 October 2026 · Prices in PKR</span></div>
+      <div class="row"><span class="lbl">Maths</span><span class="math">x² − 5x + 6 = 0 &nbsp;⇒&nbsp; (x − 2)(x − 3) = 0</span></div>
+    </div>
+  </div>
+  <aside class="margin"><p>Sentence case everywhere. Lines stay under 72 characters. No all-caps labels. Prices and scores use tabular figures so columns line up.</p></aside>
+</div></section>
+
+<section class="block" id="tokens"><div class="wrap paper">
+  <div>
+    <h2>Space, shape, depth and motion</h2>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Token</th><th>Values</th><th>Rule</th></tr></thead>
+      <tbody>
+        <tr><td>Spacing</td><td class="num">4 · 8 · 12 · 16 · 24 · 32 · 48 · 64 · 96 · 128</td><td>Nothing in between. Sections are 96px apart (64px on mobile).</td></tr>
+        <tr><td>Grid</td><td>12 columns, 1200px max</td><td>The last 3 columns are the margin column on wide screens. On mobile it drops below.</td></tr>
+        <tr><td>Radius</td><td>6px controls · 10px containers</td><td>Two values only. Paper isn't round, and there are no pill buttons.</td></tr>
+        <tr><td>Borders</td><td>1px solid border · 1px dashed rule</td><td>Cards are paper on paper, separated by borders, not shadows.</td></tr>
+        <tr><td>Shadow</td><td>One "float" token</td><td>Menus, dialogs, toasts and the hero exam card only.</td></tr>
+        <tr><td>Motion</td><td>150ms hover · 200ms open</td><td>One signature moment: the examiner tick draws itself on confirmation. Reduced motion is respected.</td></tr>
+        <tr><td>Icons</td><td>Lucide, 1.5px stroke, 20px</td><td>One set. No emoji, no mixed styles.</td></tr>
+      </tbody></table></div>
+  </div>
+  <aside class="margin"><p>The old site used 8 radii, 18 colour families and more than 200 one-off font sizes. This system allows 2, 6 and 8.</p></aside>
+</div></section>
+
+<section class="block" id="components"><div class="wrap">
+  <div class="paper"><div><h2>Components in the language</h2><p class="lead">Built on shadcn/ui and themed with the tokens. There are two card types: the white sheet card and the quiet margin panel.</p></div><aside class="margin"><p>Every component below appears in both the marketing site and the app, so the two feel like one product.</p></aside></div>
+
+  <div class="gallery">
+    <div class="g-12 sheet" style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+      <a class="btn btn-primary" href="#sample">Book a free trial</a>
+      <a class="btn btn-secondary" href="#sample"><svg aria-hidden="true"><use href="#i-wa"/></svg>WhatsApp us</a>
+      <a class="btn btn-ghost" href="#sample">See all tutors</a>
+      <span class="badge">IGCSE</span><span class="badge">A Level</span><span class="badge">Online</span><span class="badge">Home tutoring, Islamabad</span>
+    </div>
+
+    <article class="g-6 sheet tutor">
+      <div class="avatar" aria-hidden="true">SA</div>
+      <div>
+        <h3>Sara A.</h3>
+        <p class="small muted">MPhil Mathematics, 8 years teaching</p>
+        <div class="meta"><span class="badge">O Level</span><span class="badge">A Level</span><span class="badge">IGCSE</span><span class="badge">Online & home</span></div>
+        <p class="small">Specialises in Cambridge 0580 and 9709 pure maths. Known for clear working and past-paper drills.</p>
+        <div class="foot"><span class="small muted num">Example profile. Real tutors and reviews only.</span><a class="btn btn-secondary" href="#sample">View profile</a></div>
+      </div>
+    </article>
+
+    <article class="g-6 sheet plan">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px"><h3>Growth</h3><span class="mark">[2 subjects]</span></div>
+      <p class="small muted" style="margin-top:4px">For students preparing two core subjects.</p>
+      <p style="margin-top:16px"><span class="price num">PKR 35,000</span> <span class="small muted">per month</span></p>
+      <ul>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg>8 one-to-one lessons a month</li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg>Monthly progress report for parents</li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg>AI practice between lessons</li>
+      </ul>
+      <a class="btn btn-primary" href="#sample">Book a free trial</a>
+    </article>
+
+    <article class="g-8 sheet q" aria-label="Practice question example">
+      <div><span class="qnum" style="font-size:1.25rem">3 (b)</span>&nbsp; <span class="stem">Solve <span class="math">x² − 5x + 6 = 0</span>.</span></div>
+      <span class="mark">[3]</span>
+      <div class="working">
+        <div><span class="hand">(x − 2)(x − 3) = 0</span><span class="ann">M1</span></div>
+        <div><span class="hand">x = 2 or x = 3</span><span class="ann">A1 A1</span></div>
+        <div></div>
+      </div>
+      <div class="feedback"><svg class="tick" aria-hidden="true"><use href="#i-tick"/></svg><p><span class="note">Full marks. You factorised before solving, which is exactly what the mark scheme rewards.</span><br><span class="small muted">AI feedback, checked against the Cambridge 0580 mark scheme</span></p></div>
+    </article>
+
+    <aside class="g-4 panel">
+      <h3 style="font-size:1.25rem">This week</h3>
+      <p class="small muted" style="margin:4px 0 16px">IGCSE Mathematics</p>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><svg class="star" aria-hidden="true"><use href="#i-star"/></svg><span>Quadratics mastered</span></div>
+      <p class="small">12 questions · 10 correct</p>
+      <div class="bar" style="margin-top:8px"><i style="width:83%"></i></div>
+      <p class="small muted" style="margin-top:16px">Next: simultaneous equations with your tutor on Thursday.</p>
+    </aside>
+
+    <div class="g-6 sheet">
+      <h3 style="font-size:1.25rem;margin-bottom:12px">Parent report</h3>
+      <div class="tablewrap" style="margin-top:0"><table class="report num">
+        <thead><tr><th>Topic</th><th>Progress</th><th>Score</th></tr></thead>
+        <tbody>
+          <tr><td>Quadratics</td><td><div class="bar"><i style="width:88%"></i></div></td><td>88%</td></tr>
+          <tr><td>Trigonometry</td><td><div class="bar"><i style="width:64%"></i></div></td><td>64%</td></tr>
+          <tr><td>Vectors</td><td><div class="bar"><i style="width:41%"></i></div></td><td>41%</td></tr>
+        </tbody></table></div>
+      <p class="note" style="margin-top:14px">Vectors need work. We'll spend next week's lessons there.</p>
+    </div>
+
+    <div class="g-6 sheet">
+      <h3 style="font-size:1.25rem;margin-bottom:16px">Book a free trial</h3>
+      <div class="field"><label for="f1">Student's exam board and subject</label><input id="f1" value="Cambridge IGCSE Mathematics"><span class="help">We'll match a tutor who has taught this syllabus.</span></div>
+      <div class="field err" style="margin-top:16px"><label for="f2">WhatsApp number</label><input id="f2" value="0300 123" aria-invalid="true" aria-describedby="f2h"><span class="help" id="f2h">Enter the number with country code, e.g. +92 300 1234567.</span></div>
+    </div>
+
+    <div class="g-12 sheet faq">
+      <h3 style="font-size:1.25rem;margin-bottom:4px">Questions parents ask</h3>
+      <details open><summary>How does the free trial work?</summary><p>You tell us the subject and exam board. We match a tutor within a day, and the first lesson is free with no payment details needed.</p></details>
+      <details><summary>Do you teach online and at home?</summary><p>Online everywhere. At home only in cities where we have tutors near you.</p></details>
+    </div>
+  </div>
+</div></section>
+
+<section class="block" id="sample"><div class="wrap">
+  <div class="paper"><div><h2>Homepage sample</h2><p class="lead">The first two sections of the homepage in this language: one message, one primary action, and the product shown as what it actually is, which is marked work.</p></div><aside class="margin"><p>Sample copy. Claims shown are ones the client must confirm before launch.</p></aside></div>
+  <div class="browser" role="img" aria-label="Homepage mockup in the exam paper design language">
+    <div class="chrome"><i></i><i></i><i></i><span>tutoringgalaxy.com</span></div>
+    <div class="site">
+      <div class="site-nav"><svg class="logo" aria-label="Tutoring Galaxy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 619.44 96" width="619.44" height="96" role="img"><g transform="translate(2 64.67)"><g transform="translate(0 -62.67) scale(1.44)"><circle cx="32" cy="32" r="31" style="fill:var(--ink, #041C32)"/><g transform="translate(10.02 45.88)"><path d="M8.232 -19.544H12.908V-1.1340000000000001L15.26 -0.462V0.0H5.88V-0.462L8.232 -1.1340000000000001ZM18.788 -18.942H2.352L4.0600000000000005 -19.32L0.9380000000000001 -13.370000000000001L0.49 -13.468L1.4000000000000001 -21.098H1.666L4.284 -19.698L2.688 -20.02H18.452L16.842 -19.698L19.474 -21.098H19.740000000000002L20.650000000000002 -13.468L20.202 -13.370000000000001L17.080000000000002 -19.32ZM38.696 -1.582H40.376000000000005V-1.12Q38.738 -0.602 37.24 -0.27999999999999997Q35.742000000000004 0.042 34.391000000000005 0.189Q33.040000000000006 0.336 31.822000000000003 0.336Q29.302 0.336 27.195 -0.32199999999999995Q25.088 -0.98 23.555 -2.31Q22.022000000000002 -3.64 21.175000000000004 -5.614Q20.328000000000003 -7.588 20.328000000000003 -10.206Q20.328000000000003 -13.216000000000001 21.791000000000004 -15.505Q23.254 -17.794 25.858000000000004 -19.075000000000003Q28.462000000000003 -20.356 31.892000000000003 -20.356Q33.39 -20.356 34.587 -20.167Q35.784000000000006 -19.978 36.89 -19.656L35.21 -19.418L37.128 -20.93H37.338L38.752 -13.58L38.332 -13.482000000000001L34.818000000000005 -19.04L36.862 -16.87Q35.588 -18.158 34.286 -18.816000000000003Q32.984 -19.474 31.5 -19.474Q30.184000000000005 -19.474 29.036 -19.026Q27.888 -18.578 27.013 -17.584Q26.138 -16.59 25.648000000000003 -14.937999999999999Q25.158 -13.286 25.158 -10.864Q25.158 -7.5040000000000004 26.138 -5.187Q27.118000000000002 -2.87 28.742 -1.6660000000000001Q30.366 -0.462 32.284000000000006 -0.462Q32.872 -0.462 33.411 -0.553Q33.95 -0.644 34.419000000000004 -0.819Q34.888000000000005 -0.994 35.266000000000005 -1.232L34.258 -0.196V-7.784L31.584000000000003 -8.47V-8.96H40.474000000000004V-8.47L38.696 -7.868Z" style="fill:var(--on-ink, #F7F4EC)"/></g><path d="M47.5,10.4 Q48.84,14.66 53.1,16 Q48.84,17.34 47.5,21.6 Q46.16,17.34 41.9,16 Q46.16,14.66 47.5,10.4 Z" style="fill:var(--star, var(--gold, #C8922E))"/></g><path d="M136.816 -44.672000000000004H147.504V-2.592L152.88 -1.056V0.0H131.44V-1.056L136.816 -2.592ZM160.94400000000002 -43.296H123.376L127.28 -44.160000000000004L120.144 -30.560000000000002L119.12 -30.784L121.2 -48.224000000000004H121.808L127.792 -45.024L124.144 -45.76H160.176L156.496 -45.024L162.512 -48.224000000000004H163.12L165.2 -30.784L164.176 -30.560000000000002L157.04 -44.160000000000004ZM179.952 -10.56Q179.952 -8.768 180.54399999999998 -7.6160000000000005Q181.136 -6.464 182.304 -5.92Q183.472 -5.376 185.328 -5.376Q187.184 -5.376 188.89600000000002 -5.936Q190.608 -6.496 192.048 -7.296L192.336 -6.5280000000000005Q189.904 -4.224 188.176 -2.7840000000000003Q186.448 -1.344 185.04000000000002 -0.6080000000000001Q183.632 0.128 182.288 0.384Q180.94400000000002 0.64 179.344 0.64Q174.928 0.64 172.784 -1.792Q170.64000000000001 -4.224 170.64000000000001 -9.088000000000001V-29.6L165.936 -31.2V-32.384L180.208 -33.12L179.952 -29.92ZM190.99200000000002 1.056 190.57600000000002 -5.056V-29.632L186.032 -31.2V-32.384L200.336 -33.12L199.92000000000002 -29.888V-4.352Q200.208 -4.192 200.8 -3.888Q201.392 -3.584 202.112 -3.232Q202.832 -2.88 203.536 -2.528Q204.24 -2.176 204.752 -1.8880000000000001V-1.088L191.472 1.056ZM219.344 -9.312Q219.344 -7.104 220.704 -6.016Q222.064 -4.928 224.624 -4.928Q226.064 -4.928 227.664 -5.152Q229.26399999999998 -5.376 231.44 -5.952V-4.704Q228.176 -2.528 226.0 -1.344Q223.82399999999998 -0.16 222.144 0.32Q220.464 0.8 218.736 0.8Q216.208 0.8 214.24 -0.17600000000000005Q212.272 -1.1520000000000001 211.152 -3.216Q210.03199999999998 -5.28 210.03199999999998 -8.512V-27.296L205.392 -30.72V-31.392Q205.744 -31.616 206.736 -32.176Q207.72799999999998 -32.736000000000004 209.12 -33.536Q210.512 -34.336 212.16 -35.296Q213.808 -36.256 215.536 -37.28Q217.26399999999998 -38.304 218.832 -39.232H219.344V-31.808ZM215.856 -28.32V-32.768H230.35199999999998L229.744 -28.32ZM248.944 -1.12Q251.344 -1.12 252.88 -2.688Q254.416 -4.256 255.136 -7.5200000000000005Q255.856 -10.784 255.856 -15.808Q255.856 -21.056 255.152 -24.576Q254.44799999999998 -28.096 252.928 -29.872Q251.408 -31.648 248.976 -31.648Q246.576 -31.648 245.04 -30.08Q243.504 -28.512 242.76799999999997 -25.248Q242.03199999999998 -21.984 242.03199999999998 -16.96Q242.03199999999998 -11.744 242.736 -8.208Q243.44 -4.672 244.95999999999998 -2.896Q246.48 -1.12 248.944 -1.12ZM248.656 0.768Q243.88799999999998 0.768 240.176 -1.408Q236.464 -3.584 234.336 -7.4399999999999995Q232.208 -11.296 232.208 -16.32Q232.208 -21.408 234.44799999999998 -25.296Q236.688 -29.184 240.54399999999998 -31.36Q244.39999999999998 -33.536 249.232 -33.536Q254.096 -33.536 257.808 -31.376Q261.52 -29.216 263.616 -25.36Q265.712 -21.504 265.712 -16.448Q265.712 -11.36 263.424 -7.4719999999999995Q261.13599999999997 -3.584 257.28 -1.408Q253.42399999999998 0.768 248.656 0.768ZM292.784 -33.408Q294.44800000000004 -33.408 295.42400000000004 -32.4Q296.40000000000003 -31.392 296.40000000000003 -29.728Q296.40000000000003 -27.648 295.05600000000004 -26.224Q293.712 -24.8 291.728 -24.8Q290.608 -24.8 289.712 -25.008000000000003Q288.81600000000003 -25.216 287.92 -25.44Q287.024 -25.664 285.872 -25.664Q284.944 -25.664 284.16 -25.408Q283.37600000000003 -25.152 282.65600000000006 -24.672Q281.93600000000004 -24.192 281.2 -23.424L281.168 -24.896Q283.76 -27.776 285.536 -29.472Q287.312 -31.168 288.576 -32.016Q289.84000000000003 -32.864 290.81600000000003 -33.135999999999996Q291.79200000000003 -33.408 292.784 -33.408ZM282.03200000000004 -27.2V-1.984L286.48 -0.96V0.0H268.91200000000003V-0.96L272.72 -1.984V-25.792Q272.30400000000003 -26.176000000000002 271.79200000000003 -26.592Q271.28000000000003 -27.008 270.51200000000006 -27.68Q269.744 -28.352 268.56 -29.408V-30.208000000000002L281.616 -33.76H282.03200000000004ZM311.08799999999997 -33.76V-27.2V-1.92L314.768 -0.96V0.0H297.96799999999996V-0.96L301.77599999999995 -1.984V-25.792Q301.392 -26.112000000000002 300.79999999999995 -26.624000000000002Q300.20799999999997 -27.136 299.40799999999996 -27.84Q298.60799999999995 -28.544 297.616 -29.408V-30.208000000000002L310.67199999999997 -33.76ZM330.25600000000003 -26.528000000000002V-1.92L333.936 -0.96V0.0H317.136V-0.96L320.944 -1.984V-25.792Q320.4 -26.272000000000002 319.44 -27.184Q318.48 -28.096 316.784 -29.408V-30.208000000000002L329.84 -33.76H330.25600000000003ZM338.192 -0.96 341.872 -1.92V-21.824Q341.872 -23.712 341.264 -24.896Q340.656 -26.080000000000002 339.44 -26.656Q338.224 -27.232 336.304 -27.232Q334.384 -27.232 332.592 -26.704Q330.8 -26.176000000000002 329.232 -25.44L328.976 -26.048000000000002Q331.472 -28.448 333.264 -29.92Q335.056 -31.392 336.48 -32.144Q337.904 -32.896 339.264 -33.152Q340.624 -33.408 342.288 -33.408Q346.8 -33.408 349.00800000000004 -30.928Q351.216 -28.448 351.216 -23.488V-1.984L354.992 -0.96V0.0H338.192ZM370.25600000000003 14.88Q366.25600000000003 14.88 363.48800000000006 14.368Q360.72 13.856 359.04 12.911999999999999Q357.36 11.968 356.608 10.736Q355.856 9.504 355.856 8.096Q355.856 6.912 356.56 5.872Q357.264 4.832 358.8 3.952Q360.336 3.072 362.88 2.3200000000000003Q365.424 1.568 369.104 0.928H371.952L371.92 1.3760000000000001Q368.24 1.824 366.15999999999997 2.624Q364.08 3.424 363.216 4.544Q362.352 5.664 362.352 7.072Q362.352 8.928 363.63199999999995 10.256Q364.912 11.584 367.216 12.288Q369.52 12.992 372.688 12.992Q376.144 12.992 378.368 12.24Q380.592 11.488 381.68 10.208Q382.76800000000003 8.928 382.76800000000003 7.328Q382.76800000000003 6.048 382.0 5.216Q381.232 4.384 379.616 3.8400000000000003Q378.0 3.2960000000000003 375.472 2.944Q372.944 2.592 369.424 2.368Q366.32 2.08 364.20799999999997 1.472Q362.096 0.864 360.81600000000003 -0.12800000000000006Q359.536 -1.12 358.96000000000004 -2.4160000000000004Q358.384 -3.712 358.384 -5.344Q358.384 -8.032 360.88 -10.016Q363.376 -12.0 367.984 -12.768L368.4 -11.936Q366.192 -11.776 365.312 -11.024000000000001Q364.432 -10.272 364.432 -9.344Q364.432 -8.512 364.81600000000003 -7.952Q365.2 -7.392 366.304 -6.992000000000001Q367.408 -6.5920000000000005 369.472 -6.304Q371.536 -6.016 374.896 -5.728Q378.704 -5.408 381.36 -4.672000000000001Q384.016 -3.936 385.696 -2.768Q387.376 -1.6 388.15999999999997 -0.016000000000000014Q388.944 1.568 388.944 3.616Q388.944 6.5920000000000005 386.944 9.152000000000001Q384.944 11.712 380.81600000000003 13.296Q376.688 14.88 370.25600000000003 14.88ZM371.12 -11.52Q367.184 -11.52 364.17600000000004 -12.896Q361.168 -14.272 359.488 -16.736Q357.808 -19.2 357.808 -22.496000000000002Q357.808 -25.76 359.52 -28.240000000000002Q361.232 -30.72 364.22400000000005 -32.128Q367.216 -33.536 371.024 -33.536Q374.064 -33.536 376.528 -32.752Q378.992 -31.968 380.76800000000003 -30.496000000000002Q382.544 -29.024 383.488 -27.008000000000003Q384.432 -24.992 384.432 -22.528Q384.432 -19.296 382.736 -16.816Q381.04 -14.336 378.048 -12.928Q375.056 -11.52 371.12 -11.52ZM371.824 -13.152000000000001Q374.064 -13.376 375.04 -15.68Q376.016 -17.984 375.728 -21.792Q375.472 -26.784 374.08 -29.424Q372.688 -32.064 370.32 -31.904Q368.24 -31.744 367.24800000000005 -29.424Q366.25600000000003 -27.104 366.48 -23.296Q366.736 -18.368000000000002 368.144 -15.680000000000001Q369.552 -12.992 371.824 -13.152000000000001ZM375.504 -32.224000000000004 373.872 -33.312Q378.448 -33.024 381.28 -33.120000000000005Q384.112 -33.216 385.68 -33.504000000000005Q387.248 -33.792 388.048 -34.032Q388.848 -34.272 389.424 -34.272Q390.064 -34.272 390.512 -33.824Q390.96 -33.376 390.96 -32.256Q390.96 -30.272000000000002 389.91999999999996 -28.96Q388.88 -27.648 387.568 -27.648Q386.672 -27.648 385.76 -28.288Q384.848 -28.928 383.568 -29.792Q382.288 -30.656000000000002 380.352 -31.376000000000005Q378.416 -32.096000000000004 375.504 -32.224000000000004ZM448.11199999999997 -3.616H451.952V-2.56Q448.20799999999997 -1.3760000000000001 444.784 -0.64Q441.36 0.096 438.272 0.432Q435.18399999999997 0.768 432.4 0.768Q426.64 0.768 421.82399999999996 -0.7360000000000001Q417.008 -2.24 413.504 -5.28Q410.0 -8.32 408.06399999999996 -12.832Q406.128 -17.344 406.128 -23.328Q406.128 -30.208000000000002 409.472 -35.440000000000005Q412.816 -40.672000000000004 418.768 -43.6Q424.71999999999997 -46.528 432.56 -46.528Q435.984 -46.528 438.71999999999997 -46.096000000000004Q441.45599999999996 -45.664 443.984 -44.928000000000004L440.144 -44.384L444.52799999999996 -47.84H445.008L448.24 -31.04L447.28 -30.816L439.248 -43.52L443.91999999999996 -38.56Q441.008 -41.504 438.032 -43.007999999999996Q435.056 -44.512 431.664 -44.512Q428.656 -44.512 426.032 -43.488Q423.40799999999996 -42.464 421.40799999999996 -40.192Q419.40799999999996 -37.92 418.288 -34.144000000000005Q417.168 -30.368000000000002 417.168 -24.832Q417.168 -17.152 419.408 -11.856000000000002Q421.64799999999997 -6.5600000000000005 425.36 -3.8080000000000003Q429.072 -1.056 433.45599999999996 -1.056Q434.79999999999995 -1.056 436.032 -1.264Q437.264 -1.472 438.336 -1.872Q439.408 -2.2720000000000002 440.272 -2.816L437.96799999999996 -0.448V-17.792L431.856 -19.36V-20.48H452.176V-19.36L448.11199999999997 -17.984ZM475.408 -20.96 475.472 -19.424Q472.11199999999997 -18.272000000000002 470.01599999999996 -17.216Q467.91999999999996 -16.16 466.816 -15.056000000000001Q465.712 -13.952 465.296 -12.687999999999999Q464.88 -11.424 464.88 -9.888Q464.88 -7.232 466.11199999999997 -5.984Q467.344 -4.736 469.23199999999997 -4.736Q470.57599999999996 -4.736 471.58399999999995 -5.279999999999999Q472.592 -5.824 473.152 -6.928Q473.712 -8.032 473.712 -9.728V-24.768Q473.712 -27.584 472.24 -29.12Q470.768 -30.656000000000002 467.792 -30.656000000000002Q466.288 -30.656000000000002 464.96000000000004 -30.480000000000004Q463.632 -30.304000000000002 462.8 -29.984L464.24 -31.68Q464.048 -29.824 463.82399999999996 -28.448Q463.59999999999997 -27.072 463.29599999999994 -26.128Q462.99199999999996 -25.184 462.608 -24.672Q462.096 -24.032 461.13599999999997 -23.631999999999998Q460.176 -23.232 459.024 -23.232Q457.55199999999996 -23.232 456.784 -23.759999999999998Q456.01599999999996 -24.288 456.01599999999996 -25.28Q456.01599999999996 -26.688 457.424 -28.128Q458.832 -29.568 461.13599999999997 -30.800000000000004Q463.44 -32.032000000000004 466.24 -32.784000000000006Q469.03999999999996 -33.536 471.856 -33.536Q475.91999999999996 -33.536 478.36799999999994 -32.368Q480.816 -31.2 481.91999999999996 -29.04Q483.024 -26.88 483.024 -23.968V-6.144Q483.024 -5.248 483.312 -4.688000000000001Q483.59999999999997 -4.128 484.128 -3.872Q484.656 -3.616 485.36 -3.616Q486.256 -3.616 487.13599999999997 -3.872Q488.01599999999996 -4.128 488.94399999999996 -4.704V-3.36Q486.512 -0.864 484.464 -0.04799999999999999Q482.416 0.768 479.952 0.768Q477.68 0.768 476.336 -0.128Q474.99199999999996 -1.024 474.384 -2.832Q473.776 -4.64 473.68 -7.392L474.0 -7.2Q473.392 -4.64 472.144 -2.88Q470.89599999999996 -1.12 469.13599999999997 -0.19200000000000006Q467.376 0.736 465.23199999999997 0.736Q460.816 0.736 458.272 -1.488Q455.728 -3.712 455.728 -7.68Q455.728 -9.696 456.432 -11.296Q457.13599999999997 -12.896 459.152 -14.336Q461.168 -15.776 465.08799999999997 -17.36Q469.008 -18.944 475.408 -20.96ZM502.38399999999996 -1.984 506.192 -0.96V0.0H489.23199999999997V-0.96L493.03999999999996 -1.984V-40.096000000000004Q492.62399999999997 -40.384 491.888 -40.896Q491.152 -41.408 490.128 -42.112Q489.104 -42.816 487.856 -43.712V-44.480000000000004L501.936 -47.616H502.38399999999996V-41.472ZM528.7520000000001 -20.96 528.816 -19.424Q525.456 -18.272000000000002 523.36 -17.216Q521.264 -16.16 520.1600000000001 -15.056000000000001Q519.056 -13.952 518.6400000000001 -12.687999999999999Q518.224 -11.424 518.224 -9.888Q518.224 -7.232 519.456 -5.984Q520.688 -4.736 522.576 -4.736Q523.9200000000001 -4.736 524.9280000000001 -5.279999999999999Q525.936 -5.824 526.4960000000001 -6.928Q527.056 -8.032 527.056 -9.728V-24.768Q527.056 -27.584 525.5840000000001 -29.12Q524.1120000000001 -30.656000000000002 521.1360000000001 -30.656000000000002Q519.6320000000001 -30.656000000000002 518.3040000000001 -30.480000000000004Q516.976 -30.304000000000002 516.144 -29.984L517.5840000000001 -31.68Q517.392 -29.824 517.1680000000001 -28.448Q516.9440000000001 -27.072 516.6400000000001 -26.128Q516.336 -25.184 515.952 -24.672Q515.44 -24.032 514.48 -23.631999999999998Q513.52 -23.232 512.368 -23.232Q510.896 -23.232 510.12800000000004 -23.759999999999998Q509.36 -24.288 509.36 -25.28Q509.36 -26.688 510.76800000000003 -28.128Q512.176 -29.568 514.48 -30.800000000000004Q516.784 -32.032000000000004 519.5840000000001 -32.784000000000006Q522.384 -33.536 525.2 -33.536Q529.264 -33.536 531.712 -32.368Q534.1600000000001 -31.2 535.2640000000001 -29.04Q536.368 -26.88 536.368 -23.968V-6.144Q536.368 -5.248 536.6560000000001 -4.688000000000001Q536.9440000000001 -4.128 537.472 -3.872Q538.0 -3.616 538.7040000000001 -3.616Q539.6 -3.616 540.48 -3.872Q541.36 -4.128 542.288 -4.704V-3.36Q539.856 -0.864 537.808 -0.04799999999999999Q535.76 0.768 533.296 0.768Q531.024 0.768 529.6800000000001 -0.128Q528.336 -1.024 527.7280000000001 -2.832Q527.12 -4.64 527.024 -7.392L527.344 -7.2Q526.736 -4.64 525.488 -2.88Q524.24 -1.12 522.48 -0.19200000000000006Q520.72 0.736 518.576 0.736Q514.1600000000001 0.736 511.6160000000001 -1.488Q509.07200000000006 -3.712 509.07200000000006 -7.68Q509.07200000000006 -9.696 509.77600000000007 -11.296Q510.48 -12.896 512.4960000000001 -14.336Q514.5120000000001 -15.776 518.432 -17.36Q522.3520000000001 -18.944 528.7520000000001 -20.96ZM575.1840000000001 -2.144 578.9920000000001 -1.056V0.0H560.8480000000001V-1.056L564.784 -1.984L556.5600000000001 -13.888L556.176 -14.304L544.88 -30.432000000000002L541.0400000000001 -31.712V-32.768H558.8960000000001V-31.712L555.12 -30.752L562.576 -19.872L562.8960000000001 -19.552ZM558.288 -15.296000000000001 547.856 -1.952 551.8240000000001 -1.056V0.0H540.816V-1.056L545.008 -2.016L557.84 -17.408L560.2080000000001 -17.984L570.3520000000001 -30.816L566.192 -31.712V-32.768H577.1360000000001V-31.712L573.1360000000001 -30.752L560.688 -15.872ZM602.32 -8.128 597.6800000000001 2.2720000000000002 580.8480000000001 -30.464000000000002 577.2 -31.744V-32.768H595.344V-31.712L591.248 -30.656000000000002ZM587.056 14.752Q584.784 14.752 583.328 13.552Q581.8720000000001 12.352 581.8720000000001 10.08Q581.8720000000001 9.056000000000001 582.224 8.336Q582.576 7.6160000000000005 583.088 7.216Q583.6 6.816 584.08 6.816Q584.368 6.816 585.088 7.184Q585.808 7.5520000000000005 586.88 7.904Q587.952 8.256 589.3280000000001 8.256Q591.024 8.256 592.2560000000001 7.888Q593.488 7.5200000000000005 594.416 6.5600000000000005Q595.344 5.6000000000000005 596.144 3.84L598.096 -0.512L600.7520000000001 -6.784L609.1360000000001 -30.816L604.976 -31.712V-32.768H615.44V-31.712L611.76 -30.816L598.64 3.168Q596.912 7.5840000000000005 595.152 10.096Q593.392 12.608 591.424 13.68Q589.456 14.752 587.056 14.752Z" style="fill:var(--ink, #041C32)"/><path d="M306.19,-50.61 Q308.27,-44.04 314.83,-41.97 Q308.27,-39.9 306.19,-33.33 Q304.12,-39.9 297.55,-41.97 Q304.12,-44.04 306.19,-50.61 Z" style="fill:var(--gold, #C8922E)"/></g></svg><nav><span>Tutoring</span><span>Curricula</span><span>Tutors</span><span>Pricing</span><span>About</span></nav><a class="btn btn-primary" href="#sample" style="height:40px">Book a free trial</a></div>
+      <div class="site-hero">
+        <div>
+          <h1>Expert tutors for O Level, A Level, IGCSE and IB</h1>
+          <p class="lead">Tell us the subject and exam board. We match your child with a tutor who has taught that exact syllabus, online or at home. The first lesson is free.</p>
+          <div class="actions"><a class="btn btn-primary" href="#sample">Book a free trial</a><a class="btn btn-secondary" href="#sample"><svg aria-hidden="true"><use href="#i-wa"/></svg>WhatsApp us</a></div>
+          <div class="proof"><span><svg aria-hidden="true"><use href="#i-check"/></svg>Tutoring since 2016</span><span><svg aria-hidden="true"><use href="#i-check"/></svg>Families in 11 countries</span><span><svg aria-hidden="true"><use href="#i-check"/></svg>No payment for the trial</span></div>
+        </div>
+        <div class="exam">
+          <svg class="star-stamp" aria-hidden="true"><use href="#i-star"/></svg>
+          <div class="head"><span>IGCSE Mathematics 0580</span><span>Lesson 6</span></div>
+          <div class="q">
+            <div><span class="qnum" style="font-size:1.125rem">3 (b)</span>&nbsp; Solve <span class="math">x² − 5x + 6 = 0</span>.</div>
+            <span class="mark">[3]</span>
+            <div class="working">
+              <div><span class="hand">(x − 2)(x − 3) = 0</span><span class="ann">M1</span></div>
+              <div><span class="hand">x = 2 or x = 3</span><span class="ann">A1 A1</span></div>
+            </div>
+            <div class="feedback"><svg class="tick" aria-hidden="true"><use href="#i-tick"/></svg><span class="note">Full marks. Factorising first is what the mark scheme rewards.</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="steps">
+        <h2>How a free trial works</h2>
+        <div class="step"><span class="qnum">1</span><div><h3>Tell us what you need</h3><p class="muted">Subject, exam board and level, plus online or home.</p></div><span class="mark">[2 minutes]</span></div>
+        <div class="step"><span class="qnum">2</span><div><h3>Meet your matched tutor</h3><p class="muted">We suggest a tutor who has taught that syllabus and send their profile on WhatsApp.</p></div><span class="mark">[within 1 day]</span></div>
+        <div class="step"><span class="qnum">3</span><div><h3>Take the first lesson free</h3><p class="muted">Afterwards you get a short note on level, gaps and a plan. Continue only if it's right.</p></div><span class="mark">[free]</span></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<section class="block" id="inspiration"><div class="wrap">
+  <div class="paper"><div><h2>Inspiration in detail: what we take and where it goes</h2><p class="lead">We don't copy any one site. From each reference we take one specific pattern and translate it into the exam paper language, with a named home in our sitemap.</p></div><aside class="margin"><p>The references couldn't be opened from this environment (sites blocked), so these notes come from what each site is known for. We'll verify them visually before building.</p></aside></div>
+  <div class="tablewrap"><table class="insp">
+    <thead><tr><th>Reference</th><th>Pattern we take</th><th>Becomes, in our language</th><th>Where</th><th>We don't take</th></tr></thead>
+    <tbody>
+      <tr><td>MyTutor</td><td>Tutor cards that lead with university, subjects and reviews; a free intro call</td><td>Sheet card with initials or photo, curriculum badges and one "View profile" action; the free first lesson as the single offer</td><td>/tutors, homepage tutors section</td><td>Busy multi-price listings</td></tr>
+      <tr><td>Varsity Tutors</td><td>Subject pages that drill down to topics</td><td>Curriculum → subject → topics as a "syllabus contents" list with margin marks for lesson counts</td><td>/curricula/[curriculum], /subjects/[subject]</td><td>Huge mega-menus, sales pop-ups</td></tr>
+      <tr><td>Atom Learning</td><td>A hero that speaks to the parent's worry; progress as proof</td><td>The hero shows marked work rather than a stock photo; the parent report as the proof section</td><td>Homepage hero, /how-it-works</td><td>Unverifiable outcome statistics</td></tr>
+      <tr><td>Save My Exams</td><td>Navigation by exam board → subject → topic, in exam language</td><td>Board and subject pickers worded the way students say them ("Cambridge IGCSE Maths 0580")</td><td>Booking form, /app/practice</td><td>Ad-heavy, dense resource pages</td></tr>
+      <tr><td>Brilliant</td><td>One question at a time, instant feedback, learning by doing</td><td>The practice question card: numbered question, marks, answer lines, examiner-style AI feedback</td><td>/app/practice</td><td>Game-like streaks and confetti</td></tr>
+      <tr><td>Khanmigo</td><td>How to explain AI to parents: it guides, it doesn't give answers, parents can see activity</td><td>A plain "How our AI practice works" panel, with feedback checked against mark schemes</td><td>/how-it-works, parent dashboard</td><td>AI mascot characters</td></tr>
+      <tr><td>Synthesis</td><td>A premium, story-led product page</td><td>An About page told as a short timeline from 2016</td><td>/about</td><td>Superlatives and hype claims</td></tr>
+      <tr><td>Dribbble: MyTutor concept</td><td>Landing page and dashboard designed as one system</td><td>The same cards, badges and margin across marketing and app (this page)</td><td>Whole product</td><td>Decorative gradients</td></tr>
+      <tr><td>Dribbble: Danesha</td><td>A short page: hero, programmes, testimonials, pricing</td><td>The homepage cut to 8 sections with one primary action</td><td>Homepage</td><td>Illustrated characters</td></tr>
+      <tr><td>Dribbble: EdTech dashboard</td><td>Sidebar shell with an at-a-glance overview</td><td>App shell: sidebar, a "This week" panel, a report table and a graph-paper chart area</td><td>/app</td><td>Dense KPI tiles</td></tr>
+    </tbody></table></div>
+</div></section>
+
+<section class="block" id="consistency"><div class="wrap">
+  <div class="paper"><div><h2>How we keep one design sense across the whole project</h2><p class="lead">Consistency isn't a mood board. It's a chain where each step only uses what the previous step defines, and a machine checks it.</p></div><aside class="margin"><p>This is the main fix for the audit's top problem: three products, three looks, 116 hardcoded colours.</p></aside></div>
+  <div class="flow">
+    <div><b>Rules</b><p>DESIGN.md defines colours, type, spacing, motifs and voice. Changes start here.</p></div>
+    <div><b>Tokens</b><p>The rules become CSS variables in <code>globals.css</code> (Tailwind v4 <code>@theme</code>), for light and dark.</p></div>
+    <div><b>Components</b><p>shadcn/ui components themed once in <code>components/ui</code>: buttons, cards, badges, forms.</p></div>
+    <div><b>Sections and templates</b><p>Hero, steps, tutor grid, pricing and FAQ are reusable sections; pages only arrange them.</p></div>
+    <div><b>Style guide</b><p>A private <code>/styleguide</code> page renders every token and component live.</p></div>
+    <div><b>Checks</b><p>CI fails on raw hex or arbitrary values, runs a11y lint and takes screenshots at 390 and 1440px.</p></div>
+  </div>
+  <div class="do-dont">
+    <div class="sheet"><h3><span class="ok">Every UI change</span> must</h3><ul><li>use tokens and existing components only</li><li>have one primary action per view</li><li>use sentence case and real, provable content</li><li>show visible focus and work at 390px</li><li>respect reduced motion</li></ul></div>
+    <div class="sheet"><h3><span class="no">Never</span></h3><ul><li>add a new colour, radius or font size inside a page</li><li>add a third card style</li><li>use gold or red as decoration</li><li>add an animation that isn't a response to an action</li><li>invent tutors, reviews or statistics</li></ul></div>
+  </div>
+</div></section>
+
+<div class="wrap"><footer>Source of truth: docs/design/DESIGN.md. Fonts: Newsreader and Figtree from Google Fonts. Logo direction shown: Scholar.</footer></div>
+</body>
+</html>
