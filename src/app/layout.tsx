@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Manrope, Newsreader } from "next/font/google";
 import { site } from "@/data/content/site";
+import { brandColors } from "@/lib/brand-colors";
 import "./globals.css";
 
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope", display: "swap" });
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#ffffff",
+  themeColor: brandColors.paper,
   width: "device-width",
   initialScale: 1,
 };
