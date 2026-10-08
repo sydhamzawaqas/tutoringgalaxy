@@ -19,7 +19,8 @@ export function pageMetadata({
     title,
     description,
     alternates: { canonical: path },
-    openGraph: { title, description, url: path },
+    // Next replaces the inherited openGraph object, so the default share image must be repeated here.
+    openGraph: { title, description, url: path, images: [{ url: "/opengraph-image", width: 1200, height: 630 }] },
     robots: noindex ? { index: false, follow: false } : undefined,
   };
 }
