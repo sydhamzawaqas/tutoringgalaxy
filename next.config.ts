@@ -83,16 +83,27 @@ const legacyRedirects = [
 
   // Auth and old admin screens
   { source: "/auth/:path*", destination: "/login" },
-  { source: "/admin/content-factory/:path*", destination: "/admin/content" },
-  { source: "/admin/content-pilot/:path*", destination: "/admin/content" },
-  { source: "/admin/exams/:path*", destination: "/admin/questions" },
-  { source: "/admin/mcqs/:path*", destination: "/admin/questions" },
-  { source: "/admin/ai-quality/:path*", destination: "/admin/ai" },
+  { source: "/admin/content-factory/:path*", destination: "/admin" },
+  { source: "/admin/content-pilot/:path*", destination: "/admin" },
+  { source: "/admin/exams/:path*", destination: "/admin" },
+  { source: "/admin/mcqs/:path*", destination: "/admin" },
+  { source: "/admin/ai-quality/:path*", destination: "/admin" },
   { source: "/admin/growth/:path*", destination: "/admin" },
   { source: "/admin/gap-analysis/:path*", destination: "/admin" },
 ].map((r) => ({ ...r, permanent: true }));
 
+// Baseline security headers for every route. A nonce-based script CSP needs per-request rendering,
+// so it's left for later (see docs/README TODOs); frame-ancestors still blocks clickjacking.
+const securityHeaders = [
+  { key: "Content-Security-Policy", value: "frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'" },
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=()" },
+  { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
+];
+
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
   /* config options here */
   cacheComponents: true,
   partialPrefetching: true,
@@ -106,6 +117,9 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return legacyRedirects;
+  },
+  async headers() {
+    return [{ source: "/:path*", headers: securityHeaders }];
   },
 };
 

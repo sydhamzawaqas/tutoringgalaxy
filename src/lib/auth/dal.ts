@@ -1,6 +1,7 @@
 import "server-only";
 import { cache } from "react";
 import { notFound, redirect } from "next/navigation";
+import { connection } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { isRole, type Role } from "./roles";
 
@@ -29,7 +30,11 @@ export function isUuid(value: unknown): value is string {
 /** The signed-in user, or null. Verifies the token with Supabase Auth (getUser), not just the cookie. */
 export const getSession = cache(async (): Promise<SessionUser | null> => {
   const supabase = await createClient();
-  if (!supabase) return null;
+  if (!supabase) {
+    // Not configured: still defer to request time so no auth decision is baked in at build.
+    await connection();
+    return null;
+  }
 
   const {
     data: { user },

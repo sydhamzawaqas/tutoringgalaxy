@@ -1,4 +1,4 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { connection, NextResponse, type NextRequest } from "next/server";
 import type { EmailOtpType } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
 import { safeNextPath } from "@/lib/auth/roles";
@@ -12,6 +12,8 @@ const OTP_TYPES: EmailOtpType[] = ["signup", "invite", "magiclink", "recovery", 
  * PKCE `?code=` links are also accepted. `next` is restricted to in-app paths (no open redirect).
  */
 export async function GET(request: NextRequest) {
+  // Always per-request: never prerender or cache an auth callback.
+  await connection();
   const { searchParams } = request.nextUrl;
   const tokenHash = searchParams.get("token_hash");
   const type = searchParams.get("type");
