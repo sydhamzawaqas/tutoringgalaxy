@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { withBase } from "@/lib/base-path";
 import Link from "next/link";
 import { Check } from "lucide-react";
 import { pageMetadata } from "@/lib/seo";
@@ -118,7 +119,7 @@ async function Picker({ searchParams }: { searchParams: SearchParams }) {
             </h2>
             <SheetCard className="mt-4">
               {/* A plain GET form: works without JavaScript, and the session page re-validates everything. */}
-              <form action="/app/practice/session" method="get" className="flex flex-col gap-6">
+              <form action={withBase("/app/practice/session")} method="get" className="flex flex-col gap-6">
                 <input type="hidden" name="curriculum" value={curriculum.slug} />
                 <input type="hidden" name="subject" value={subject.slug} />
                 <fieldset>

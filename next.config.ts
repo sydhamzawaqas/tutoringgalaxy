@@ -104,6 +104,8 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // Only set for the GitHub Pages preview build (served under /tutoringgalaxy); empty in production.
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || undefined,
   /* config options here */
   cacheComponents: true,
   partialPrefetching: true,

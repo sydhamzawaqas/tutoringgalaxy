@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { withBase } from "@/lib/base-path";
 import Link from "next/link";
 import { Suspense } from "react";
 import { Info } from "lucide-react";
@@ -135,7 +136,7 @@ async function Directory({ searchParams }: Props) {
 /** GET form: works without JavaScript and keeps filters in the URL. */
 function FilterForm({ filters }: { filters: Filters }) {
   return (
-    <form action="/tutors" method="get" role="search" aria-label="Filter tutors" className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-[repeat(3,minmax(0,1fr))_auto]">
+    <form action={withBase("/tutors")} method="get" role="search" aria-label="Filter tutors" className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-[repeat(3,minmax(0,1fr))_auto]">
       <Field id="filter-curriculum" label="Curriculum">
         <Select id="filter-curriculum" name="curriculum" defaultValue={filters.curriculum ?? ""}>
           <option value="">Any curriculum</option>

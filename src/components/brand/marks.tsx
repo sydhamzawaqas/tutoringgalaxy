@@ -1,11 +1,12 @@
 import { cn } from "@/lib/utils";
+import { withBase } from "@/lib/base-path";
 
 /** Logo wordmark (Orbit). Outlined in /public/brand; use `reversed` on dark backgrounds. */
 export function Wordmark({ className, reversed = false }: { className?: string; reversed?: boolean }) {
   return (
     // eslint-disable-next-line @next/next/no-img-element -- static SVG, no optimisation needed
     <img
-      src={reversed ? "/brand/wordmark-reversed.svg" : "/brand/wordmark.svg"}
+      src={withBase(reversed ? "/brand/wordmark-reversed.svg" : "/brand/wordmark.svg")}
       alt="Tutoring Galaxy"
       width={681}
       height={103}
