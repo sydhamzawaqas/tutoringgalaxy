@@ -2,7 +2,7 @@
 
 This is the source of truth for how every page looks: marketing site, AI practice app, parent reports and admin.
 If a screen needs something this file doesn't cover, add it here first, then build it.
-Visual reference: [`design-language.html`](design-language.html).
+Visual reference: [`design-language.html`](design-language.html) (drawn before the logo choice; the live site uses the Orbit logo and Manrope headings described below). Logo: [`../brand/logo/README.md`](../brand/logo/README.md).
 
 ## 1. The idea
 
@@ -66,11 +66,12 @@ Star gold is for shapes only (2.25:1 on white is fine for a non-text graphic, no
 
 ## 3. Typography
 
-Two families, both free on Google Fonts:
+Two families, both free on Google Fonts and self-hosted with `next/font`:
 
-- **Newsreader** (serif): headings, the logo wordmark, big numbers in reports. It echoes printed exam papers and textbooks.
-- **Figtree** (sans): everything else, including body, UI, buttons, forms and tables. Use `tabular-nums` for prices, scores and times.
-- Maths uses KaTeX in the app. Simple maths on marketing pages uses Newsreader italic.
+- **Manrope**: the logo's typeface (the Orbit wordmark is Manrope Bold). Used for headings (700), body, UI, buttons, forms and
+  tables, with `tabular-nums` for prices, scores and times.
+- **Newsreader italic**: only for the examiner's voice, meaning tutor and AI notes (`<Note>`), handwritten-style working and maths on
+  marketing pages. Nowhere else. The app renders maths with KaTeX.
 
 Scale (rem at a 16px base, from the classic typographic scale):
 
@@ -85,7 +86,7 @@ Scale (rem at a 16px base, from the classic typographic scale):
 | `small` | 0.875rem / 1.5 | Captions, margin marks |
 | `micro` | 0.75rem / 1.4 | Legal, chart labels only |
 
-Rules: sentence case everywhere, measure under 72 characters, headings in Newsreader 600, and never more than three sizes in one card.
+Rules: sentence case everywhere, measure under 72 characters, headings in Manrope 700 with -0.02em tracking, and never more than three sizes in one card.
 
 ## 4. Space, shape, depth, motion
 
@@ -102,9 +103,9 @@ Rules: sentence case everywhere, measure under 72 characters, headings in Newsre
 |---|---|---|
 | Margin marks | Right-aligned Graphite `[3]`, `[1 day]`, `[PKR 15,000]` | Steps, pricing, practice questions, report rows |
 | Answer lines | Dashed ruled lines | Forms, the practice working area, section ends |
-| Question numbering | `1`, `2 (a)` in Newsreader | Only for real sequences: how it works, booking steps, questions |
-| Examiner annotation | Marking red, handwritten-feel *italic* note, a tick | Testimonial highlights, AI feedback, tutor notes |
-| Gold star | The logo star | Results, mastery achieved, "top tutor". Earned, never decorative |
+| Question numbering | `1`, `2 (a)` in Manrope Bold, tabular | Only for real sequences: how it works, booking steps, questions |
+| Examiner annotation | Marking red, Newsreader *italic* note, a tick | Testimonial highlights, AI feedback, tutor notes |
+| Gold star | The gold star (the logo's moon is the same gold) | Results, mastery achieved, "top tutor". Earned, never decorative |
 | Graph paper | A 24px grid in `--rule` | App practice area, charts. Not on marketing pages |
 
 ## 6. Components (built on shadcn/ui, themed with the tokens above)
