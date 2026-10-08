@@ -76,7 +76,8 @@ ol.pr b{font-weight:600}
 .ins li{margin-bottom:4px}
 .ins ul.avoid li::marker{content:"✕  ";color:var(--bad)}
 .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:16px}
-.hm{margin-top:24px}
+.hm{background:transparent;border-style:dashed;align-self:start}
+@media(min-width:1100px){.hm{grid-column:span 2}}
 .hm ul{padding-left:18px;color:var(--muted);font-size:15px}
 /* palettes */
 .pal,.fp{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:20px}
@@ -268,8 +269,7 @@ footer{padding:32px 0 56px;color:var(--muted);font-size:14px;border-top:1px soli
   <h4>Avoid</h4><ul class="avoid"><li>Don't fill it with demo data for logged-out users. The old practice engine greeted everyone as "Candidate A (Oliver)".</li></ul>
   <div class="tags"><span class="tag">Dashboard</span><span class="tag">Parent report</span><span class="tag">App</span></div>
 </article>
-  </div>
-  <div class="hm">
+  <div class="hm ins">
     <h3>Honourable mentions</h3>
     <ul>
       <li><a href="https://outschool.com/online-classes/homeschool">Outschool</a>: filtering by age and subject, and class cards that show group size and price per session.</li>
@@ -278,6 +278,7 @@ footer{padding:32px 0 56px;color:var(--muted);font-size:14px;border-top:1px soli
       <li><a href="https://dribbble.com/shots/22874758-Filo-Online-tutor-landing-page">Filo</a> and <a href="https://dribbble.com/shots/24183066-TutorAI-An-AI-Tutoring-Landing-Page-Concept">TutorAI</a>: concepts for an online tutor and an AI tutor landing page.</li>
       <li>Preply showed up only in third-party reviews (video intros on tutor profiles are its standout pattern). Its own site URL did not appear in the search results, so it isn't listed as a main inspiration.</li>
     </ul>
+  </div>
   </div>
 </div></section>
 
