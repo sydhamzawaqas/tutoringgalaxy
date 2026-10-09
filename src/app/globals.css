@@ -1,26 +1,226 @@
 @import "tailwindcss";
 
+/*
+ * Tutoring Galaxy design tokens: "The Exam Paper".
+ * Source of truth: docs/design/DESIGN.md. Components use these tokens only, never raw hex.
+ */
+
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --surface: #f6f9fc;
+  --foreground: #14284b;
+  --muted-foreground: #55637a;
+  --border: #dce4ee;
+  --rule: #e6edf5;
+  --primary: #14284b;
+  --primary-foreground: #ffffff;
+  --annotation: #b83227;
+  --star: #e0a21b;
+  --success: #1d7a4c;
+  --destructive: #b42318;
+  --focus: #2f6fd6;
+  --whatsapp: #1d7a4c;
+  --elevation-float: 0 1px 2px rgb(20 40 75 / 0.06), 0 8px 24px rgb(20 40 75 / 0.1);
+
+  /* Brand range (rich sections) */
+  --navy-deep: #0a1a33;
+  --navy: #14284b;
+  --navy-soft: #1f3b6b;
+  --gold: #f2b01e;
+  --gold-deep: #c98a00;
+  --gold-tint: #fff5dc;
+  --sky-tint: #eaf2ff;
+  --mint-tint: #e6f6ee;
+  --lilac-tint: #f0edff;
+  --coral-tint: #fdecea;
+  --on-dark: #ffffff;
+  --on-dark-muted: #b9c6dc;
+  --elevation-card: 0 1px 2px rgb(20 40 75 / 0.05), 0 12px 32px -12px rgb(20 40 75 / 0.18);
+  --elevation-lift: 0 2px 4px rgb(10 26 51 / 0.08), 0 24px 48px -16px rgb(10 26 51 / 0.35);
+}
+
+.dark {
+  --background: #0d1a2e;
+  --surface: #13243d;
+  --foreground: #e8eef6;
+  --muted-foreground: #a7b4c7;
+  --border: #253957;
+  --rule: #1c2f4b;
+  --primary: #e8eef6;
+  --primary-foreground: #0d1a2e;
+  --annotation: #f08a80;
+  --star: #f2c14e;
+  --success: #5cc795;
+  --destructive: #f97066;
+  --focus: #8db4f5;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-rule: var(--rule);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-annotation: var(--annotation);
+  --color-star: var(--star);
+  --color-success: var(--success);
+  --color-destructive: var(--destructive);
+  --color-focus: var(--focus);
+  --color-navy-deep: var(--navy-deep);
+  --color-navy: var(--navy);
+  --color-navy-soft: var(--navy-soft);
+  --color-gold: var(--gold);
+  --color-gold-deep: var(--gold-deep);
+  --color-gold-tint: var(--gold-tint);
+  --color-sky-tint: var(--sky-tint);
+  --color-mint-tint: var(--mint-tint);
+  --color-lilac-tint: var(--lilac-tint);
+  --color-coral-tint: var(--coral-tint);
+  --color-on-dark: var(--on-dark);
+  --color-on-dark-muted: var(--on-dark-muted);
+  --shadow-card: var(--elevation-card);
+  --shadow-lift: var(--elevation-lift);
+  --radius-panel: 20px;
+  --radius-pill: 999px;
+
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-note: var(--font-newsreader), Georgia, serif;
+
+  --container-page: 75rem;
+  --container-measure: 46rem;
+
+  --radius-control: 6px;
+  --radius-container: 10px;
+  --shadow-float: var(--elevation-float);
+
+  /* Type scale (DESIGN.md §3) */
+  --text-micro: 0.75rem;
+  --text-micro--line-height: 1.4;
+  --text-label: 0.8125rem;
+  --text-label--line-height: 1.4;
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.5;
+  --text-body: 1rem;
+  --text-body--line-height: 1.6;
+  --text-button: 0.9375rem;
+  --text-button--line-height: 1;
+  --text-note: 1.0625rem;
+  --text-note--line-height: 1.4;
+  --text-lead: 1.125rem;
+  --text-lead--line-height: 1.6;
+  --text-h3: 1.5rem;
+  --text-h3--line-height: 1.25;
+  --text-h2-sm: 1.875rem;
+  --text-h2-sm--line-height: 1.15;
+  --text-h2: 2.25rem;
+  --text-h2--line-height: 1.15;
+  --text-h1-sm: 2.25rem;
+  --text-h1-sm--line-height: 1.1;
+  --text-h1: 3rem;
+  --text-h1--line-height: 1.1;
+  --text-display: 3.75rem;
+  --text-display--line-height: 1.05;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-padding-top: 5rem;
+  }
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--focus) 22%, transparent);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /* Arched photo frame (bright homepage). */
+  .arch-top {
+    border-top-left-radius: 12rem;
+    border-top-right-radius: 12rem;
+  }
+  /* Night-sky texture for navy sections: tiny stars, no images. */
+  .starfield {
+    background-color: var(--navy-deep);
+    background-image:
+      radial-gradient(1px 1px at 12% 18%, rgb(255 255 255 / 0.55) 50%, transparent 51%),
+      radial-gradient(1px 1px at 72% 12%, rgb(255 255 255 / 0.45) 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 38% 64%, rgb(242 176 30 / 0.7) 50%, transparent 51%),
+      radial-gradient(1px 1px at 88% 58%, rgb(255 255 255 / 0.4) 50%, transparent 51%),
+      radial-gradient(1px 1px at 54% 32%, rgb(255 255 255 / 0.35) 50%, transparent 51%),
+      radial-gradient(1px 1px at 24% 82%, rgb(255 255 255 / 0.4) 50%, transparent 51%),
+      radial-gradient(900px 480px at 85% -10%, rgb(31 59 107 / 0.9), transparent 70%),
+      radial-gradient(700px 420px at -10% 110%, rgb(242 176 30 / 0.12), transparent 70%);
+    background-size: 220px 220px, 260px 260px, 300px 300px, 240px 240px, 200px 200px, 280px 280px, auto, auto;
+  }
+  .select-chevron {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2355637a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-position: right 0.75rem center;
+    background-repeat: no-repeat;
+  }
+  /* Answer lines: dashed ruled lines, like an exam paper. */
+  .answer-line {
+    border-bottom: 1px dashed var(--border);
+  }
+  /* Graph paper: app only (practice, charts). */
+  .graph-paper {
+    background-image:
+      linear-gradient(var(--rule) 1px, transparent 1px),
+      linear-gradient(90deg, var(--rule) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  /* Examiner tick: the one signature motion. */
+  .tick-draw path {
+    stroke-dasharray: 40;
+    stroke-dashoffset: 40;
+    animation: tick-draw 0.5s 0.2s ease-out forwards;
+  }
+}
+
+@keyframes tick-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .tick-draw path {
+    stroke-dashoffset: 0;
+  }
 }

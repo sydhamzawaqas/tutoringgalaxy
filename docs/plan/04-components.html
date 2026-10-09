@@ -1,0 +1,934 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Component Shortlist · Tutoring Galaxy</title>
+<meta name="description" content="Phase 3 plan: which UI components the new Tutoring Galaxy site uses (shadcn/ui base, a few Aceternity UI accents), mapped to pages and sections.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f4ef; --surface:#ffffff; --surface-2:#efece5; --ink:#17202a; --muted:#59626d; --line:#ded9ce;
+  --accent:#0f5e5a; --accent-soft:#dcefed;
+  --must:#1d6a40; --must-bg:#e2f1e7; --nice:#7f5300; --nice-bg:#f7ebcc; --avoid:#a2261e; --avoid-bg:#f8e0dc;
+  --code-bg:#f1eee7;
+  --mock-1:#e7e3da; --mock-2:#d5cfc2; --mock-ink:#3b434d;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#12161b; --surface:#1a2027; --surface-2:#212831; --ink:#e9e6e0; --muted:#9ca5af; --line:#2e3740;
+    --accent:#62c4ba; --accent-soft:#183634;
+    --must:#86d6a6; --must-bg:#16301f; --nice:#f0c46b; --nice-bg:#372a10; --avoid:#f29b92; --avoid-bg:#3b1c19;
+    --code-bg:#20262e;
+    --mock-1:#232a33; --mock-2:#313a45; --mock-ink:#c7ccd2;
+    color-scheme:dark;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 "Public Sans",system-ui,sans-serif}
+a{color:var(--accent);text-underline-offset:2px}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:2px}
+code,.mono{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.82em}
+code{background:var(--code-bg);padding:.1em .35em;border-radius:4px;overflow-wrap:anywhere}
+h1,h2,h3{font-family:"Newsreader",Georgia,serif;font-weight:600;line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(2rem,4.5vw,3.1rem);letter-spacing:-.01em}
+h2{font-size:clamp(1.55rem,3vw,2.1rem);margin-bottom:.5rem}
+h3{font-size:1.25rem;margin-bottom:.4rem}
+p,li{text-wrap:pretty}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+@media (min-width:700px){.wrap{padding:0 32px}}
+header.top{border-bottom:1px solid var(--line);padding:40px 0 32px}
+.kicker{color:var(--muted);font-size:.9rem;margin:0 0 10px}
+.lede{font-size:1.12rem;max-width:68ch;color:var(--ink);margin:14px 0 0}
+.assume{margin-top:24px;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:8px;padding:16px 18px;max-width:80ch}
+.assume strong{display:block;margin-bottom:4px}
+nav.toc{margin-top:22px;display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.92rem}
+section{padding:44px 0;border-bottom:1px solid var(--line)}
+.sec-intro{max-width:72ch;color:var(--muted);margin:0 0 22px}
+.grid-2{display:grid;gap:18px}
+.grid-2 > *{min-width:0}
+@media (min-width:860px){.grid-2{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px}
+.panel h3{font-size:1.1rem}
+.panel ul,.panel ol{margin:.4rem 0 0;padding-left:1.2rem}
+.panel li{margin:.3rem 0}
+.rules li strong{font-weight:600}
+
+/* priority + library chips */
+.pri,.lib{display:inline-block;font-size:.75rem;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap;line-height:1.5}
+.pri.must{background:var(--must-bg);color:var(--must)}
+.pri.nice{background:var(--nice-bg);color:var(--nice)}
+.pri.avoid{background:var(--avoid-bg);color:var(--avoid)}
+.lib{border:1px solid var(--line);color:var(--muted);font-weight:500}
+.lib.ace{border-color:var(--accent);color:var(--accent)}
+.lib.magic{border-style:dashed}
+
+/* must-have summary */
+.musts{display:grid;gap:0;margin:0;padding:0;list-style:none;border:1px solid var(--line);border-radius:10px;background:var(--surface);overflow:hidden}
+@media (min-width:860px){.musts{grid-template-columns:1fr 1fr}}
+.musts li{padding:10px 16px;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.musts li b{font-weight:600;min-width:11ch}
+.musts li span{color:var(--muted);font-size:.93rem}
+
+/* shortlist tables */
+.group{margin-top:34px}
+.group h3{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.group h3 small{font-family:"Public Sans",sans-serif;font-size:.85rem;font-weight:400;color:var(--muted)}
+table.sl{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:.9rem;margin-top:10px}
+table.sl th{text-align:left;font-weight:600;font-size:.78rem;color:var(--muted);background:var(--surface-2);padding:9px 12px;border-bottom:1px solid var(--line)}
+table.sl td{padding:12px;border-bottom:1px solid var(--line);vertical-align:top}
+table.sl tr:last-child td{border-bottom:0}
+table.sl td.name{font-weight:600;min-width:9rem}
+table.sl td.name .lib{margin-top:5px}
+table.sl td.inst code{display:inline-block;font-size:.74rem;line-height:1.45}
+table.sl col.c-name{width:13%} table.sl col.c-where{width:19%} table.sl col.c-why{width:21%}
+table.sl col.c-a11y{width:22%} table.sl col.c-inst{width:17%} table.sl col.c-pri{width:8%}
+tr.row-avoid td{background:color-mix(in srgb,var(--avoid-bg) 35%,transparent)}
+@media (max-width:900px){
+  table.sl,table.sl tbody,table.sl tr,table.sl td{display:block;width:100%}
+  table.sl thead,table.sl colgroup{display:none}
+  table.sl{border:0;background:transparent}
+  table.sl tr{background:var(--surface);border:1px solid var(--line);border-radius:10px;margin-bottom:12px;padding:6px 0}
+  table.sl td{border:0;padding:6px 14px}
+  table.sl td[data-label]:not(.name)::before{content:attr(data-label);display:block;font-size:.72rem;font-weight:600;color:var(--muted);margin-bottom:1px}
+  table.sl td.name{font-size:1.02rem;display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;padding-top:10px}
+  table.sl td.name .lib{margin-top:0}
+  table.sl td.pri-cell{padding-bottom:12px}
+}
+
+/* avoid list */
+.avoid-list{display:grid;gap:12px;list-style:none;margin:0;padding:0}
+@media (min-width:760px){.avoid-list{grid-template-columns:1fr 1fr}}
+.avoid-list li{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--avoid);border-radius:8px;padding:14px 16px}
+.avoid-list li b{display:block;margin-bottom:3px}
+.avoid-list li p{margin:0;color:var(--muted);font-size:.93rem}
+.avoid-list .instead{display:block;margin-top:6px;color:var(--ink);font-size:.9rem}
+
+/* mock */
+.mock-wrap{display:grid;gap:24px;align-items:start}
+@media (min-width:980px){.mock-wrap{grid-template-columns:minmax(0,1fr) 280px}}
+.frame{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.05)}
+.frame-bar{display:flex;align-items:center;gap:6px;padding:8px 12px;border-bottom:1px solid var(--line);background:var(--surface-2);font-size:.75rem;color:var(--muted)}
+.frame-bar i{width:9px;height:9px;border-radius:50%;background:var(--mock-2);display:inline-block}
+.frame-bar span{margin-left:8px}
+.m{font-size:.72rem;color:var(--mock-ink)}
+.blk{position:relative;padding:14px;border-bottom:1px dashed var(--mock-2)}
+.tag{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:.64rem;padding:1px 6px;border-radius:4px;background:var(--accent-soft);color:var(--accent);margin:0 4px 4px 0;white-space:nowrap}
+.tag.ace{background:transparent;border:1px solid var(--accent)}
+.tag.magic{background:transparent;border:1px dashed var(--accent)}
+.bar{height:8px;border-radius:4px;background:var(--mock-2)}
+.bar.dark{background:var(--mock-ink);opacity:.75}
+.btn{display:inline-block;height:22px;border-radius:6px;padding:0 10px;font-size:.66rem;line-height:22px;font-weight:600}
+.btn.pri{background:var(--accent);color:var(--surface)}
+.btn.sec{border:1px solid var(--mock-ink);color:var(--mock-ink)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.cols{display:grid;gap:10px}
+.box{background:var(--mock-1);border-radius:8px;padding:10px;min-height:40px}
+.mock-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.mock-nav .links{display:flex;gap:8px;flex-wrap:wrap}
+.mock-nav .links b{display:inline-block;width:34px;height:6px;border-radius:3px;background:var(--mock-2)}
+.logo{width:70px;height:12px;border-radius:3px;background:var(--mock-ink);opacity:.8}
+.hero{background:
+  radial-gradient(ellipse 60% 70% at 15% 0%,color-mix(in srgb,var(--accent) 18%,transparent),transparent 70%),
+  linear-gradient(var(--surface),var(--surface));}
+.hero .grid{position:absolute;inset:0;background-image:linear-gradient(var(--mock-1) 1px,transparent 1px),linear-gradient(90deg,var(--mock-1) 1px,transparent 1px);background-size:22px 22px;-webkit-mask-image:radial-gradient(ellipse at 30% 20%,#000 20%,transparent 70%);mask-image:radial-gradient(ellipse at 30% 20%,#000 20%,transparent 70%);pointer-events:none}
+.hero > *{position:relative}
+.d-hero{display:grid;gap:14px;grid-template-columns:1.2fr 1fr;align-items:center}
+.d-3{grid-template-columns:repeat(3,1fr)}
+.d-4{grid-template-columns:repeat(4,1fr)}
+.d-2{grid-template-columns:1fr 1fr}
+.tabs-mock{display:flex;gap:4px;margin-bottom:8px}
+.tabs-mock b{font-weight:600;font-size:.62rem;padding:3px 8px;border-radius:5px;background:var(--mock-1)}
+.tabs-mock b:first-child{background:var(--mock-ink);color:var(--surface)}
+.avatar{width:26px;height:26px;border-radius:50%;background:var(--mock-2);flex:none}
+.acc{border-top:1px solid var(--mock-2);padding:6px 0;display:flex;justify-content:space-between}
+.acc::after{content:"+";opacity:.6}
+.foot{background:var(--surface-2)}
+.cap{font-size:.86rem;color:var(--muted);margin-top:10px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:.85rem;color:var(--muted);margin:0 0 16px}
+.legend .tag{margin:0 6px 0 0}
+@media (max-width:620px){
+  .d-hero,.d-3,.d-4,.d-2{grid-template-columns:1fr}
+}
+.mobile .blk{padding:10px}
+.mobile .sticky{position:sticky;bottom:0;display:flex;gap:6px;padding:8px;background:var(--surface);border-top:1px solid var(--line)}
+.mobile .sticky .btn{flex:1;text-align:center}
+.app-mock{display:grid;grid-template-columns:120px 1fr 200px;min-height:230px}
+.app-mock .side{background:var(--surface-2);padding:12px;border-right:1px solid var(--line)}
+.app-mock .side b{display:block;height:8px;border-radius:3px;background:var(--mock-2);margin:10px 0}
+.app-mock .main{padding:14px}
+.app-mock .chat{border-left:1px solid var(--line);padding:12px;display:flex;flex-direction:column;gap:8px}
+.bubble{border-radius:10px;padding:6px 8px;background:var(--mock-1)}
+.bubble.me{align-self:flex-end;background:var(--accent-soft)}
+.math{font-family:"Newsreader",serif;font-style:italic;font-size:.95rem}
+@media (max-width:760px){.app-mock{grid-template-columns:1fr}.app-mock .side,.app-mock .chat{border:0;border-bottom:1px solid var(--line)}}
+
+.sources ol{padding-left:1.3rem;font-size:.9rem}
+.sources li{margin:.3rem 0;overflow-wrap:anywhere}
+.unv li{margin:.35rem 0}
+pre{background:var(--code-bg);border-radius:8px;padding:14px 16px;overflow-x:auto;font-size:.8rem;line-height:1.55;margin:10px 0 0}
+pre code{background:none;padding:0;font-size:inherit}
+footer.end{padding:28px 0 48px;color:var(--muted);font-size:.85rem}
+@media (prefers-reduced-motion:no-preference){a{transition:color .15s ease-out}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <p class="kicker">Tutoring Galaxy rebuild · Plan 04 · 8 Oct 2026</p>
+    <h1>Component shortlist</h1>
+    <p class="lede">Which ready-made UI components the new site uses, and where. The base layer is <strong>shadcn/ui</strong>, which covers forms, menus, dialogs, tabs, tables and charts. On top of that we add a <strong>small number of Aceternity UI effects</strong> on the homepage and About page. Everything else is plain, consistent and accessible, because the old sites suffered from too many styles, effects and calls to action.</p>
+    <div class="assume" role="note">
+      <strong>Assumption: "UI.serenity" means Aceternity UI</strong>
+      The owner asked for components from "UI.serenity". We couldn't find a library by that name, so we believe it's <a href="https://ui.aceternity.com">Aceternity UI</a> (ui.aceternity.com). It's a popular Next.js + Tailwind + Motion collection, and the name sounds close. <em>Please confirm with the owner.</em> If they meant something else, only the rows marked "Aceternity" below would change.
+    </div>
+    <nav class="toc" aria-label="On this page">
+      <a href="#summary">1. Approach &amp; rules</a>
+      <a href="#musts">Must-haves at a glance</a>
+      <a href="#shortlist">2. Shortlist by area</a>
+      <a href="#avoid">3. Avoid list</a>
+      <a href="#mock">4. Homepage composition</a>
+      <a href="#setup">5. Setup &amp; licensing</a>
+      <a href="#unverified">6. Not yet verified</a>
+      <a href="#sources">Sources</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section id="summary">
+  <div class="wrap">
+    <h2>1. Approach and rules</h2>
+    <p class="sec-intro">One component system for the whole product (marketing site, logged-in app and admin), so a parent moving from the homepage to a progress report sees one brand.</p>
+    <div class="grid-2">
+      <div class="panel">
+        <h3>Approach</h3>
+        <ul>
+          <li><strong>shadcn/ui is the base for about 90% of the UI.</strong> Its components are copied into <code>src/components/ui</code>, so we own the code. They're built on Radix (or Base UI) primitives, which handle keyboard, focus and ARIA for us, and they're themed from one set of CSS variables. This fixes the "29 hex colors, 18 color families, 8 radius styles" problem from the audit.</li>
+          <li><strong>Aceternity UI only adds accents:</strong> at most one ambient effect on the homepage hero, plus optional story pieces (About timeline, testimonials, curricula bento). Aceternity is distributed through the same shadcn CLI (<code>@aceternity/…</code>), so the files land in the same folder and use the same tokens.</li>
+          <li><strong>Magic UI is optional</strong> (MIT): we may use one or two utilities, such as a CSS-only marquee or a one-time blur-fade. It isn't required.</li>
+          <li><strong>Plain npm libraries for specialist jobs:</strong> KaTeX for maths, react-hook-form + zod for forms, TanStack Table for admin, Recharts (via shadcn Chart) for progress.</li>
+          <li><strong>One icon family:</strong> Lucide, which shadcn uses by default. No emoji icons. Aceternity pieces that import <code>@tabler/icons-react</code> get their icons swapped to Lucide when we add them.</li>
+        </ul>
+      </div>
+      <div class="panel rules">
+        <h3>Rules every component has to follow</h3>
+        <ol>
+          <li><strong>No more than 1–2 motion effects per page.</strong> Motion the visitor didn't trigger appears only in the homepage hero. Everything else animates only in response to an action, like opening, expanding or confirming.</li>
+          <li><strong>Respect <code>prefers-reduced-motion</code>.</strong> Every Motion/Aceternity piece checks <code>useReducedMotion()</code> or uses Tailwind <code>motion-reduce:</code> and falls back to a static state. Content must never depend on an animation to appear.</li>
+          <li><strong>Keyboard-accessible, with a visible focus ring.</strong> Every interactive component works with Tab, Enter, Space, Esc and the arrow keys. Touch targets are at least 44×44px. Decorative layers get <code>aria-hidden</code> and <code>pointer-events:none</code>.</li>
+          <li><strong>One primary CTA label: "Book a free trial".</strong> Plus one WhatsApp action. No new button styles (moving borders, shimmer, rainbow).</li>
+          <li><strong>Content lives at URLs, not in modals.</strong> Tutor profiles, practice questions and reports each get their own page. Dialogs are only for confirmations and short tasks.</li>
+          <li><strong>Only real data.</strong> Testimonial, tutor and stat components ship empty, or get hidden, until the client supplies real, permissioned content.</li>
+          <li><strong>Client components stay small.</strong> Effects are loaded as leaf client components, so marketing pages remain mostly server-rendered.</li>
+        </ol>
+      </div>
+    </div>
+
+    <h3 id="musts" style="margin-top:34px">Must-haves at a glance</h3>
+    <ul class="musts">
+      <li><b>Navigation Menu</b><span>site header, all marketing pages</span></li>
+      <li><b>Sheet</b><span>mobile menu, mobile tutor filters, chat panel on mobile</span></li>
+      <li><b>Button</b><span>one CTA set incl. WhatsApp variant, site-wide</span></li>
+      <li><b>Card</b><span>how it works, tutor cards, pricing, blog, practice question</span></li>
+      <li><b>Badge · Avatar · Item</b><span>tutor cards, subject grid, trust strip</span></li>
+      <li><b>Tabs</b><span>home curricula &amp; subjects, parent report sections</span></li>
+      <li><b>Accordion</b><span>FAQ (home teaser, Pricing, Curricula pages)</span></li>
+      <li><b>Combobox · Select · Toggle Group</b><span>tutor filters, booking form, pricing currency</span></li>
+      <li><b>Field + react-hook-form + zod</b><span>Book a free trial (multi-step), Join as tutor, Contact</span></li>
+      <li><b>Progress</b><span>booking steps, topic mastery in the app</span></li>
+      <li><b>Sonner (toast)</b><span>form submitted, saved, errors (site + app)</span></li>
+      <li><b>Separator</b><span>footer, trust strip, app layout</span></li>
+      <li><b>Sidebar</b><span>student / parent / tutor / admin dashboard shell</span></li>
+      <li><b>Chart (Recharts)</b><span>parent progress report, tutor dashboard</span></li>
+      <li><b>KaTeX</b><span>practice questions, solutions, AI chat</span></li>
+      <li><b>Message · Message Scroller · Input Group</b><span>AI chat panel in practice</span></li>
+      <li><b>Radio Group · Alert · Attachment</b><span>practice question card, feedback, photo of working</span></li>
+      <li><b>Skeleton · Empty · Spinner</b><span>loading and empty states (no demo data)</span></li>
+      <li><b>Dialog · Alert Dialog · Dropdown Menu · Tooltip</b><span>app + admin actions</span></li>
+      <li><b>Data Table (Table + TanStack Table)</b><span>admin: leads, bookings, tutors, students</span></li>
+    </ul>
+  </div>
+</section>
+
+<section id="shortlist">
+  <div class="wrap">
+    <h2>2. Shortlist by area</h2>
+    <p class="sec-intro">Priority: <span class="pri must">Must</span> is needed for launch. <span class="pri nice">Nice</span> is optional and added only if it earns its place. <span class="pri avoid">Avoid</span> means we looked at it and decided against it (more in section 3). We checked shadcn component names against the shadcn-ui/ui registry source (main branch, 8 Oct 2026) and Magic UI names against its GitHub registry. Aceternity names come from search results for its site, which we couldn't open directly (see section 6).</p>
+
+    <!-- NAVIGATION -->
+    <div class="group">
+      <h3>Navigation, CTAs and footer <small>all marketing pages</small></h3>
+      <table class="sl">
+        <colgroup><col class="c-name"><col class="c-where"><col class="c-why"><col class="c-a11y"><col class="c-inst"><col class="c-pri"></colgroup>
+        <thead><tr><th scope="col">Component</th><th scope="col">Where</th><th scope="col">Why</th><th scope="col">Accessibility &amp; performance</th><th scope="col">Install</th><th scope="col">Priority</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="name" data-label="Component">Navigation Menu <span class="lib">shadcn</span></td>
+            <td data-label="Where">Site header: Tutors · Curricula · Subjects · Pricing · About · Blog, plus "Book a free trial"</td>
+            <td data-label="Why">Replaces the old 2 nav bars and 10 links with one bar of 6 links. Its dropdown can hold the curricula list.</td>
+            <td data-label="Accessibility &amp; performance">Radix handles arrow keys, Esc and <code>aria-expanded</code>. Add a "Skip to content" link and <code>aria-current="page"</code>.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add navigation-menu</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri must">Must</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Sheet <span class="lib">shadcn</span></td>
+            <td data-label="Where">Mobile menu (under 768px). Also reused for mobile tutor filters and the mobile AI chat panel.</td>
+            <td data-label="Why">One slide-in pattern for every "more" panel on a phone.</td>
+            <td data-label="Accessibility &amp; performance">Traps focus, closes on Esc, returns focus to the trigger. The trigger needs <code>aria-label="Open menu"</code>.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add sheet</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri must">Must</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Button (+ WhatsApp variant) <span class="lib">shadcn</span></td>
+            <td data-label="Where">Everywhere. Primary: "Book a free trial". Secondary: "WhatsApp us" (link to <code>wa.me/923340917037</code> with prefilled text). On mobile, one sticky bar with these two buttons. No floating bubble.</td>
+            <td data-label="Why">The audit counted 14 different CTA labels. We add one <code>cva</code> variant and use it everywhere.</td>
+            <td data-label="Accessibility &amp; performance">WhatsApp is a real <code>&lt;a&gt;</code> labelled "Chat on WhatsApp (opens WhatsApp)", using the official glyph. The sticky bar reserves bottom padding so it never covers content.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add button</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri must">Must</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Breadcrumb <span class="lib">shadcn</span></td>
+            <td data-label="Where">Tutor profile, curriculum and subject detail pages, blog posts</td>
+            <td data-label="Why">Shows where you are on deep pages, and maps directly to <code>BreadcrumbList</code> structured data.</td>
+            <td data-label="Accessibility &amp; performance">Renders <code>nav aria-label="breadcrumb"</code> and marks the current page with <code>aria-current</code>. No JS.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add breadcrumb</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri nice">Nice</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Footer (composed) <span class="lib">shadcn</span></td>
+            <td data-label="Where">All marketing pages: 4 link columns, contact, socials, legal</td>
+            <td data-label="Why">No library footer needed. Build it from Separator and plain links, in the same palette as the rest of the page (no separate dark-navy footer).</td>
+            <td data-label="Accessibility &amp; performance"><code>&lt;footer&gt;</code> with a <code>nav</code> per column and real <code>mailto:</code>/<code>tel:</code> links. Server-rendered.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add separator</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri must">Must</span></td>
+          </tr>
+          <tr class="row-avoid">
+            <td class="name" data-label="Component">Floating Navbar / Resizable Navbar <span class="lib ace">Aceternity</span></td>
+            <td data-label="Where">(considered for the site header)</td>
+            <td data-label="Why">The floating version hides on scroll and both add motion to the most-used control. We get the same result with a plain sticky header.</td>
+            <td data-label="Accessibility &amp; performance">A header that moves or hides is disorienting and adds another floating layer on mobile.</td>
+            <td class="inst" data-label="Install"><code>@aceternity/floating-navbar</code> (not installed)</td>
+            <td class="pri-cell" data-label="Priority"><span class="pri avoid">Avoid</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- HOME -->
+    <div class="group">
+      <h3>Homepage sections <small>hero · trust · how it works · curricula · tutors · results · pricing + FAQ · final CTA</small></h3>
+      <table class="sl">
+        <colgroup><col class="c-name"><col class="c-where"><col class="c-why"><col class="c-a11y"><col class="c-inst"><col class="c-pri"></colgroup>
+        <thead><tr><th scope="col">Component</th><th scope="col">Where</th><th scope="col">Why</th><th scope="col">Accessibility &amp; performance</th><th scope="col">Install</th><th scope="col">Priority</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="name" data-label="Component">Spotlight New <span class="lib ace">Aceternity</span></td>
+            <td data-label="Where">Home, hero background only. This is the page's one ambient motion effect.</td>
+            <td data-label="Why">A slow, low-contrast light beam behind the headline. It gives the brand some atmosphere without the purple-gradient look. Aceternity itself calls it the "subtle" version of Spotlight.</td>
+            <td data-label="Accessibility &amp; performance">Needs <code>motion</code>, <code>clsx</code>, <code>tailwind-merge</code>. Mark it <code>aria-hidden</code>. Show it static under reduced motion and on screens under 768px. Load it as a small client leaf so the headline stays server-rendered (LCP).</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add @aceternity/spotlight-new</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri nice">Nice</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Grid and Dot Backgrounds <span class="lib ace">Aceternity</span></td>
+            <td data-label="Where">Home hero (masked grid behind the Spotlight). Could also go behind the final CTA band.</td>
+            <td data-label="Why">Static texture made only with Tailwind gradient classes. No JS and no motion.</td>
+            <td data-label="Accessibility &amp; performance">Zero runtime cost. Check text contrast over the pattern. We can write the same 3 classes ourselves.</td>
+            <td class="inst" data-label="Install">Copy from the docs page (slug unverified)</td>
+            <td class="pri-cell" data-label="Priority"><span class="pri nice">Nice</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Blur Fade <span class="lib magic">Magic UI</span></td>
+            <td data-label="Where">Home hero headline and lede, played once on load. Use it <em>instead of</em> Spotlight New, not as well.</td>
+            <td data-label="Why">A short, one-time entrance if the owner wants some life in the hero but no ambient effect.</td>
+            <td data-label="Accessibility &amp; performance">Needs <code>motion</code>. The source has no reduced-motion handling, so we add <code>useReducedMotion()</code>. Never put it on the LCP image.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add @magicui/blur-fade</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri nice">Nice</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Trust strip (static) <span class="lib">shadcn</span></td>
+            <td data-label="Where">Directly under the hero: "Since 2016 · 11 countries · O/A Level, IGCSE, IB, MDCAT…" plus real exam-board or school names, if permitted</td>
+            <td data-label="Why">Short proof that fits on one line and doesn't move. Built from <code>Item</code>/<code>Badge</code> and Separator.</td>
+            <td data-label="Accessibility &amp; performance">Wraps to 2 lines on mobile. Logos use <code>alt</code> text, or <code>alt=""</code> when a visible label is next to them.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add item badge</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri must">Must</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Marquee <span class="lib magic">Magic UI</span></td>
+            <td data-label="Where">Trust strip, but only if there are more than 8 real logos</td>
+            <td data-label="Why">CSS-only (no dependencies) and has a <code>pauseOnHover</code> option.</td>
+            <td data-label="Accessibility &amp; performance">Moving content longer than 5s needs a way to pause it (WCAG 2.2.2). Turn on <code>pauseOnHover</code>, add a pause button, and show a static wrapped row under <code>motion-reduce</code>.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add @magicui/marquee</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri nice">Nice</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Card (as an ordered list) <span class="lib">shadcn</span></td>
+            <td data-label="Where">How it works: 1 Tell us your goal → 2 Free trial with a matched tutor → 3 Weekly lessons and a progress report</td>
+            <td data-label="Why">This content really is a sequence, so numbering is justified. It replaces the duplicated "How it works" and "Learning journey" sections.</td>
+            <td data-label="Accessibility &amp; performance">Use an <code>&lt;ol&gt;</code> so screen readers announce "3 items". No hover animation. Server-rendered.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add card</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri must">Must</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Tabs + Item grid <span class="lib">shadcn</span></td>
+            <td data-label="Where">Home "Curricula &amp; subjects": tabs School · Pre-university · Entrance exams · US tests, each showing a grid of linked items</td>
+            <td data-label="Why">Fits 17+ curricula and 21 subjects into one short section instead of three long ones.</td>
+            <td data-label="Accessibility &amp; performance">Radix tabs use roving focus and arrow keys. Every item is a real link, so search engines can crawl the panels. Lucide icons, no emoji.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add tabs item</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri must">Must</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Bento Grid <span class="lib ace">Aceternity</span></td>
+            <td data-label="Where">Curricula landing page: larger tiles for the top 4 (O/A Level, IGCSE, IB, MDCAT), smaller ones for the rest</td>
+            <td data-label="Why">A mostly static layout. It gives the Curricula page a hierarchy without adding effects.</td>
+            <td data-label="Accessibility &amp; performance">Remove the hover-translate on tiles, or limit it to <code>motion-safe:</code>. Make each tile a single link, not nested interactive elements.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add @aceternity/bento-grid</code> (slug inferred)</td>
+            <td class="pri-cell" data-label="Priority"><span class="pri nice">Nice</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Testimonial cards <span class="lib">shadcn</span></td>
+            <td data-label="Where">Home "Results &amp; testimonials": 3 quotes with name, curriculum and permissioned result. Also used on the Tutors and Pricing pages.</td>
+            <td data-label="Why">Static, so visitors can scan them and nothing is hidden. Built from Card, Avatar and a <code>&lt;blockquote&gt;</code>.</td>
+            <td data-label="Accessibility &amp; performance">Use <code>&lt;figure&gt;</code>/<code>&lt;figcaption&gt;</code>. Hide the section completely until real testimonials exist (audit 3.3).</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add card avatar</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri must">Must</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Animated Testimonials <span class="lib ace">Aceternity</span></td>
+            <td data-label="Where">Home results section, as an alternative to the cards: one featured quote with photo, plus previous/next</td>
+            <td data-label="Why">It looks good if there are real photos of real families or students. It can be the page's second motion moment, and it only moves when the visitor clicks.</td>
+            <td data-label="Accessibility &amp; performance">Needs <code>motion</code> and <code>@tabler/icons-react</code>. Set <code>autoplay={false}</code>. Give the buttons <code>aria-label</code>s and wrap the quote in <code>aria-live="polite"</code>. Swap the icons to Lucide.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add @aceternity/animated-testimonials</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri nice">Nice</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Carousel <span class="lib">shadcn</span></td>
+            <td data-label="Where">Mobile only: swipeable row of tutor cards and testimonials</td>
+            <td data-label="Why">Saves vertical space on phones (the old mobile homepage was 39 screens long).</td>
+            <td data-label="Accessibility &amp; performance">Uses Embla (<code>embla-carousel-react</code>). <strong>No autoplay.</strong> Visible previous/next buttons with labels, and each slide gets <code>aria-roledescription="slide"</code>.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add carousel</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri nice">Nice</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Pricing cards + Toggle Group <span class="lib">shadcn</span></td>
+            <td data-label="Where">Home pricing teaser (3 cards) and the Pricing page: Starter · Growth · Elite, with a toggle between PKR and local currency</td>
+            <td data-label="Why">The same Card as everywhere else, with one "Most popular" Badge. Toggle Group switches the currency without loading a new page.</td>
+            <td data-label="Accessibility &amp; performance">Use <code>tabular-nums</code> on prices. The toggle needs an <code>aria-label</code>. Also fix the "4 or 5 sessions" inconsistency from the audit.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add card badge toggle-group</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri must">Must</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Table (plan comparison) <span class="lib">shadcn</span></td>
+            <td data-label="Where">Pricing page only, below the cards</td>
+            <td data-label="Why">Gives a clear feature-by-plan comparison without checkmark-heavy graphics.</td>
+            <td data-label="Accessibility &amp; performance">Use <code>&lt;th scope&gt;</code> headers and a caption. Wrap it in a horizontal scroll container on mobile.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add table</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri nice">Nice</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Accordion <span class="lib">shadcn</span></td>
+            <td data-label="Where">FAQ: home teaser (5–6 questions), Pricing page, each Curriculum page</td>
+            <td data-label="Why">Short answers that open on demand. One data file feeds both the UI and the <code>FAQPage</code> JSON-LD.</td>
+            <td data-label="Accessibility &amp; performance">Radix gives each panel a button with <code>aria-expanded</code> and a region. Keep the answer text in the DOM so it can be found and indexed.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add accordion</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri must">Must</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- TUTORS / CONTENT PAGES -->
+    <div class="group">
+      <h3>Tutors, About, Blog <small>tutor list and profile, About, Blog</small></h3>
+      <table class="sl">
+        <colgroup><col class="c-name"><col class="c-where"><col class="c-why"><col class="c-a11y"><col class="c-inst"><col class="c-pri"></colgroup>
+        <thead><tr><th scope="col">Component</th><th scope="col">Where</th><th scope="col">Why</th><th scope="col">Accessibility &amp; performance</th><th scope="col">Install</th><th scope="col">Priority</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="name" data-label="Component">Tutor card <span class="lib">shadcn</span></td>
+            <td data-label="Where">Home tutors section (3 cards), Tutors list page, "similar tutors" on the profile page</td>
+            <td data-label="Why">Composed from Card, Avatar (a real photo, not DiceBear), Badge (curricula) and Button. The whole card links to <code>/tutors/[slug]</code>.</td>
+            <td data-label="Accessibility &amp; performance">Make the tutor's name the one link (stretched link) so screen readers don't hear repeated links. Show ratings only if verified. Use <code>next/image</code> with set dimensions.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add card avatar badge</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri must">Must</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Filters: Combobox, Toggle Group, Select <span class="lib">shadcn</span></td>
+            <td data-label="Where">Tutors list: subject and curriculum (searchable Combobox), Online/Home (Toggle Group), sort (Select). On mobile they sit inside a Sheet.</td>
+            <td data-label="Why">Replaces the old "Smart Tutor Match" and "tutor finder" with one honest filter bar. Filter state goes in URL search params so results can be shared.</td>
+            <td data-label="Accessibility &amp; performance">Combobox has a listbox role and type-ahead. Announce the result count with <code>aria-live</code>. Note: in the Radix base, Combobox depends on <code>@base-ui/react</code>.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add combobox toggle-group select</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri must">Must</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Pagination <span class="lib">shadcn</span></td>
+            <td data-label="Where">Tutors list, Blog index</td>
+            <td data-label="Why">Gives crawlable page links. No infinite scroll.</td>
+            <td data-label="Accessibility &amp; performance"><code>nav aria-label="pagination"</code>, with <code>aria-current</code> on the current page.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add pagination</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri nice">Nice</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Timeline <span class="lib ace">Aceternity</span></td>
+            <td data-label="Where">About page: from 2016, Islamabad → online → 11 countries → AI practice</td>
+            <td data-label="Why">The founder story is a real sequence, and a sticky-header timeline tells it well. This is the About page's one effect.</td>
+            <td data-label="Accessibility &amp; performance">Needs <code>motion</code>, <code>clsx</code>, <code>tailwind-merge</code>, <code>@tabler/icons-react</code>. The scroll-linked beam is decorative only. Render it as an <code>&lt;ol&gt;</code>, and keep the beam static under reduced motion.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add @aceternity/timeline</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri nice">Nice</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Blog card + Aspect Ratio <span class="lib">shadcn</span></td>
+            <td data-label="Where">Blog index, "Related articles" at the end of posts, optional "Resources" row on Curriculum pages</td>
+            <td data-label="Why">The same Card component again, with a fixed 16:9 image ratio so images don't shift the layout (CLS).</td>
+            <td data-label="Accessibility &amp; performance">The title is the link. Add <code>&lt;time datetime&gt;</code>. Images use <code>next/image</code> with sizes.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add card aspect-ratio badge</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri must">Must</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Typeset (article prose) <span class="lib">shadcn</span></td>
+            <td data-label="Where">Blog post body, and the long-form text on the Curriculum and Subject pages</td>
+            <td data-label="Why">A typography stylesheet we own, so long text matches the design tokens. The alternative is <code>@tailwindcss/typography</code>.</td>
+            <td data-label="Accessibility &amp; performance">CSS only. Keep line length under about 75 characters.</td>
+            <td class="inst" data-label="Install">Generated via the shadcn Typeset builder (not a CLI add)</td>
+            <td class="pri-cell" data-label="Priority"><span class="pri nice">Nice</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- FORMS -->
+    <div class="group">
+      <h3>Forms <small>Book a free trial · Contact · Join as a tutor</small></h3>
+      <table class="sl">
+        <colgroup><col class="c-name"><col class="c-where"><col class="c-why"><col class="c-a11y"><col class="c-inst"><col class="c-pri"></colgroup>
+        <thead><tr><th scope="col">Component</th><th scope="col">Where</th><th scope="col">Why</th><th scope="col">Accessibility &amp; performance</th><th scope="col">Install</th><th scope="col">Priority</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="name" data-label="Component">Field + inputs, with react-hook-form + zod <span class="lib">shadcn</span></td>
+            <td data-label="Where">Book a free trial, in 3 steps: <em>Student</em> (curriculum, subject, grade) → <em>Schedule</em> (country/time zone, preferred times, online/home) → <em>Contact</em> (parent name, WhatsApp number, email). Join as tutor and Contact use the same parts.</td>
+            <td data-label="Why"><code>Field</code> is the current shadcn form primitive (label, description, error). One zod schema validates both in the browser and in the Server Action.</td>
+            <td data-label="Accessibility &amp; performance">Labels use <code>htmlFor</code>. Errors are linked with <code>aria-describedby</code> and the field gets <code>aria-invalid</code>. When the step changes, move focus to the new step's heading. Use <code>autocomplete</code> (tel, email, name) and <code>inputmode="tel"</code>.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add field input textarea select radio-group checkbox</code><br><code>npm i react-hook-form zod @hookform/resolvers</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri must">Must</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Progress (step indicator) <span class="lib">shadcn</span></td>
+            <td data-label="Where">Top of the booking form ("Step 2 of 3"). The same component is reused for mastery bars in the app.</td>
+            <td data-label="Why">Tells parents how long the form is, so fewer give up halfway.</td>
+            <td data-label="Accessibility &amp; performance">Pair the bar with visible text ("Step 2 of 3") and use <code>aria-valuetext</code>.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add progress</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri must">Must</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Questionnaire <span class="lib">shadcn</span></td>
+            <td data-label="Where">Candidate for the booking steps and for a later diagnostic ("Star Finder") flow</td>
+            <td data-label="Why">A new shadcn multi-step component (built on <code>@shadcn/react</code>) that could replace hand-built step logic.</td>
+            <td data-label="Accessibility &amp; performance">It's new. Test its keyboard and screen-reader behaviour before using it, and fall back to Field + our own step state.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add questionnaire</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri nice">Nice</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Calendar <span class="lib">shadcn</span></td>
+            <td data-label="Where">Booking step 2 (preferred trial date). Also tutor availability in the app.</td>
+            <td data-label="Why">Optional. A short list of time slots (Radio Group) may be enough for launch.</td>
+            <td data-label="Accessibility &amp; performance">Needs <code>react-day-picker</code> and <code>date-fns</code>. Arrow-key grid navigation. Always show the time zone.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add calendar</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri nice">Nice</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Sonner (toast) <span class="lib">shadcn</span></td>
+            <td data-label="Where">"Trial request sent, we'll WhatsApp you within working hours". Also used for saves and errors in the app.</td>
+            <td data-label="Why">One notification system for the whole product.</td>
+            <td data-label="Accessibility &amp; performance">Needs <code>sonner</code> and <code>next-themes</code>. Toasts are announced politely. Never put the only copy of important information in a toast: the form also shows an inline success state.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add sonner</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri must">Must</span></td>
+          </tr>
+          <tr class="row-avoid">
+            <td class="name" data-label="Component">Placeholders and Vanish Input · Signup Form <span class="lib ace">Aceternity</span></td>
+            <td data-label="Where">(considered for the booking form)</td>
+            <td data-label="Why">Animated placeholders replace labels, and the vanish effect is a gimmick. Our form already has its own style.</td>
+            <td data-label="Accessibility &amp; performance">A placeholder isn't a label, and the text disappears while the user is typing.</td>
+            <td class="inst" data-label="Install">not installed</td>
+            <td class="pri-cell" data-label="Priority"><span class="pri avoid">Avoid</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- APP -->
+    <div class="group">
+      <h3>Logged-in app <small>student practice with AI · parent progress report · tutor dashboard</small></h3>
+      <table class="sl">
+        <colgroup><col class="c-name"><col class="c-where"><col class="c-why"><col class="c-a11y"><col class="c-inst"><col class="c-pri"></colgroup>
+        <thead><tr><th scope="col">Component</th><th scope="col">Where</th><th scope="col">Why</th><th scope="col">Accessibility &amp; performance</th><th scope="col">Install</th><th scope="col">Priority</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="name" data-label="Component">Sidebar (dashboard shell) <span class="lib">shadcn</span></td>
+            <td data-label="Where"><code>/app</code> layout for all roles. Student: Today · Practice · Progress. Parent: Reports · Sessions · Billing. Tutor: Students · Schedule · Notes. Admin gets its own group.</td>
+            <td data-label="Why">Fixes the 13-item header that overflowed. Up to 6 items per role, collapses to icons, and turns into a Sheet on mobile. Start from the <code>sidebar-07</code> block.</td>
+            <td data-label="Accessibility &amp; performance">Needs <code>radix-ui</code>, <code>class-variance-authority</code>, <code>lucide-react</code>. Has a Ctrl/Cmd+B shortcut. Icon-only items get Tooltips and <code>aria-label</code>s.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add sidebar</code><br><code>npx shadcn@latest add sidebar-07</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri must">Must</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Chart (Recharts) <span class="lib">shadcn</span></td>
+            <td data-label="Where">Parent progress report (mastery by topic as bars, scores over time as a line), tutor dashboard (sessions per week)</td>
+            <td data-label="Why">Chart colours come from theme tokens (<code>--chart-1…5</code>), so charts match the brand in light and dark mode.</td>
+            <td data-label="Accessibility &amp; performance">Needs <code>recharts</code>. Turn on <code>accessibilityLayer</code> for keyboard access to data points. Provide a data table or text summary next to each chart. Lazy-load below the fold.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add chart</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri must">Must</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Progress <span class="lib">shadcn</span></td>
+            <td data-label="Where">Topic mastery rows, the practice-set "question 4 of 10" bar, the parent report summary</td>
+            <td data-label="Why">The same component as the booking steps, so the app and site match.</td>
+            <td data-label="Accessibility &amp; performance">Show the value as text next to the bar (with <code>tabular-nums</code>).</td>
+            <td class="inst" data-label="Install">(already added)</td>
+            <td class="pri-cell" data-label="Priority"><span class="pri must">Must</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Practice question card <span class="lib">shadcn</span></td>
+            <td data-label="Where"><code>/app/practice/[topic]/[questionId]</code>: question, options or working box, Check button, feedback</td>
+            <td data-label="Why">Composed from Card, Radio Group (multiple choice), Textarea (working), Button, Alert (correct/incorrect + hint) and Kbd (shortcuts). Each question has its own URL, so there are no modals.</td>
+            <td data-label="Accessibility &amp; performance">Group the options in a <code>fieldset</code>/<code>legend</code>. Announce feedback with <code>role="status"</code>. Never use colour alone: add a text label and an icon.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add card radio-group textarea alert kbd</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri must">Must</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">KaTeX (+ remark-math / rehype-katex) <span class="lib">npm</span></td>
+            <td data-label="Where">Question stems, worked solutions, AI chat replies, the formula pages in Subjects</td>
+            <td data-label="Why">Fast and dependable maths rendering. Questions are rendered on the server with <code>katex.renderToString</code>, so they need no client JS. AI Markdown goes through <code>react-markdown</code> + <code>remark-math</code> + <code>rehype-katex</code>.</td>
+            <td data-label="Accessibility &amp; performance">KaTeX's default output includes MathML, which screen readers can read. Load <code>katex.min.css</code> only on routes that show maths. Set <code>throwOnError:false</code> for AI output.</td>
+            <td class="inst" data-label="Install"><code>npm i katex react-markdown remark-math rehype-katex</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri must">Must</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">AI chat panel: Message, Message Scroller, Input Group, Spinner <span class="lib">shadcn</span></td>
+            <td data-label="Where">Practice page, right-hand panel ("Ask for a hint"). On mobile it opens in a Sheet. Gemini runs server-side only, behind login.</td>
+            <td data-label="Why">shadcn's new chat parts give a consistent layout for messages, auto-scroll, and the composer with a send button. Input Group holds the send and attach buttons.</td>
+            <td data-label="Accessibility &amp; performance">Message Scroller needs <code>@shadcn/react</code>. Announce completed replies (not every token) with <code>aria-live="polite"</code>. Add a Stop button and keep Enter-to-send predictable. These components are new, so the fallback is Scroll Area + Textarea.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add message message-scroller input-group spinner</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri must">Must</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Attachment <span class="lib">shadcn</span></td>
+            <td data-label="Where">Practice: "Upload a photo of your working" for AI feedback</td>
+            <td data-label="Why">Has built-in states (idle, uploading, processing, error, done) and matches the rest of the UI.</td>
+            <td data-label="Accessibility &amp; performance">Wrap a native <code>&lt;input type="file" accept="image/*" capture&gt;</code> so the phone camera and keyboard both work. Limit file size before uploading.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add attachment</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri must">Must</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">File Upload <span class="lib ace">Aceternity</span></td>
+            <td data-label="Where">Alternative to Attachment for the same upload, if the owner wants a richer drop zone</td>
+            <td data-label="Why">A nicer drag-and-drop area. Drag-and-drop matters less on phones, which is where most photos of working come from.</td>
+            <td data-label="Accessibility &amp; performance">Needs <code>motion</code> and <code>@tabler/icons-react</code> (plus a dropzone library, unconfirmed). Check that it can be reached by keyboard.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add @aceternity/file-upload</code> (slug inferred)</td>
+            <td class="pri-cell" data-label="Priority"><span class="pri nice">Nice</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Skeleton · Empty · Spinner <span class="lib">shadcn</span></td>
+            <td data-label="Where">Every app page: loading states (<code>loading.tsx</code> skeletons) and empty states ("No sessions yet. Book your first lesson")</td>
+            <td data-label="Why">Replaces the Practice Engine's habit of showing demo data ("Candidate A (Oliver)") with honest empty states.</td>
+            <td data-label="Accessibility &amp; performance">Mark skeleton regions <code>aria-busy="true"</code>. Every Empty state has one clear next action.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add skeleton empty spinner</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri must">Must</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Dialog · Alert Dialog · Dropdown Menu · Tooltip <span class="lib">shadcn</span></td>
+            <td data-label="Where">Confirmations (cancel a session, end a practice set), the user menu, row actions, labels for icon buttons</td>
+            <td data-label="Why">Standard overlays, used only for short tasks. Content never goes in them.</td>
+            <td data-label="Accessibility &amp; performance">Focus trap, Esc to close and focus return are built in. Destructive actions always use Alert Dialog.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add dialog alert-dialog dropdown-menu tooltip</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri must">Must</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Input OTP <span class="lib">shadcn</span></td>
+            <td data-label="Where">Login with a one-time code by email or WhatsApp. This depends on the auth decision.</td>
+            <td data-label="Why">Parents and students don't need to remember passwords. It also replaces the old hard-coded PINs.</td>
+            <td data-label="Accessibility &amp; performance">Needs <code>input-otp</code>. Supports paste and <code>autocomplete="one-time-code"</code>.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add input-otp</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri nice">Nice</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ADMIN -->
+    <div class="group">
+      <h3>Admin <small>leads · trial bookings · tutors · students · content</small></h3>
+      <table class="sl">
+        <colgroup><col class="c-name"><col class="c-where"><col class="c-why"><col class="c-a11y"><col class="c-inst"><col class="c-pri"></colgroup>
+        <thead><tr><th scope="col">Component</th><th scope="col">Where</th><th scope="col">Why</th><th scope="col">Accessibility &amp; performance</th><th scope="col">Install</th><th scope="col">Priority</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="name" data-label="Component">Data Table (Table + TanStack Table) <span class="lib">shadcn</span></td>
+            <td data-label="Where"><code>/admin/leads</code>, <code>/admin/bookings</code>, <code>/admin/tutors</code>, <code>/admin/students</code></td>
+            <td data-label="Why">shadcn's documented pattern adds sorting, filtering, column visibility, pagination and row actions (Dropdown Menu) on top of the Table component.</td>
+            <td data-label="Accessibility &amp; performance">Sortable headers are buttons with <code>aria-sort</code>. Use server-side pagination for large tables. Note: TanStack Table is now v9, and shadcn's guide was written for v8, so check the API.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add table dropdown-menu checkbox</code><br><code>npm i @tanstack/react-table</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri must">Must</span></td>
+          </tr>
+          <tr>
+            <td class="name" data-label="Component">Command (Cmd+K) <span class="lib">shadcn</span></td>
+            <td data-label="Where">Admin and tutor dashboard: jump to a student, tutor or booking</td>
+            <td data-label="Why">Fast for staff who use the dashboard every day. Not needed by parents.</td>
+            <td data-label="Accessibility &amp; performance">Has a combobox/listbox pattern. The shortcut is shown with Kbd.</td>
+            <td class="inst" data-label="Install"><code>npx shadcn@latest add command kbd</code></td>
+            <td class="pri-cell" data-label="Priority"><span class="pri nice">Nice</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="avoid">
+  <div class="wrap">
+    <h2>3. Avoid list</h2>
+    <p class="sec-intro">These components exist in the libraries (we checked the names), and many look impressive in a demo. Each one would bring back a problem the audit found: the generic AI look, too much motion, too many CTAs, crowded mobile screens, or content that's hard to reach.</p>
+    <ul class="avoid-list">
+      <li><b>3D globes: GitHub Globe (Aceternity), Globe (Magic UI)</b><p>Adds three.js/WebGL or cobe weight to the page that matters most for LCP and INP on mid-range Android phones. A list of 11 countries is easier to read than a spinning planet.</p><span class="instead">Instead: a plain list of countries, or Magic UI Dotted Map (static SVG) on About if the owner insists.</span></li>
+      <li><b>Particle and ambient backgrounds: Sparkles, Meteors, Vortex, Aurora Background, Wavy Background, Background Beams, Particles, Warp Background</b><p>This is exactly the "galaxy / purple-gradient" AI look the audit flagged. Continuous canvas animation drains batteries and competes with the content.</p><span class="instead">Instead: one Spotlight New in the hero, or a static grid.</span></li>
+      <li><b>Glass and hover-gimmick cards: Card Spotlight, Glare Card, 3D Card Effect, Wobble Card, 3D Pin, Direction Aware Hover, Magic Card, Neon Gradient Card</b><p>Brings back the old "glass badges". Hover effects don't exist on touch screens, where most parents browse.</p><span class="instead">Instead: shadcn Card with a border, one subtle shadow, and a focus ring.</span></li>
+      <li><b>Auto-playing carousels: Infinite Moving Cards, Images Slider, autoplay on Apple Cards Carousel or Animated Testimonials</b><p>Content that moves on its own fails WCAG 2.2.2 (Pause, Stop, Hide) unless it has controls, and visitors miss most of the slides.</p><span class="instead">Instead: static testimonial cards, or a carousel the visitor controls.</span></li>
+      <li><b>Animated headline text: Typewriter Effect, Flip Words, Text Generate Effect, Encrypted Text, Colourful Text, Hero Highlight, Hyper Text, Sparkles Text, Morphing Text, Aurora Text, Animated Gradient Text</b><p>Screen readers may read partial or garbled words, and highlighting one word in the headline is a well-known sign of generated design.</p><span class="instead">Instead: a well-set static headline in the brand typeface.</span></li>
+      <li><b>Animated CTA buttons: Moving Border, Hover Border Gradient, Shimmer Button, Rainbow Button, Pulsating Button, Border Beam, Shine Border</b><p>The audit counted 14 CTA variants. Every animated button style adds another kind of CTA and competes with "Book a free trial".</p><span class="instead">Instead: one Button set (primary, secondary, ghost, plus a WhatsApp variant).</span></li>
+      <li><b>Scroll-jacking: MacBook Scroll, Hero Parallax, Container Scroll Animation, Sticky Scroll Reveal, Parallax Scroll, Scroll-Based Velocity</b><p>Makes pages longer and slower. The old homepage was already 16,000px on desktop and about 39 screens on mobile.</p><span class="instead">Instead: about 7 short sections in normal document flow.</span></li>
+      <li><b>Floating layers: Floating Navbar, Dock, floating WhatsApp bubble, Sticky Banner</b><p>On the old mobile site a floating button, a bottom bar and the hero CTAs overlapped. Each extra floating layer covers content.</p><span class="instead">Instead: one sticky header, plus one mobile bottom bar with 2 actions.</span></li>
+      <li><b>Cursor effects: Following Pointer, Smooth Cursor, Pointer, Lens, Pointer Highlight</b><p>Takes over the cursor, does nothing on touch, and adds work on every pointer move.</p><span class="instead">Instead: nothing. Let the content speak.</span></li>
+      <li><b>Count-up stats: Number Ticker</b><p>The "big animated number" is a template cliché, and our numbers must be provable ("since 2016", "11 countries").</p><span class="instead">Instead: plain numbers in the trust strip.</span></li>
+      <li><b>Modal content: Expandable Card, Animated Modal, Link Preview</b><p>The Practice Engine had 223 modals and nothing could be linked to. Tutor profiles and questions need URLs for sharing and SEO.</p><span class="instead">Instead: a real page per tutor and per question. Dialogs only for confirmations.</span></li>
+      <li><b>Novelty extras: Multi-step Loader, Confetti, Cool Mode, Placeholders and Vanish Input, Lamp, Canvas Reveal Effect, 3D Marquee</b><p>Fun once and noise after that. Most are client-heavy, and some (Lamp, Canvas Reveal) are full-section visual effects.</p><span class="instead">Instead: honest Skeleton/Spinner loading states and a calm success message.</span></li>
+      <li><b>Emoji or mixed icon sets</b><p>Emoji subject icons and mixed Tabler/Lucide icons make the pages look like different products.</p><span class="instead">Instead: Lucide only. Swap the Tabler imports in Aceternity code when we add it.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section id="mock">
+  <div class="wrap">
+    <h2>4. How the pieces combine on the homepage</h2>
+    <p class="sec-intro">A static wireframe made of grey boxes, not real components, to show how they're composed. The labels show which component fills each slot. There's one ambient effect (the hero), and the testimonial switcher is optional.</p>
+    <p class="legend"><span><span class="tag">shadcn</span>base component</span><span><span class="tag ace">Aceternity</span>accent effect</span><span><span class="tag magic">Magic UI</span>optional utility</span></p>
+
+    <div class="mock-wrap">
+      <figure class="frame m" style="margin:0" aria-label="Desktop homepage wireframe">
+        <div class="frame-bar" aria-hidden="true"><i></i><i></i><i></i><span>tutoringgalaxy.com · desktop</span></div>
+
+        <div class="blk">
+          <div class="mock-nav">
+            <div class="row"><div class="logo"></div><span class="tag">navigation-menu</span></div>
+            <div class="links" aria-hidden="true"><b></b><b></b><b></b><b></b><b></b><b></b></div>
+            <div class="row"><span class="btn sec">WhatsApp</span><span class="btn pri">Book a free trial</span><span class="tag">button</span></div>
+          </div>
+        </div>
+
+        <div class="blk hero" style="padding:26px 18px">
+          <div class="grid" aria-hidden="true"></div>
+          <div><span class="tag ace">spotlight-new (1 effect)</span><span class="tag ace">grid background</span></div>
+          <div class="d-hero cols" style="margin-top:8px">
+            <div>
+              <div class="bar dark" style="height:16px;width:90%;margin-bottom:8px"></div>
+              <div class="bar dark" style="height:16px;width:70%;margin-bottom:12px"></div>
+              <div class="bar" style="width:85%;margin-bottom:6px"></div>
+              <div class="bar" style="width:60%;margin-bottom:14px"></div>
+              <div class="row"><span class="btn pri">Book a free trial</span><span class="btn sec">WhatsApp us</span></div>
+            </div>
+            <div class="box" style="background:var(--surface);border:1px solid var(--line)">
+              <div style="font-weight:600;margin-bottom:6px">Find a tutor in 30 seconds</div>
+              <div class="box" style="min-height:20px;margin-bottom:6px;padding:4px 8px">Curriculum ▾</div>
+              <div class="box" style="min-height:20px;margin-bottom:8px;padding:4px 8px">Subject ▾</div>
+              <span class="btn pri">Continue</span>
+              <div style="margin-top:6px"><span class="tag">field</span><span class="tag">combobox</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="blk" style="padding:10px 14px">
+          <div class="row" style="justify-content:space-between"><span>Since 2016</span><span>·</span><span>11 countries</span><span>·</span><span>O/A Level · IGCSE · IB · MDCAT · SAT</span><span class="tag">item · separator</span></div>
+        </div>
+
+        <div class="blk">
+          <div style="font-weight:600;margin-bottom:8px">How it works <span class="tag">card in &lt;ol&gt;</span></div>
+          <div class="cols d-3">
+            <div class="box"><b>1</b> Tell us your goal</div><div class="box"><b>2</b> Free trial with a matched tutor</div><div class="box"><b>3</b> Weekly lessons + progress report</div>
+          </div>
+        </div>
+
+        <div class="blk">
+          <div style="font-weight:600;margin-bottom:8px">Curricula &amp; subjects <span class="tag">tabs</span><span class="tag">item</span></div>
+          <div class="tabs-mock" aria-hidden="true"><b>School</b><b>Pre-university</b><b>Entrance exams</b><b>US tests</b></div>
+          <div class="cols d-4"><div class="box">O Level</div><div class="box">IGCSE</div><div class="box">GCSE</div><div class="box">Matric</div></div>
+        </div>
+
+        <div class="blk">
+          <div style="font-weight:600;margin-bottom:8px">Tutors <span class="tag">card · avatar · badge</span></div>
+          <div class="cols d-3">
+            <div class="box"><div class="row"><div class="avatar"></div><div style="flex:1"><div class="bar dark" style="width:70%;margin-bottom:5px"></div><div class="bar" style="width:50%"></div></div></div></div>
+            <div class="box"><div class="row"><div class="avatar"></div><div style="flex:1"><div class="bar dark" style="width:60%;margin-bottom:5px"></div><div class="bar" style="width:55%"></div></div></div></div>
+            <div class="box"><div class="row"><div class="avatar"></div><div style="flex:1"><div class="bar dark" style="width:65%;margin-bottom:5px"></div><div class="bar" style="width:45%"></div></div></div></div>
+          </div>
+        </div>
+
+        <div class="blk">
+          <div style="font-weight:600;margin-bottom:8px">Results &amp; testimonials <span class="tag">card · avatar</span> <span class="tag ace">or animated-testimonials (no autoplay)</span></div>
+          <div class="cols d-2">
+            <div class="box" style="min-height:64px"><div class="bar" style="width:95%;margin-bottom:5px"></div><div class="bar" style="width:80%;margin-bottom:10px"></div><div class="row"><div class="avatar"></div><span>Parent, A Level (real, with permission)</span></div></div>
+            <div class="box" style="min-height:64px"><div class="bar" style="width:90%;margin-bottom:5px"></div><div class="bar" style="width:70%;margin-bottom:10px"></div><div class="row"><div class="avatar"></div><span>Student, IGCSE</span></div></div>
+          </div>
+        </div>
+
+        <div class="blk">
+          <div class="cols d-2">
+            <div>
+              <div style="font-weight:600;margin-bottom:8px">Pricing teaser <span class="tag">card · badge</span></div>
+              <div class="cols d-3"><div class="box">Starter</div><div class="box" style="outline:2px solid var(--accent)">Growth</div><div class="box">Elite</div></div>
+            </div>
+            <div>
+              <div style="font-weight:600;margin-bottom:4px">FAQ <span class="tag">accordion</span></div>
+              <div class="acc">Is the first class really free?</div><div class="acc">Online or at home?</div><div class="acc">Which countries?</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="blk" style="text-align:center;background:var(--accent-soft)">
+          <div class="bar dark" style="height:12px;width:40%;margin:0 auto 10px"></div>
+          <span class="btn pri">Book a free trial</span> <span class="btn sec">WhatsApp us</span>
+        </div>
+
+        <div class="blk foot" style="border-bottom:0">
+          <div class="cols d-4"><div class="bar" style="width:60%"></div><div class="bar" style="width:50%"></div><div class="bar" style="width:55%"></div><div class="bar" style="width:40%"></div></div>
+          <div style="margin-top:8px"><span class="tag">footer · separator</span></div>
+        </div>
+      </figure>
+
+      <figure class="frame m mobile" style="margin:0" aria-label="Mobile homepage wireframe, first screen">
+        <div class="frame-bar" aria-hidden="true"><i></i><i></i><i></i><span>390px · first screen</span></div>
+        <div class="blk"><div class="mock-nav"><div class="logo"></div><span class="tag">sheet (☰)</span></div></div>
+        <div class="blk hero" style="padding:18px 12px">
+          <div class="bar dark" style="height:14px;width:95%;margin-bottom:6px"></div>
+          <div class="bar dark" style="height:14px;width:70%;margin-bottom:10px"></div>
+          <div class="bar" style="width:90%;margin-bottom:5px"></div>
+          <div class="bar" style="width:65%;margin-bottom:10px"></div>
+          <div style="font-size:.66rem">Spotlight is static under 768px</div>
+        </div>
+        <div class="blk"><div>Since 2016 · 11 countries</div><div>O/A Level · IGCSE · IB…</div></div>
+        <div class="blk"><div style="font-weight:600;margin-bottom:6px">How it works</div><div class="box" style="margin-bottom:6px">1 Tell us your goal</div><div class="box">2 Free trial</div></div>
+        <div class="blk"><div style="font-weight:600;margin-bottom:6px">Tutors <span class="tag">carousel</span></div><div class="row" style="flex-wrap:nowrap;overflow:hidden"><div class="box" style="flex:0 0 75%">Tutor card</div><div class="box" style="flex:0 0 30%">…</div></div></div>
+        <div class="sticky"><span class="btn pri">Book a free trial</span><span class="btn sec">WhatsApp</span></div>
+        <figcaption class="cap" style="padding:0 12px 12px">One sticky bar with 2 actions replaces the floating bubble, the bottom bar and the hero buttons, which used to show all at once.</figcaption>
+      </figure>
+    </div>
+
+    <h3 style="margin-top:34px">And in the app: practice page</h3>
+    <figure class="frame m" style="margin:10px 0 0" aria-label="App practice page wireframe">
+      <div class="frame-bar" aria-hidden="true"><i></i><i></i><i></i><span>/app/practice/quadratics/q-104</span></div>
+      <div class="app-mock">
+        <div class="side"><span class="tag">sidebar</span><b></b><b style="width:70%"></b><b style="width:80%"></b><b style="width:60%"></b></div>
+        <div class="main">
+          <div class="row" style="justify-content:space-between;margin-bottom:8px"><span>Question 4 of 10</span><span class="tag">progress</span></div>
+          <div class="bar" style="margin-bottom:12px"><div class="bar dark" style="width:40%"></div></div>
+          <div class="box" style="background:var(--surface);border:1px solid var(--line)">
+            <div style="margin-bottom:8px">Solve <span class="math">x² − 5x + 6 = 0</span> <span class="tag">katex</span></div>
+            <div style="margin-bottom:4px">○ x = 2, 3</div><div style="margin-bottom:4px">○ x = −2, −3</div><div style="margin-bottom:8px">○ x = 1, 6</div>
+            <div class="row"><span class="btn pri">Check</span><span class="tag">card · radio-group · alert</span><span class="tag">attachment</span></div>
+          </div>
+        </div>
+        <div class="chat">
+          <span class="tag">message · message-scroller</span>
+          <div class="bubble me">Can I get a hint?</div>
+          <div class="bubble">Try factorising: which two numbers multiply to 6 and add to −5?</div>
+          <div class="box" style="min-height:24px;padding:5px 8px;margin-top:auto">Ask a question… <span class="tag">input-group</span></div>
+        </div>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<section id="setup">
+  <div class="wrap">
+    <h2>5. Setup order, dependencies and licensing</h2>
+    <div class="grid-2">
+      <div class="panel">
+        <h3>Install order (when the build starts)</h3>
+        <p style="margin:.3rem 0 0;color:var(--muted);font-size:.92rem">The repo uses npm (<code>package-lock.json</code>). Nothing has been installed yet. These are the planned commands.</p>
+<pre><code># 1. initialise: choose style, base color, Lucide icons and the Radix base
+npx shadcn@latest init
+
+# 2. base layer (marketing + forms)
+npx shadcn@latest add button navigation-menu sheet card badge avatar item \
+  tabs accordion separator breadcrumb toggle-group field input textarea \
+  select combobox radio-group checkbox progress sonner aspect-ratio
+
+# 3. app + admin
+npx shadcn@latest add sidebar chart skeleton empty spinner alert \
+  alert-dialog dialog dropdown-menu tooltip table kbd \
+  message message-scroller input-group attachment
+
+# 4. libraries
+npm i react-hook-form zod @hookform/resolvers @tanstack/react-table \
+  katex react-markdown remark-math rehype-katex
+
+# 5. accents, one at a time and only when the section is built
+npx shadcn@latest add @aceternity/spotlight-new
+npx shadcn@latest add @aceternity/timeline           # About
+npx shadcn@latest add @aceternity/animated-testimonials  # only with real quotes</code></pre>
+      </div>
+      <div class="panel">
+        <h3>Dependencies and licences</h3>
+        <ul>
+          <li><strong>shadcn/ui</strong> is MIT. The code is copied into the repo. Latest CLI checked: <code>shadcn@4.21.4</code>. Its dependencies come per component: <code>radix-ui</code>, <code>class-variance-authority</code>, <code>lucide-react</code>, plus <code>recharts</code> (Chart), <code>sonner</code> + <code>next-themes</code>, <code>embla-carousel-react</code> (Carousel), <code>react-day-picker</code> + <code>date-fns</code> (Calendar), <code>input-otp</code>, <code>vaul</code> (Drawer), <code>@shadcn/react</code> (Message Scroller, Questionnaire) and <code>@base-ui/react</code> (Combobox).</li>
+          <li><strong>Aceternity UI:</strong> free components are copy-paste or installed through the shadcn CLI. <code>@aceternity</code> is listed in shadcn's official registry directory (<code>https://ui.aceternity.com/registry/{name}.json</code>). Typical dependencies are <code>motion</code>, <code>clsx</code>, <code>tailwind-merge</code> and sometimes <code>@tabler/icons-react</code>. <strong>Pro</strong> (blocks and templates) is paid and allows unlimited end products, but you can't resell the components or templates themselves. Every pick above is a free component, so no purchase is needed. <em>We couldn't read the licence text for the free tier (site blocked). Confirm before launch.</em></li>
+          <li><strong>Magic UI</strong> is MIT (license file checked on GitHub) and also listed in the shadcn directory as <code>@magicui</code>. Marquee has no dependencies. Blur Fade and Number Ticker need <code>motion</code>.</li>
+          <li><strong>motion</strong> (v14 latest) is the only animation library. Add it once with the first accent component, never on its own.</li>
+          <li><strong>KaTeX</strong> is MIT. The fonts are served from our own bundle via <code>katex/dist/katex.min.css</code>.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="unverified">
+  <div class="wrap">
+    <h2>6. What we couldn't verify</h2>
+    <ul class="unv">
+      <li><strong>"UI.serenity" = Aceternity UI</strong> is our guess. The owner needs to confirm it.</li>
+      <li><strong>Aceternity pages couldn't be opened.</strong> ui.aceternity.com (and 21st.dev) are blocked from this environment. Component names, descriptions and dependencies come from web-search snippets of the official pages, plus a third-party component catalogue on GitHub. Pages confirmed by search: Spotlight New, Hero Highlight, Timeline, GitHub Globe, Sparkles, Infinite Moving Cards, Background Beams. The <code>@aceternity/&lt;slug&gt;</code> install pattern is confirmed by shadcn's registry directory and examples in search results. These slugs are <em>inferred</em>: <code>bento-grid</code>, <code>animated-testimonials</code>, <code>file-upload</code>, and the grid/dot background page. Run <code>npx shadcn@latest view @aceternity/&lt;slug&gt;</code> before relying on them.</li>
+      <li><strong>Exact dependencies</strong> for Bento Grid, Animated Testimonials and File Upload (for example, whether File Upload needs <code>react-dropzone</code>) weren't confirmed.</li>
+      <li><strong>Aceternity free-tier licence:</strong> we only found the Pro licence text. The free-tier terms need a direct read.</li>
+      <li><strong>New shadcn components</strong> (Message, Message Scroller, Bubble, Attachment, Questionnaire, Marker) are in the registry source as of 8 Oct 2026, but we couldn't open their docs pages. Test their accessibility before relying on them.</li>
+      <li><strong>Reduced-motion support:</strong> the Magic UI Marquee, Blur Fade and Number Ticker source has no built-in <code>prefers-reduced-motion</code> handling (we checked the source). We assume Aceternity pieces also lack it and will add it ourselves.</li>
+      <li><strong>TanStack Table v9</strong> is the current npm release. The shadcn data-table guide targets v8, so check compatibility at build time.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="sources" class="sources" style="border-bottom:0">
+  <div class="wrap">
+    <h2>Sources</h2>
+    <ol>
+      <li>Current-state audit: <code>docs/audit/01-current-state-audit.md</code> (this repo)</li>
+      <li>shadcn/ui registry source, main branch, 8 Oct 2026: <a href="https://github.com/shadcn-ui/ui/tree/main/apps/v4/registry">github.com/shadcn-ui/ui/tree/main/apps/v4/registry</a> (component list in <code>bases/radix/ui</code> and <code>new-york-v4/ui</code>, dependencies in <code>_registry.ts</code>, blocks <code>sidebar-01…16</code>, <code>dashboard-01</code>)</li>
+      <li>shadcn registry directory listing @aceternity and @magicui: <a href="https://github.com/shadcn-ui/ui/blob/main/apps/v4/registry/directory.json">apps/v4/registry/directory.json</a></li>
+      <li>shadcn docs: <a href="https://ui.shadcn.com/docs/components">ui.shadcn.com/docs/components</a>, <a href="https://ui.shadcn.com/docs/components/radix/data-table">data table guide</a>, <a href="https://ui.shadcn.com/docs/components/radix/questionnaire">questionnaire</a> (linked from the registry; not opened)</li>
+      <li>Aceternity UI: <a href="https://ui.aceternity.com/components">ui.aceternity.com/components</a>, <a href="https://ui.aceternity.com/docs/cli">docs/cli</a>, <a href="https://ui.aceternity.com/components/spotlight-new">spotlight-new</a>, <a href="https://ui.aceternity.com/components/hero-highlight">hero-highlight</a>, <a href="https://ui.aceternity.com/components/timeline">timeline</a>, <a href="https://ui.aceternity.com/llms.txt">llms.txt</a>, <a href="https://ui.aceternity.com/licence">licence</a>, <a href="https://ui.aceternity.com/pro">pro</a> (seen via web search; blocked from direct fetch)</li>
+      <li>Third-party Aceternity component catalogue (cross-check only): <a href="https://github.com/secondsky/claude-skills/blob/main/plugins/aceternity-ui/skills/aceternity-ui/SKILL.md">secondsky/claude-skills · aceternity-ui</a></li>
+      <li>Magic UI registry and licence: <a href="https://github.com/magicuidesign/magicui/tree/main/apps/www/registry/magicui">github.com/magicuidesign/magicui</a>, <a href="https://magicui.design">magicui.design</a></li>
+      <li>npm registry (latest versions checked 8 Oct 2026): <a href="https://www.npmjs.com/package/katex">katex</a>, <a href="https://www.npmjs.com/package/motion">motion</a>, <a href="https://www.npmjs.com/package/@tanstack/react-table">@tanstack/react-table</a>, <a href="https://www.npmjs.com/package/react-hook-form">react-hook-form</a>, <a href="https://www.npmjs.com/package/zod">zod</a>, <a href="https://www.npmjs.com/package/recharts">recharts</a>, <a href="https://www.npmjs.com/package/shadcn">shadcn</a></li>
+      <li>WCAG 2.2, Success Criterion 2.2.2 Pause, Stop, Hide: <a href="https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html">w3.org/WAI/WCAG22/Understanding/pause-stop-hide</a></li>
+      <li>KaTeX options (MathML output): <a href="https://katex.org/docs/options">katex.org/docs/options</a></li>
+      <li>Project skills: <code>.claude/skills/nextjs-shadcn</code>, <code>make-interfaces-feel-better</code>, <code>frontend-a11y</code>, <code>frontend-design</code></li>
+    </ol>
+  </div>
+</section>
+</main>
+
+<footer class="end"><div class="wrap">Tutoring Galaxy rebuild · Plan 04 (Components) · Prepared 8 Oct 2026 · Static document, no scripts.</div></footer>
+</body>
+</html>

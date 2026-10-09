@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tutoring Galaxy Moodboard</title>
+<meta name="description" content="Phase 3 of the Tutoring Galaxy rebuild: 10 inspirations, 4 ColorHunt-based palettes with WCAG-checked tokens, and 4 Google Fonts pairings.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Fraunces:opsz,wght@9..144,400;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600&family=Instrument+Sans:wght@400;600&family=JetBrains+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Nastaliq+Urdu:wght@400;600&family=Source+Code+Pro:wght@400;500&family=Source+Sans+3:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+:root{
+  --bg:#F7F4EC;--surface:#FFFFFF;--text:#041C32;--muted:#4A5868;--primary:#0F4C81;--primary-fg:#fff;
+  --accent:#ECB365;--accent-soft:#F6E3BF;--border:#E2DCCD;--ok:#1D7A4C;--bad:#B42318;--code:#EFEADF;
+  --serif:'Newsreader',Georgia,'Times New Roman',serif;--sans:'Figtree',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light dark;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#041C32;--surface:#082A45;--text:#F2EEE4;--muted:#A9B6C3;--primary:#ECB365;--primary-fg:#041C32;
+  --accent:#ECB365;--accent-soft:#2A3B45;--border:#1A4361;--ok:#5CC98B;--bad:#F4877C;--code:#0B3352;}}
+:root[data-theme="dark"]{--bg:#041C32;--surface:#082A45;--text:#F2EEE4;--muted:#A9B6C3;--primary:#ECB365;--primary-fg:#041C32;--accent:#ECB365;--accent-soft:#2A3B45;--border:#1A4361;--ok:#5CC98B;--bad:#F4877C;--code:#0B3352;}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.6 var(--sans);overflow-wrap:break-word}
+a{color:inherit;text-decoration-color:var(--accent);text-decoration-thickness:2px;text-underline-offset:3px}
+a:hover{color:var(--primary)}
+code{font:500 .82em/1.4 var(--mono);background:var(--code);padding:.1em .35em;border-radius:4px;word-break:break-all}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+@media(min-width:720px){.wrap{padding:0 32px}}
+header.top{border-bottom:1px solid var(--border);padding:20px 0}
+.top .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline}
+.brand{font:600 18px/1.2 var(--serif);letter-spacing:-.01em}
+.brand b{color:var(--accent);font-weight:600}
+.top nav{display:flex;gap:16px;flex-wrap:wrap;font-size:14px;color:var(--muted)}
+.top nav a{text-decoration:none}
+h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:-.015em;text-wrap:balance}
+h1{font-size:clamp(34px,6vw,60px);line-height:1.05;margin:56px 0 16px;max-width:16ch}
+h2{font-size:clamp(26px,3.6vw,38px);line-height:1.15;margin:0 0 8px}
+h3{font-size:21px;line-height:1.25;margin:0}
+.eyebrow{font:600 12px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 12px}
+.lede{font-size:19px;max-width:62ch;color:var(--muted);margin:0 0 32px}
+section{padding:64px 0;border-top:1px solid var(--border)}
+section>.wrap>p.intro{max-width:70ch;color:var(--muted);margin:0 0 32px}
+/* summary */
+.sum{display:grid;gap:16px;grid-template-columns:1fr;margin-bottom:56px}
+@media(min-width:900px){.sum{grid-template-columns:1fr 1fr 1.3fr}}
+.box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px}
+.box h3{font-size:18px;margin-bottom:12px}
+.strip{display:flex;height:56px;border-radius:6px;overflow:hidden;margin-bottom:12px;border:1px solid var(--border)}
+.strip span{flex:1}
+.mini{font-size:14px;color:var(--muted);margin:0}
+.fontdemo{font:600 30px/1.1 var(--serif);margin:0 0 6px}
+.fontdemo2{font:400 15px/1.5 var(--sans);margin:0 0 6px}
+.fontdemo3{font:400 14px/1.4 var(--mono);margin:0;color:var(--muted)}
+ol.pr{margin:0;padding-left:20px}
+ol.pr li{margin:0 0 10px}
+ol.pr b{font-weight:600}
+/* tags */
+.tag{display:inline-block;font:600 11px/1 var(--sans);letter-spacing:.04em;padding:5px 8px;border-radius:999px;border:1px solid var(--border);color:var(--muted);white-space:nowrap}
+.tag-live{background:var(--primary);color:var(--primary-fg);border-color:transparent}
+.tag-dr{background:var(--accent-soft);color:var(--text);border-color:transparent}
+.tag-rec{background:var(--accent);color:#041C32;border-color:transparent}
+/* inspirations */
+.grid{display:grid;gap:16px;grid-template-columns:1fr}
+@media(min-width:700px){.grid{grid-template-columns:1fr 1fr}}
+@media(min-width:1100px){.grid{grid-template-columns:1fr 1fr 1fr}}
+.ins{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;display:flex;flex-direction:column;min-width:0}
+.ins-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.ins .num{font:500 13px/1 var(--mono);color:var(--muted)}
+.ins h3 a{text-decoration:none}
+.ins h3 a:hover{text-decoration:underline}
+.url{font:400 12px/1.4 var(--mono);color:var(--muted);margin:6px 0 10px;word-break:break-all}
+.why{margin:0 0 12px}
+.ins h4{font:600 12px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;margin:12px 0 6px;color:var(--muted)}
+.ins ul{margin:0;padding-left:18px;font-size:15px}
+.ins li{margin-bottom:4px}
+.ins ul.avoid li::marker{content:"✕  ";color:var(--bad)}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:16px}
+.hm{background:transparent;border-style:dashed;align-self:start}
+@media(min-width:1100px){.hm{grid-column:span 2}}
+.hm ul{padding-left:18px;color:var(--muted);font-size:15px}
+/* palettes */
+.pal,.fp{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:20px}
+@media(min-width:720px){.pal,.fp{padding:28px}}
+.pal.rec,.fp.rec{border:2px solid var(--accent)}
+.pal-h{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.swatches{display:flex;border-radius:8px;overflow:hidden;border:1px solid var(--border);flex-wrap:wrap}
+.sw{flex:1 1 90px;height:96px;display:flex;align-items:flex-end;padding:8px}
+.sw span{font:500 12px/1.2 var(--mono)}
+.sw small{display:block;font:400 10px/1.2 var(--sans);opacity:.8}
+.sw-x{flex:.6 1 70px}
+.src{font-size:13px;color:var(--muted);margin:10px 0}
+.src a{word-break:break-all}
+.pv-pair{display:grid;gap:12px;grid-template-columns:1fr;margin:16px 0}
+@media(min-width:720px){.pv-pair{grid-template-columns:1fr 1fr}}
+.pv{background:var(--p-background);color:var(--p-text);border-radius:10px;padding:16px;border:1px solid var(--p-border);font-family:var(--sans)}
+.pv-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.pv-mode{font:500 12px/1 var(--mono);color:var(--p-muted)}
+.pv-badge{background:var(--p-accent);color:var(--p-accent-fg);font:600 12px/1 var(--sans);padding:5px 9px;border-radius:999px}
+.pv-card{background:var(--p-surface);border:1px solid var(--p-border);border-radius:12px;padding:16px}
+.pv-h{font:600 20px/1.2 var(--serif);margin-bottom:6px}
+.pv-p{margin:0 0 14px;color:var(--p-muted);font-size:14px}
+.pv-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.pv-btn{background:var(--p-primary);color:var(--p-primary-fg);font:600 15px/1 var(--sans);padding:12px 16px;border-radius:6px}
+.pv-link{color:var(--p-text);font-weight:600;font-size:14px;text-decoration:underline;text-decoration-color:var(--p-accent);text-underline-offset:3px}
+.pv-status{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px;font-size:13px;font-weight:600}
+details{margin-top:8px}
+summary{cursor:pointer;font-weight:600;padding:8px 0}
+.toks{display:grid;gap:20px;grid-template-columns:1fr;margin-top:8px}
+@media(min-width:900px){.toks{grid-template-columns:1fr 1fr}}
+.tok{min-width:0}
+.tok h4{margin:0 0 8px;font:600 14px/1 var(--sans)}
+table.t{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:12px}
+table.t th{text-align:left;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border);padding:6px 4px}
+table.t td{border-bottom:1px solid var(--border);padding:5px 4px;vertical-align:middle}
+td.num{font-family:var(--mono);white-space:nowrap}
+.chip{display:inline-block;width:14px;height:14px;border-radius:3px;border:1px solid var(--border);vertical-align:-2px;margin-right:6px}
+.pass{font:600 11px/1 var(--sans);padding:3px 6px;border-radius:4px;white-space:nowrap}
+.pass.ok{color:var(--ok);background:color-mix(in srgb,var(--ok) 14%,transparent)}
+.pass.bad{color:var(--bad);background:color-mix(in srgb,var(--bad) 14%,transparent)}
+/* fonts */
+.spec{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:16px 0;margin-bottom:12px}
+.s-h1{font-family:var(--fd),serif;font-weight:var(--fdw);font-size:clamp(30px,5vw,48px);line-height:1.08;letter-spacing:-.02em;margin:0 0 12px;text-wrap:balance}
+.s-h2{font-family:var(--fd),serif;font-weight:500;font-size:clamp(21px,3vw,28px);line-height:1.2;margin:0 0 12px}
+.s-body{font-family:var(--fb),sans-serif;font-size:17px;line-height:1.6;max-width:62ch;margin:0 0 12px}
+.s-math{font-family:var(--fm),monospace;font-size:15px;margin:0;font-variant-numeric:tabular-nums;color:var(--muted)}
+.s-ur{font-family:'Noto Nastaliq Urdu','Noto Naskh Arabic',serif;font-size:24px;line-height:2;margin:12px 0 0}
+.s-ar{font-family:'IBM Plex Sans Arabic','Noto Naskh Arabic',sans-serif;font-size:24px;margin:12px 0 0}
+.s-note{font-size:12px;color:var(--muted);margin:0}
+.fp .why{margin:0 0 8px}
+.meta{font-size:13px;color:var(--muted);margin:0}
+.srcs{font-size:14px;padding-left:18px}
+.srcs a{word-break:break-all}
+.callout{background:var(--accent-soft);border-radius:10px;padding:16px 18px;font-size:15px;margin:0 0 32px;max-width:80ch}
+footer{padding:32px 0 56px;color:var(--muted);font-size:14px;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <div class="brand">Tutoring Galaxy <b>·</b> rebuild</div>
+  <nav aria-label="Sections"><a href="#direction">Direction</a><a href="#inspiration">Inspiration</a><a href="#palettes">Palettes</a><a href="#fonts">Fonts</a><a href="#sources">Sources</a></nav>
+</div></header>
+
+<main>
+<div class="wrap">
+  <p class="eyebrow" style="margin-top:48px">Phase 3 · Inspiration · 8 Oct 2026</p>
+  <h1>Calm and academic, not AI-gradient.</h1>
+  <p class="lede">A moodboard for the new tutoringgalaxy.com: 10 references from real sites and Dribbble, 4 colour palettes built from ColorHunt with WCAG-checked tokens, and 4 Google Fonts pairings. Read it alongside the <a href="../audit/01-current-state-audit.md">current-state audit</a>.</p>
+  <p class="callout"><b>How this was made:</b> dribbble.com, colorhunt.co and fonts.google.com were blocked from the research environment. Every inspiration URL below comes from web-search results, and the notes on them are based on search snippets, not on looking at the pages. Open each link before the design review. Palette hex codes come from a public GitHub list of ColorHunt palette codes. Font families and weights were checked against Google's own METADATA.pb files on GitHub.</p>
+
+  <div class="sum" id="direction">
+    <div class="box">
+      <h3>Recommended palette</h3>
+      <div class="strip"><span style="background:#041c32" title="#041C32"></span><span style="background:#04293a" title="#04293A"></span><span style="background:#064663" title="#064663"></span><span style="background:#ecb365" title="#ECB365"></span><span style="background:#0f4c81" title="#0F4C81"></span><span style="background:#f7f4ec" title="#F7F4EC"></span></div>
+      <p class="mini"><b>A. Scholar Navy &amp; Old Gold.</b> Ink #041C32 · brand navy #0F4C81 (primary) · old gold #ECB365 (highlight only) · paper #F7F4EC. Text on paper is 15.7:1 and the button label is 8.9:1.</p>
+    </div>
+    <div class="box">
+      <h3>Recommended type</h3>
+      <p class="fontdemo">Newsreader</p>
+      <p class="fontdemo2">Figtree for body text and interface</p>
+      <p class="fontdemo3">JetBrains Mono · x² + 5x + 6 = 0</p>
+      <p class="mini" style="margin-top:10px">Noto Nastaliq Urdu and Noto Naskh Arabic as fallbacks for Urdu and Arabic.</p>
+    </div>
+    <div class="box">
+      <h3>Design principles</h3>
+      <ol class="pr">
+        <li><b>One primary action.</b> "Book a free trial" is the only solid button on any screen. WhatsApp is the single secondary action, and nothing else competes with them.</li>
+        <li><b>Calm academic, not AI-gradient.</b> Use flat colour, paper backgrounds and navy ink. Gold covers less than 5% of a screen. No purple, no glass, no gradients.</li>
+        <li><b>Real people over illustrations.</b> Use real tutor photos, names and results. Where we don't have them yet, leave the space empty rather than invent them.</li>
+        <li><b>Let type do the work.</b> A serif for headlines, a sans for the interface, and mono with tabular figures for maths and prices.</li>
+        <li><b>Few, strict rules.</b> Two corner radii (6px for controls, 12px for cards), one spacing scale and a 7-section homepage.</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<section id="inspiration"><div class="wrap">
+  <p class="eyebrow">Section 2</p>
+  <h2>Ten inspirations</h2>
+  <p class="intro">Seven live sites and three Dribbble shots. Each card lists what to borrow and what to avoid. The live sites were chosen for how they work (tutor cards, curriculum structure, parent reporting, AI practice), not just for how they look.</p>
+  <div class="grid">
+<article class="ins">
+  <div class="ins-top"><span class="num">01</span><span class="tag tag-live">Live site</span></div>
+  <h3><a href="https://www.mytutor.co.uk/united-kingdom/cardiff">MyTutor: city landing pages</a></h3>
+  <p class="url">www.mytutor.co.uk/united-kingdom/cardiff</p>
+  <p class="why">UK GCSE/A Level tutoring for parents, which is the closest model to our business.</p>
+  <h4>Borrow</h4><ul><li>Tutor cards that lead with price per hour, university and reviews, followed by a free 15-minute "meet the tutor" call. Our free trial maps onto this directly.</li><li>Short trust lines that make one specific claim each ("1 in 8 applicants make the cut", a Trustpilot score), not a grid of badges.</li><li>Real per-city pages for local SEO. They show we can do city pages without thousands of thin templates.</li></ul>
+  <h4>Avoid</h4><ul class="avoid"><li>Its claims vary between versions of its own pages (price floor, rating). We publish only numbers we can prove and keep them in one place.</li></ul>
+  <div class="tags"><span class="tag">Tutor cards</span><span class="tag">Trust</span><span class="tag">Local SEO</span></div>
+</article>
+<article class="ins">
+  <div class="ins-top"><span class="num">02</span><span class="tag tag-live">Live site</span></div>
+  <h3><a href="https://www.varsitytutors.com/t/math">Varsity Tutors: subject tutor directory</a></h3>
+  <p class="url">www.varsitytutors.com/t/math</p>
+  <p class="why">A mature 1-to-1 marketplace with dense, credential-led tutor profiles.</p>
+  <h4>Borrow</h4><ul><li>Tutor profile cards that show degree, institution, years of experience and test scores. We can use O/A Level grades and university the same way.</li><li>Subject hubs (/t/math, /t/science) that drill down to topics. This is a good model for our Subjects pages.</li></ul>
+  <h4>Avoid</h4><ul class="avoid"><li>"Talk to our team for pricing" hides the price. We publish our PKR tiers openly.</li><li>Its 250+ subjects make the catalogue sprawl. We show our 21 subjects grouped by curriculum.</li></ul>
+  <div class="tags"><span class="tag">Tutor cards</span><span class="tag">Subjects</span></div>
+</article>
+<article class="ins">
+  <div class="ins-top"><span class="num">03</span><span class="tag tag-live">Live site</span></div>
+  <h3><a href="https://www.atomlearning.com/11-plus-prep">Atom Learning: 11+ prep</a></h3>
+  <p class="url">www.atomlearning.com/11-plus-prep</p>
+  <p class="why">Parent-first copy ("Take the stress out of the 11+") with progress reporting as the proof.</p>
+  <h4>Borrow</h4><ul><li>A hero that names the parent's worry, then the outcome, in one line.</li><li>Progress reporting (score by subject and topic, comparison with peers) as the core product promise. This fits our parent progress report.</li><li>Scale proof ("1,000+ schools") sits next to an offer for families who need help paying, which builds goodwill.</li></ul>
+  <h4>Avoid</h4><ul class="avoid"><li>Its own claim that its papers are "the best match on the market" is unverifiable. We avoid superlatives.</li></ul>
+  <div class="tags"><span class="tag">Hero</span><span class="tag">Parent dashboard</span><span class="tag">Trust</span></div>
+</article>
+<article class="ins">
+  <div class="ins-top"><span class="num">04</span><span class="tag tag-live">Live site</span></div>
+  <h3><a href="https://www.savemyexams.com/igcse/">Save My Exams: IGCSE hub</a></h3>
+  <p class="url">www.savemyexams.com/igcse/</p>
+  <p class="why">The best information structure in the sector for exam board → subject → topic. These are the same curricula our families take.</p>
+  <h4>Borrow</h4><ul><li>Navigation by level → subject → exam board (Cambridge, Edexcel), which mirrors how parents search ("CIE IGCSE Maths tutor").</li><li>Calm, text-led pages with lots of white space that rank well. This is a model for our curriculum pages.</li><li>An AI feature (Smart Mark) named plainly and described by what it does.</li></ul>
+  <h4>Avoid</h4><ul class="avoid"><li>Very dense mega-menus. Our sitemap is about ten pages, so we don't need them.</li></ul>
+  <div class="tags"><span class="tag">Curricula IA</span><span class="tag">Content</span><span class="tag">SEO</span></div>
+</article>
+<article class="ins">
+  <div class="ins-top"><span class="num">05</span><span class="tag tag-live">Live site</span></div>
+  <h3><a href="https://brilliant.org/math/">Brilliant: maths</a></h3>
+  <p class="url">brilliant.org/math/</p>
+  <p class="why">The benchmark for "learn by doing" interactive practice with a built-in AI tutor (Koji).</p>
+  <h4>Borrow</h4><ul><li>The AI tutor guides step by step and doesn't reveal the answer. Use the same rule for our Gemini practice area.</li><li>Learning paths (Foundational → Advanced) are a clean model for our curriculum-aligned practice sets.</li><li>Short "15 minutes a day" framing that sets a realistic expectation.</li></ul>
+  <h4>Avoid</h4><ul class="avoid"><li>Playful, gamified visuals suit adults learning for fun. Our parents are paying for exam results, so stay more sober.</li></ul>
+  <div class="tags"><span class="tag">AI practice</span><span class="tag">Interaction</span><span class="tag">Hero</span></div>
+</article>
+<article class="ins">
+  <div class="ins-top"><span class="num">06</span><span class="tag tag-live">Live site</span></div>
+  <h3><a href="https://www.khanmigo.ai/parents">Khanmigo for parents</a></h3>
+  <p class="url">www.khanmigo.ai/parents</p>
+  <p class="why">Shows how to sell an AI tutor to parents: safety, visibility and "it doesn't do the homework for them".</p>
+  <h4>Borrow</h4><ul><li>Parents can see their child's AI chats and get alerts. This becomes a trust feature for our /app area.</li><li>Says "Socratic, not answer-giving" explicitly, which answers the cheating worry.</li><li>Interactive diagrams built on Gemini, the same model family we plan to use.</li></ul>
+  <h4>Avoid</h4><ul class="avoid"><li>US-only and age-gated. Do not copy its eligibility or pricing model.</li></ul>
+  <div class="tags"><span class="tag">AI practice</span><span class="tag">Trust</span><span class="tag">Parent messaging</span></div>
+</article>
+<article class="ins">
+  <div class="ins-top"><span class="num">07</span><span class="tag tag-live">Live site</span></div>
+  <h3><a href="https://www.synthesis.com/tutor">Synthesis Tutor</a></h3>
+  <p class="url">www.synthesis.com/tutor</p>
+  <p class="why">Premium positioning for an AI tutor, with a strong origin story and a dedicated testimonials page.</p>
+  <h4>Borrow</h4><ul><li>One clear product story (where the method came from and how it adapts) instead of a list of features.</li><li>Testimonials collected on one dedicated page, not scattered across the homepage.</li><li>Continuous micro-assessment explained in plain language for parents.</li></ul>
+  <h4>Avoid</h4><ul class="avoid"><li>Superlatives like "superhuman" and "99.99% of students" are unverifiable, which is exactly the trust risk flagged in our audit.</li><li>Confusing pricing with many tiers. Keep ours to three.</li></ul>
+  <div class="tags"><span class="tag">Hero</span><span class="tag">Storytelling</span><span class="tag">Testimonials</span></div>
+</article>
+<article class="ins">
+  <div class="ins-top"><span class="num">08</span><span class="tag tag-dr">Dribbble shot</span></div>
+  <h3><a href="https://dribbble.com/shots/18478858-MyTutor-Online-Tutoring-Landing-Page-View">MyTutor: online tutoring landing (Sans Brothers)</a></h3>
+  <p class="url">dribbble.com/shots/18478858-MyTutor-Online-Tutoring-Landing-Page-View</p>
+  <p class="why">A highly liked tutoring set: landing page, responsive view and dashboard designed as one system.</p>
+  <h4>Borrow</h4><ul><li>Landing page and student dashboard designed together. This is the "one brand, one domain" goal from our audit.</li><li>A dedicated responsive view, so mobile is designed rather than squeezed.</li></ul>
+  <h4>Avoid</h4><ul class="avoid"><li>The search snippet tags it "colorful e-learning". Avoid multi-colour pastel categories, which is the mixed-template look we are leaving.</li></ul>
+  <div class="tags"><span class="tag">Hero</span><span class="tag">Landing</span><span class="tag">Dashboard</span></div>
+</article>
+<article class="ins">
+  <div class="ins-top"><span class="num">09</span><span class="tag tag-dr">Dribbble shot</span></div>
+  <h3><a href="https://dribbble.com/shots/18133282-Danesha-Operation-Online-Tutor-Landing-Page">Danesha: online tutor landing page (Pickolab)</a></h3>
+  <p class="url">dribbble.com/shots/18133282-Danesha-Operation-Online-Tutor-Landing-Page</p>
+  <p class="why">A short, disciplined landing structure: hero → programmes → testimonials → pricing.</p>
+  <h4>Borrow</h4><ul><li>Four to five sections in total. This supports our 7-section homepage target (the old one had 19).</li><li>Pricing kept on the landing page as a teaser rather than hidden.</li></ul>
+  <h4>Avoid</h4><ul class="avoid"><li>It is a concept, so check that every block maps to real content we have (real tutors, real results).</li></ul>
+  <div class="tags"><span class="tag">Page structure</span><span class="tag">Pricing</span><span class="tag">Testimonials</span></div>
+</article>
+<article class="ins">
+  <div class="ins-top"><span class="num">10</span><span class="tag tag-dr">Dribbble shot</span></div>
+  <h3><a href="https://dribbble.com/shots/25278782-Dashboard-Design-for-EdTech-Students-Teachers">Dashboard for EdTech: students &amp; teachers</a></h3>
+  <p class="url">dribbble.com/shots/25278782-Dashboard-Design-for-EdTech-Students-Teachers</p>
+  <p class="why">Reference for the logged-in /app: attendance, progress, schedule and a teacher gradebook.</p>
+  <h4>Borrow</h4><ul><li>A sidebar plus an at-a-glance home (attendance, progress, upcoming sessions) for parents and students.</li><li>A gradebook table with filters (course, topic, date) for the tutor side.</li></ul>
+  <h4>Avoid</h4><ul class="avoid"><li>Don't fill it with demo data for logged-out users. The old practice engine greeted everyone as "Candidate A (Oliver)".</li></ul>
+  <div class="tags"><span class="tag">Dashboard</span><span class="tag">Parent report</span><span class="tag">App</span></div>
+</article>
+  <div class="hm ins">
+    <h3>Honourable mentions</h3>
+    <ul>
+      <li><a href="https://outschool.com/online-classes/homeschool">Outschool</a>: filtering by age and subject, and class cards that show group size and price per session.</li>
+      <li><a href="https://senecalearning.com/en-gb/">Seneca</a> and <a href="https://cognitoedu.org/about-us.html">Cognito</a>: free-first revision platforms for GCSE and A Level. A model for free resources as a route to our paid tutoring.</li>
+      <li><a href="https://dribbble.com/shots/15405613-Tutor-App">Tutor App (Purrweb)</a>: mobile tutor search with filters for education, subject and price.</li>
+      <li><a href="https://dribbble.com/shots/22874758-Filo-Online-tutor-landing-page">Filo</a> and <a href="https://dribbble.com/shots/24183066-TutorAI-An-AI-Tutoring-Landing-Page-Concept">TutorAI</a>: concepts for an online tutor and an AI tutor landing page.</li>
+      <li>Preply showed up only in third-party reviews (video intros on tutor profiles are its standout pattern). Its own site URL did not appear in the search results, so it isn't listed as a main inspiration.</li>
+    </ul>
+  </div>
+  </div>
+</div></section>
+
+<section id="palettes"><div class="wrap">
+  <p class="eyebrow">Section 3</p>
+  <h2>Four palettes</h2>
+  <p class="intro">Each palette is a real ColorHunt palette (4 colours), plus one or two added colours where it needed them. Each one is turned into semantic tokens for light and dark mode. Contrast is calculated with the WCAG 2.x formula: 4.5:1 for text and 3:1 for interface elements. The previews below use each palette's own tokens.</p>
+<article class="pal rec" id="pal-a">
+  <header class="pal-h"><h3>A. Scholar Navy & Old Gold</h3><span class="tag tag-rec">Recommended</span></header>
+  <div class="swatches"><div class="sw" style="background:#041c32"><span style="color:#fff">#041C32</span></div><div class="sw" style="background:#04293a"><span style="color:#fff">#04293A</span></div><div class="sw" style="background:#064663"><span style="color:#fff">#064663</span></div><div class="sw" style="background:#ecb365"><span style="color:#111">#ECB365</span></div><div class="sw sw-x" style="background:#0f4c81"><span style="color:#fff">#0F4C81<small>added</small></span></div><div class="sw sw-x" style="background:#f7f4ec"><span style="color:#111">#F7F4EC<small>added</small></span></div></div>
+  <p class="src">ColorHunt palette: <a href="https://colorhunt.co/palette/041c3204293a064663ecb365">colorhunt.co/palette/041c3204293a064663ecb365</a></p>
+  <p>Deep ink navy with a muted, antique gold. We keep the current brand navy #0F4C81 as the primary button colour, so the site stays recognisable, and swap the loud #F4B400 for the calmer ColorHunt gold #ECB365. Purple is removed.</p>
+  <div class="pv-pair"><div class="pv" style="--p-background:#F7F4EC;--p-surface:#FFFFFF;--p-text:#041C32;--p-muted:#4A5868;--p-primary:#0F4C81;--p-primary-fg:#FFFFFF;--p-accent:#ECB365;--p-accent-fg:#041C32;--p-border:#E2DCCD;--p-success:#1D7A4C;--p-warning:#8A5A00;--p-danger:#B42318" aria-label="Light preview">
+    <div class="pv-top"><span class="pv-mode">Light</span><span class="pv-badge">IGCSE · Maths</span></div>
+    <div class="pv-card">
+      <div class="pv-h">Free trial lesson</div>
+      <p class="pv-p">Meet your tutor and get a study plan. No payment needed.</p>
+      <div class="pv-row"><span class="pv-btn">Book a free trial</span><span class="pv-link">WhatsApp us</span></div>
+      <div class="pv-status"><span style="color:var(--p-success)">● Tutor matched</span><span style="color:var(--p-warning)">● 2 slots left</span><span style="color:var(--p-danger)">● Payment due</span></div>
+    </div></div><div class="pv" style="--p-background:#041C32;--p-surface:#082A45;--p-text:#F2EEE4;--p-muted:#A9B6C3;--p-primary:#ECB365;--p-primary-fg:#041C32;--p-accent:#7DB3E8;--p-accent-fg:#041C32;--p-border:#1A4361;--p-success:#5CC98B;--p-warning:#F2C46B;--p-danger:#F4877C" aria-label="Dark preview">
+    <div class="pv-top"><span class="pv-mode">Dark</span><span class="pv-badge">IGCSE · Maths</span></div>
+    <div class="pv-card">
+      <div class="pv-h">Free trial lesson</div>
+      <p class="pv-p">Meet your tutor and get a study plan. No payment needed.</p>
+      <div class="pv-row"><span class="pv-btn">Book a free trial</span><span class="pv-link">WhatsApp us</span></div>
+      <div class="pv-status"><span style="color:var(--p-success)">● Tutor matched</span><span style="color:var(--p-warning)">● 2 slots left</span><span style="color:var(--p-danger)">● Payment due</span></div>
+    </div></div></div>
+  <details open><summary>Semantic tokens and contrast ratios</summary>
+  <div class="toks"><div class="tok"><h4>Light</h4><table class="t"><thead><tr><th>Token</th><th>Value</th></tr></thead><tbody><tr><td><code>--background</code></td><td><span class="chip" style="background:#F7F4EC"></span><code>#F7F4EC</code></td></tr><tr><td><code>--surface</code></td><td><span class="chip" style="background:#FFFFFF"></span><code>#FFFFFF</code></td></tr><tr><td><code>--text</code></td><td><span class="chip" style="background:#041C32"></span><code>#041C32</code></td></tr><tr><td><code>--muted</code></td><td><span class="chip" style="background:#4A5868"></span><code>#4A5868</code></td></tr><tr><td><code>--primary</code></td><td><span class="chip" style="background:#0F4C81"></span><code>#0F4C81</code></td></tr><tr><td><code>--primary-fg</code></td><td><span class="chip" style="background:#FFFFFF"></span><code>#FFFFFF</code></td></tr><tr><td><code>--accent</code></td><td><span class="chip" style="background:#ECB365"></span><code>#ECB365</code></td></tr><tr><td><code>--accent-fg</code></td><td><span class="chip" style="background:#041C32"></span><code>#041C32</code></td></tr><tr><td><code>--border</code></td><td><span class="chip" style="background:#E2DCCD"></span><code>#E2DCCD</code></td></tr><tr><td><code>--success</code></td><td><span class="chip" style="background:#1D7A4C"></span><code>#1D7A4C</code></td></tr><tr><td><code>--warning</code></td><td><span class="chip" style="background:#8A5A00"></span><code>#8A5A00</code></td></tr><tr><td><code>--danger</code></td><td><span class="chip" style="background:#B42318"></span><code>#B42318</code></td></tr></tbody></table>
+  <table class="t ck"><thead><tr><th>Contrast check</th><th>Ratio</th><th>WCAG</th></tr></thead><tbody><tr><td>Text on background</td><td class="num">15.70:1</td><td><span class="pass ok">AAA</span></td></tr><tr><td>Text on surface</td><td class="num">17.25:1</td><td><span class="pass ok">AAA</span></td></tr><tr><td>Muted text on background</td><td class="num">6.62:1</td><td><span class="pass ok">AA</span></td></tr><tr><td>Primary button label</td><td class="num">8.86:1</td><td><span class="pass ok">AAA</span></td></tr><tr><td>Accent badge label</td><td class="num">9.20:1</td><td><span class="pass ok">AAA</span></td></tr><tr><td>Primary vs background (UI)</td><td class="num">8.06:1</td><td><span class="pass ok">AA (UI 3:1)</span></td></tr><tr><td>Danger text on surface</td><td class="num">6.57:1</td><td><span class="pass ok">AA</span></td></tr><tr><td>Success text on surface</td><td class="num">5.33:1</td><td><span class="pass ok">AA</span></td></tr><tr><td>Warning text on surface</td><td class="num">5.93:1</td><td><span class="pass ok">AA</span></td></tr></tbody></table></div><div class="tok"><h4>Dark</h4><table class="t"><thead><tr><th>Token</th><th>Value</th></tr></thead><tbody><tr><td><code>--background</code></td><td><span class="chip" style="background:#041C32"></span><code>#041C32</code></td></tr><tr><td><code>--surface</code></td><td><span class="chip" style="background:#082A45"></span><code>#082A45</code></td></tr><tr><td><code>--text</code></td><td><span class="chip" style="background:#F2EEE4"></span><code>#F2EEE4</code></td></tr><tr><td><code>--muted</code></td><td><span class="chip" style="background:#A9B6C3"></span><code>#A9B6C3</code></td></tr><tr><td><code>--primary</code></td><td><span class="chip" style="background:#ECB365"></span><code>#ECB365</code></td></tr><tr><td><code>--primary-fg</code></td><td><span class="chip" style="background:#041C32"></span><code>#041C32</code></td></tr><tr><td><code>--accent</code></td><td><span class="chip" style="background:#7DB3E8"></span><code>#7DB3E8</code></td></tr><tr><td><code>--accent-fg</code></td><td><span class="chip" style="background:#041C32"></span><code>#041C32</code></td></tr><tr><td><code>--border</code></td><td><span class="chip" style="background:#1A4361"></span><code>#1A4361</code></td></tr><tr><td><code>--success</code></td><td><span class="chip" style="background:#5CC98B"></span><code>#5CC98B</code></td></tr><tr><td><code>--warning</code></td><td><span class="chip" style="background:#F2C46B"></span><code>#F2C46B</code></td></tr><tr><td><code>--danger</code></td><td><span class="chip" style="background:#F4877C"></span><code>#F4877C</code></td></tr></tbody></table>
+  <table class="t ck"><thead><tr><th>Contrast check</th><th>Ratio</th><th>WCAG</th></tr></thead><tbody><tr><td>Text on background</td><td class="num">14.89:1</td><td><span class="pass ok">AAA</span></td></tr><tr><td>Text on surface</td><td class="num">12.70:1</td><td><span class="pass ok">AAA</span></td></tr><tr><td>Muted text on background</td><td class="num">8.35:1</td><td><span class="pass ok">AAA</span></td></tr><tr><td>Primary button label</td><td class="num">9.20:1</td><td><span class="pass ok">AAA</span></td></tr><tr><td>Accent badge label</td><td class="num">7.79:1</td><td><span class="pass ok">AAA</span></td></tr><tr><td>Primary vs background (UI)</td><td class="num">9.20:1</td><td><span class="pass ok">AA (UI 3:1)</span></td></tr><tr><td>Danger text on surface</td><td class="num">6.03:1</td><td><span class="pass ok">AA</span></td></tr><tr><td>Success text on surface</td><td class="num">7.13:1</td><td><span class="pass ok">AAA</span></td></tr><tr><td>Warning text on surface</td><td class="num">9.03:1</td><td><span class="pass ok">AAA</span></td></tr></tbody></table></div></div></details>
+</article>
+<article class="pal" id="pal-b">
+  <header class="pal-h"><h3>B. Classic Blue & Coral</h3></header>
+  <div class="swatches"><div class="sw" style="background:#1b262c"><span style="color:#fff">#1B262C</span></div><div class="sw" style="background:#0f4c81"><span style="color:#fff">#0F4C81</span></div><div class="sw" style="background:#ed6663"><span style="color:#111">#ED6663</span></div><div class="sw" style="background:#ffa372"><span style="color:#111">#FFA372</span></div><div class="sw sw-x" style="background:#fafaf8"><span style="color:#111">#FAFAF8<small>added</small></span></div></div>
+  <p class="src">ColorHunt palette: <a href="https://colorhunt.co/palette/1b262c0f4c81ed6663ffa372">colorhunt.co/palette/1b262c0f4c81ed6663ffa372</a></p>
+  <p>This ColorHunt palette already contains the exact brand navy #0F4C81. Coral and apricot replace gold, which feels warmer and younger and suits the 12–19 audience. It moves furthest from the current brand.</p>
+  <div class="pv-pair"><div class="pv" style="--p-background:#FAFAF8;--p-surface:#FFFFFF;--p-text:#1B262C;--p-muted:#55626B;--p-primary:#0F4C81;--p-primary-fg:#FFFFFF;--p-accent:#ED6663;--p-accent-fg:#1B262C;--p-border:#E3E6E8;--p-success:#1E7B4F;--p-warning:#9A5800;--p-danger:#C0362C" aria-label="Light preview">
+    <div class="pv-top"><span class="pv-mode">Light</span><span class="pv-badge">IGCSE · Maths</span></div>
+    <div class="pv-card">
+      <div class="pv-h">Free trial lesson</div>
+      <p class="pv-p">Meet your tutor and get a study plan. No payment needed.</p>
+      <div class="pv-row"><span class="pv-btn">Book a free trial</span><span class="pv-link">WhatsApp us</span></div>
+      <div class="pv-status"><span style="color:var(--p-success)">● Tutor matched</span><span style="color:var(--p-warning)">● 2 slots left</span><span style="color:var(--p-danger)">● Payment due</span></div>
+    </div></div><div class="pv" style="--p-background:#1B262C;--p-surface:#24333B;--p-text:#F1F3F4;--p-muted:#A3B0B8;--p-primary:#FFA372;--p-primary-fg:#1B262C;--p-accent:#7FB0DE;--p-accent-fg:#1B262C;--p-border:#3A4B55;--p-success:#5CC98B;--p-warning:#F2C46B;--p-danger:#F4877C" aria-label="Dark preview">
+    <div class="pv-top"><span class="pv-mode">Dark</span><span class="pv-badge">IGCSE · Maths</span></div>
+    <div class="pv-card">
+      <div class="pv-h">Free trial lesson</div>
+      <p class="pv-p">Meet your tutor and get a study plan. No payment needed.</p>
+      <div class="pv-row"><span class="pv-btn">Book a free trial</span><span class="pv-link">WhatsApp us</span></div>
+      <div class="pv-status"><span style="color:var(--p-success)">● Tutor matched</span><span style="color:var(--p-warning)">● 2 slots left</span><span style="color:var(--p-danger)">● Payment due</span></div>
+    </div></div></div>
+  <details><summary>Semantic tokens and contrast ratios</summary>
+  <div class="toks"><div class="tok"><h4>Light</h4><table class="t"><thead><tr><th>Token</th><th>Value</th></tr></thead><tbody><tr><td><code>--background</code></td><td><span class="chip" style="background:#FAFAF8"></span><code>#FAFAF8</code></td></tr><tr><td><code>--surface</code></td><td><span class="chip" style="background:#FFFFFF"></span><code>#FFFFFF</code></td></tr><tr><td><code>--text</code></td><td><span class="chip" style="background:#1B262C"></span><code>#1B262C</code></td></tr><tr><td><code>--muted</code></td><td><span class="chip" style="background:#55626B"></span><code>#55626B</code></td></tr><tr><td><code>--primary</code></td><td><span class="chip" style="background:#0F4C81"></span><code>#0F4C81</code></td></tr><tr><td><code>--primary-fg</code></td><td><span class="chip" style="background:#FFFFFF"></span><code>#FFFFFF</code></td></tr><tr><td><code>--accent</code></td><td><span class="chip" style="background:#ED6663"></span><code>#ED6663</code></td></tr><tr><td><code>--accent-fg</code></td><td><span class="chip" style="background:#1B262C"></span><code>#1B262C</code></td></tr><tr><td><code>--border</code></td><td><span class="chip" style="background:#E3E6E8"></span><code>#E3E6E8</code></td></tr><tr><td><code>--success</code></td><td><span class="chip" style="background:#1E7B4F"></span><code>#1E7B4F</code></td></tr><tr><td><code>--warning</code></td><td><span class="chip" style="background:#9A5800"></span><code>#9A5800</code></td></tr><tr><td><code>--danger</code></td><td><span class="chip" style="background:#C0362C"></span><code>#C0362C</code></td></tr></tbody></table>
+  <table class="t ck"><thead><tr><th>Contrast check</th><th>Ratio</th><th>WCAG</th></tr></thead><tbody><tr><td>Text on background</td><td class="num">14.77:1</td><td><span class="pass ok">AAA</span></td></tr><tr><td>Text on surface</td><td class="num">15.44:1</td><td><span class="pass ok">AAA</span></td></tr><tr><td>Muted text on background</td><td class="num">6.01:1</td><td><span class="pass ok">AA</span></td></tr><tr><td>Primary button label</td><td class="num">8.86:1</td><td><span class="pass ok">AAA</span></td></tr><tr><td>Accent badge label</td><td class="num">4.91:1</td><td><span class="pass ok">AA</span></td></tr><tr><td>Primary vs background (UI)</td><td class="num">8.47:1</td><td><span class="pass ok">AA (UI 3:1)</span></td></tr><tr><td>Danger text on surface</td><td class="num">5.52:1</td><td><span class="pass ok">AA</span></td></tr><tr><td>Success text on surface</td><td class="num">5.25:1</td><td><span class="pass ok">AA</span></td></tr><tr><td>Warning text on surface</td><td class="num">5.57:1</td><td><span class="pass ok">AA</span></td></tr></tbody></table></div><div class="tok"><h4>Dark</h4><table class="t"><thead><tr><th>Token</th><th>Value</th></tr></thead><tbody><tr><td><code>--background</code></td><td><span class="chip" style="background:#1B262C"></span><code>#1B262C</code></td></tr><tr><td><code>--surface</code></td><td><span class="chip" style="background:#24333B"></span><code>#24333B</code></td></tr><tr><td><code>--text</code></td><td><span class="chip" style="background:#F1F3F4"></span><code>#F1F3F4</code></td></tr><tr><td><code>--muted</code></td><td><span class="chip" style="background:#A3B0B8"></span><code>#A3B0B8</code></td></tr><tr><td><code>--primary</code></td><td><span class="chip" style="background:#FFA372"></span><code>#FFA372</code></td></tr><tr><td><code>--primary-fg</code></td><td><span class="chip" style="background:#1B262C"></span><code>#1B262C</code></td></tr><tr><td><code>--accent</code></td><td><span class="chip" style="background:#7FB0DE"></span><code>#7FB0DE</code></td></tr><tr><td><code>--accent-fg</code></td><td><span class="chip" style="background:#1B262C"></span><code>#1B262C</code></td></tr><tr><td><code>--border</code></td><td><span class="chip" style="background:#3A4B55"></span><code>#3A4B55</code></td></tr><tr><td><code>--success</code></td><td><span class="chip" style="background:#5CC98B"></span><code>#5CC98B</code></td></tr><tr><td><code>--warning</code></td><td><span class="chip" style="background:#F2C46B"></span><code>#F2C46B</code></td></tr><tr><td><code>--danger</code></td><td><span class="chip" style="background:#F4877C"></span><code>#F4877C</code></td></tr></tbody></table>
+  <table class="t ck"><thead><tr><th>Contrast check</th><th>Ratio</th><th>WCAG</th></tr></thead><tbody><tr><td>Text on background</td><td class="num">13.87:1</td><td><span class="pass ok">AAA</span></td></tr><tr><td>Text on surface</td><td class="num">11.71:1</td><td><span class="pass ok">AAA</span></td></tr><tr><td>Muted text on background</td><td class="num">6.95:1</td><td><span class="pass ok">AA</span></td></tr><tr><td>Primary button label</td><td class="num">7.89:1</td><td><span class="pass ok">AAA</span></td></tr><tr><td>Accent badge label</td><td class="num">6.74:1</td><td><span class="pass ok">AA</span></td></tr><tr><td>Primary vs background (UI)</td><td class="num">7.89:1</td><td><span class="pass ok">AA (UI 3:1)</span></td></tr><tr><td>Danger text on surface</td><td class="num">5.34:1</td><td><span class="pass ok">AA</span></td></tr><tr><td>Success text on surface</td><td class="num">6.32:1</td><td><span class="pass ok">AA</span></td></tr><tr><td>Warning text on surface</td><td class="num">7.99:1</td><td><span class="pass ok">AAA</span></td></tr></tbody></table></div></div></details>
+</article>
+<article class="pal" id="pal-c">
+  <header class="pal-h"><h3>C. Navy & Library Teal</h3></header>
+  <div class="swatches"><div class="sw" style="background:#0f3057"><span style="color:#fff">#0F3057</span></div><div class="sw" style="background:#00587a"><span style="color:#fff">#00587A</span></div><div class="sw" style="background:#008891"><span style="color:#111">#008891</span></div><div class="sw" style="background:#e7e7de"><span style="color:#111">#E7E7DE</span></div></div>
+  <p class="src">ColorHunt palette: <a href="https://colorhunt.co/palette/0f305700587a008891e7e7de">colorhunt.co/palette/0f305700587a008891e7e7de</a></p>
+  <p>Cool and calm, like a library. Teal reads as "science and clarity" and suits the AI practice area well. There is no gold, so the brand would lose its warmth. Best kept as a secondary or app palette. The light-mode accent is darkened from #008891 to #007C84 so white badge text passes 4.5:1 (4.26 → 4.98).</p>
+  <div class="pv-pair"><div class="pv" style="--p-background:#F4F4EF;--p-surface:#FFFFFF;--p-text:#0F3057;--p-muted:#4E5D6E;--p-primary:#00587A;--p-primary-fg:#FFFFFF;--p-accent:#007C84;--p-accent-fg:#FFFFFF;--p-border:#DCDCD2;--p-success:#1D7A4C;--p-warning:#8A5A00;--p-danger:#B42318" aria-label="Light preview">
+    <div class="pv-top"><span class="pv-mode">Light</span><span class="pv-badge">IGCSE · Maths</span></div>
+    <div class="pv-card">
+      <div class="pv-h">Free trial lesson</div>
+      <p class="pv-p">Meet your tutor and get a study plan. No payment needed.</p>
+      <div class="pv-row"><span class="pv-btn">Book a free trial</span><span class="pv-link">WhatsApp us</span></div>
+      <div class="pv-status"><span style="color:var(--p-success)">● Tutor matched</span><span style="color:var(--p-warning)">● 2 slots left</span><span style="color:var(--p-danger)">● Payment due</span></div>
+    </div></div><div class="pv" style="--p-background:#0B2340;--p-surface:#0F3057;--p-text:#E7E7DE;--p-muted:#A6B4C2;--p-primary:#4FC3CB;--p-primary-fg:#0B2340;--p-accent:#E7E7DE;--p-accent-fg:#0B2340;--p-border:#244A72;--p-success:#5CC98B;--p-warning:#F2C46B;--p-danger:#F4877C" aria-label="Dark preview">
+    <div class="pv-top"><span class="pv-mode">Dark</span><span class="pv-badge">IGCSE · Maths</span></div>
+    <div class="pv-card">
+      <div class="pv-h">Free trial lesson</div>
+      <p class="pv-p">Meet your tutor and get a study plan. No payment needed.</p>
+      <div class="pv-row"><span class="pv-btn">Book a free trial</span><span class="pv-link">WhatsApp us</span></div>
+      <div class="pv-status"><span style="color:var(--p-success)">● Tutor matched</span><span style="color:var(--p-warning)">● 2 slots left</span><span style="color:var(--p-danger)">● Payment due</span></div>
+    </div></div></div>
+  <details><summary>Semantic tokens and contrast ratios</summary>
+  <div class="toks"><div class="tok"><h4>Light</h4><table class="t"><thead><tr><th>Token</th><th>Value</th></tr></thead><tbody><tr><td><code>--background</code></td><td><span class="chip" style="background:#F4F4EF"></span><code>#F4F4EF</code></td></tr><tr><td><code>--surface</code></td><td><span class="chip" style="background:#FFFFFF"></span><code>#FFFFFF</code></td></tr><tr><td><code>--text</code></td><td><span class="chip" style="background:#0F3057"></span><code>#0F3057</code></td></tr><tr><td><code>--muted</code></td><td><span class="chip" style="background:#4E5D6E"></span><code>#4E5D6E</code></td></tr><tr><td><code>--primary</code></td><td><span class="chip" style="background:#00587A"></span><code>#00587A</code></td></tr><tr><td><code>--primary-fg</code></td><td><span class="chip" style="background:#FFFFFF"></span><code>#FFFFFF</code></td></tr><tr><td><code>--accent</code></td><td><span class="chip" style="background:#007C84"></span><code>#007C84</code></td></tr><tr><td><code>--accent-fg</code></td><td><span class="chip" style="background:#FFFFFF"></span><code>#FFFFFF</code></td></tr><tr><td><code>--border</code></td><td><span class="chip" style="background:#DCDCD2"></span><code>#DCDCD2</code></td></tr><tr><td><code>--success</code></td><td><span class="chip" style="background:#1D7A4C"></span><code>#1D7A4C</code></td></tr><tr><td><code>--warning</code></td><td><span class="chip" style="background:#8A5A00"></span><code>#8A5A00</code></td></tr><tr><td><code>--danger</code></td><td><span class="chip" style="background:#B42318"></span><code>#B42318</code></td></tr></tbody></table>
+  <table class="t ck"><thead><tr><th>Contrast check</th><th>Ratio</th><th>WCAG</th></tr></thead><tbody><tr><td>Text on background</td><td class="num">12.04:1</td><td><span class="pass ok">AAA</span></td></tr><tr><td>Text on surface</td><td class="num">13.29:1</td><td><span class="pass ok">AAA</span></td></tr><tr><td>Muted text on background</td><td class="num">6.11:1</td><td><span class="pass ok">AA</span></td></tr><tr><td>Primary button label</td><td class="num">7.84:1</td><td><span class="pass ok">AAA</span></td></tr><tr><td>Accent badge label</td><td class="num">4.98:1</td><td><span class="pass ok">AA</span></td></tr><tr><td>Primary vs background (UI)</td><td class="num">7.11:1</td><td><span class="pass ok">AA (UI 3:1)</span></td></tr><tr><td>Danger text on surface</td><td class="num">6.57:1</td><td><span class="pass ok">AA</span></td></tr><tr><td>Success text on surface</td><td class="num">5.33:1</td><td><span class="pass ok">AA</span></td></tr><tr><td>Warning text on surface</td><td class="num">5.93:1</td><td><span class="pass ok">AA</span></td></tr></tbody></table></div><div class="tok"><h4>Dark</h4><table class="t"><thead><tr><th>Token</th><th>Value</th></tr></thead><tbody><tr><td><code>--background</code></td><td><span class="chip" style="background:#0B2340"></span><code>#0B2340</code></td></tr><tr><td><code>--surface</code></td><td><span class="chip" style="background:#0F3057"></span><code>#0F3057</code></td></tr><tr><td><code>--text</code></td><td><span class="chip" style="background:#E7E7DE"></span><code>#E7E7DE</code></td></tr><tr><td><code>--muted</code></td><td><span class="chip" style="background:#A6B4C2"></span><code>#A6B4C2</code></td></tr><tr><td><code>--primary</code></td><td><span class="chip" style="background:#4FC3CB"></span><code>#4FC3CB</code></td></tr><tr><td><code>--primary-fg</code></td><td><span class="chip" style="background:#0B2340"></span><code>#0B2340</code></td></tr><tr><td><code>--accent</code></td><td><span class="chip" style="background:#E7E7DE"></span><code>#E7E7DE</code></td></tr><tr><td><code>--accent-fg</code></td><td><span class="chip" style="background:#0B2340"></span><code>#0B2340</code></td></tr><tr><td><code>--border</code></td><td><span class="chip" style="background:#244A72"></span><code>#244A72</code></td></tr><tr><td><code>--success</code></td><td><span class="chip" style="background:#5CC98B"></span><code>#5CC98B</code></td></tr><tr><td><code>--warning</code></td><td><span class="chip" style="background:#F2C46B"></span><code>#F2C46B</code></td></tr><tr><td><code>--danger</code></td><td><span class="chip" style="background:#F4877C"></span><code>#F4877C</code></td></tr></tbody></table>
+  <table class="t ck"><thead><tr><th>Contrast check</th><th>Ratio</th><th>WCAG</th></tr></thead><tbody><tr><td>Text on background</td><td class="num">12.71:1</td><td><span class="pass ok">AAA</span></td></tr><tr><td>Text on surface</td><td class="num">10.68:1</td><td><span class="pass ok">AAA</span></td></tr><tr><td>Muted text on background</td><td class="num">7.47:1</td><td><span class="pass ok">AAA</span></td></tr><tr><td>Primary button label</td><td class="num">7.53:1</td><td><span class="pass ok">AAA</span></td></tr><tr><td>Accent badge label</td><td class="num">12.71:1</td><td><span class="pass ok">AAA</span></td></tr><tr><td>Primary vs background (UI)</td><td class="num">7.53:1</td><td><span class="pass ok">AA (UI 3:1)</span></td></tr><tr><td>Danger text on surface</td><td class="num">5.44:1</td><td><span class="pass ok">AA</span></td></tr><tr><td>Success text on surface</td><td class="num">6.44:1</td><td><span class="pass ok">AA</span></td></tr><tr><td>Warning text on surface</td><td class="num">8.15:1</td><td><span class="pass ok">AAA</span></td></tr></tbody></table></div></div></details>
+</article>
+<article class="pal" id="pal-d">
+  <header class="pal-h"><h3>D. Navy & Parchment</h3></header>
+  <div class="swatches"><div class="sw" style="background:#f5efe7"><span style="color:#111">#F5EFE7</span></div><div class="sw" style="background:#d8c4b6"><span style="color:#111">#D8C4B6</span></div><div class="sw" style="background:#4f709c"><span style="color:#fff">#4F709C</span></div><div class="sw" style="background:#213555"><span style="color:#fff">#213555</span></div></div>
+  <p class="src">ColorHunt palette: <a href="https://colorhunt.co/palette/f5efe7d8c4b64f709c213555">colorhunt.co/palette/f5efe7d8c4b64f709c213555</a></p>
+  <p>An editorial, almost print-like palette: warm parchment, taupe and a dusty navy. It feels the most "premium British school". Accent options are limited, so success and warning colours have to be added.</p>
+  <div class="pv-pair"><div class="pv" style="--p-background:#F5EFE7;--p-surface:#FFFDF9;--p-text:#213555;--p-muted:#5A6577;--p-primary:#213555;--p-primary-fg:#F5EFE7;--p-accent:#4F709C;--p-accent-fg:#FFFFFF;--p-border:#D8C4B6;--p-success:#1D7A4C;--p-warning:#8A5A00;--p-danger:#B42318" aria-label="Light preview">
+    <div class="pv-top"><span class="pv-mode">Light</span><span class="pv-badge">IGCSE · Maths</span></div>
+    <div class="pv-card">
+      <div class="pv-h">Free trial lesson</div>
+      <p class="pv-p">Meet your tutor and get a study plan. No payment needed.</p>
+      <div class="pv-row"><span class="pv-btn">Book a free trial</span><span class="pv-link">WhatsApp us</span></div>
+      <div class="pv-status"><span style="color:var(--p-success)">● Tutor matched</span><span style="color:var(--p-warning)">● 2 slots left</span><span style="color:var(--p-danger)">● Payment due</span></div>
+    </div></div><div class="pv" style="--p-background:#16233A;--p-surface:#213555;--p-text:#F5EFE7;--p-muted:#B9C2D0;--p-primary:#D8C4B6;--p-primary-fg:#16233A;--p-accent:#8FAAD0;--p-accent-fg:#16233A;--p-border:#34507A;--p-success:#5CC98B;--p-warning:#F2C46B;--p-danger:#F4877C" aria-label="Dark preview">
+    <div class="pv-top"><span class="pv-mode">Dark</span><span class="pv-badge">IGCSE · Maths</span></div>
+    <div class="pv-card">
+      <div class="pv-h">Free trial lesson</div>
+      <p class="pv-p">Meet your tutor and get a study plan. No payment needed.</p>
+      <div class="pv-row"><span class="pv-btn">Book a free trial</span><span class="pv-link">WhatsApp us</span></div>
+      <div class="pv-status"><span style="color:var(--p-success)">● Tutor matched</span><span style="color:var(--p-warning)">● 2 slots left</span><span style="color:var(--p-danger)">● Payment due</span></div>
+    </div></div></div>
+  <details><summary>Semantic tokens and contrast ratios</summary>
+  <div class="toks"><div class="tok"><h4>Light</h4><table class="t"><thead><tr><th>Token</th><th>Value</th></tr></thead><tbody><tr><td><code>--background</code></td><td><span class="chip" style="background:#F5EFE7"></span><code>#F5EFE7</code></td></tr><tr><td><code>--surface</code></td><td><span class="chip" style="background:#FFFDF9"></span><code>#FFFDF9</code></td></tr><tr><td><code>--text</code></td><td><span class="chip" style="background:#213555"></span><code>#213555</code></td></tr><tr><td><code>--muted</code></td><td><span class="chip" style="background:#5A6577"></span><code>#5A6577</code></td></tr><tr><td><code>--primary</code></td><td><span class="chip" style="background:#213555"></span><code>#213555</code></td></tr><tr><td><code>--primary-fg</code></td><td><span class="chip" style="background:#F5EFE7"></span><code>#F5EFE7</code></td></tr><tr><td><code>--accent</code></td><td><span class="chip" style="background:#4F709C"></span><code>#4F709C</code></td></tr><tr><td><code>--accent-fg</code></td><td><span class="chip" style="background:#FFFFFF"></span><code>#FFFFFF</code></td></tr><tr><td><code>--border</code></td><td><span class="chip" style="background:#D8C4B6"></span><code>#D8C4B6</code></td></tr><tr><td><code>--success</code></td><td><span class="chip" style="background:#1D7A4C"></span><code>#1D7A4C</code></td></tr><tr><td><code>--warning</code></td><td><span class="chip" style="background:#8A5A00"></span><code>#8A5A00</code></td></tr><tr><td><code>--danger</code></td><td><span class="chip" style="background:#B42318"></span><code>#B42318</code></td></tr></tbody></table>
+  <table class="t ck"><thead><tr><th>Contrast check</th><th>Ratio</th><th>WCAG</th></tr></thead><tbody><tr><td>Text on background</td><td class="num">10.78:1</td><td><span class="pass ok">AAA</span></td></tr><tr><td>Text on surface</td><td class="num">12.12:1</td><td><span class="pass ok">AAA</span></td></tr><tr><td>Muted text on background</td><td class="num">5.16:1</td><td><span class="pass ok">AA</span></td></tr><tr><td>Primary button label</td><td class="num">10.78:1</td><td><span class="pass ok">AAA</span></td></tr><tr><td>Accent badge label</td><td class="num">5.08:1</td><td><span class="pass ok">AA</span></td></tr><tr><td>Primary vs background (UI)</td><td class="num">10.78:1</td><td><span class="pass ok">AA (UI 3:1)</span></td></tr><tr><td>Danger text on surface</td><td class="num">6.47:1</td><td><span class="pass ok">AA</span></td></tr><tr><td>Success text on surface</td><td class="num">5.25:1</td><td><span class="pass ok">AA</span></td></tr><tr><td>Warning text on surface</td><td class="num">5.83:1</td><td><span class="pass ok">AA</span></td></tr></tbody></table></div><div class="tok"><h4>Dark</h4><table class="t"><thead><tr><th>Token</th><th>Value</th></tr></thead><tbody><tr><td><code>--background</code></td><td><span class="chip" style="background:#16233A"></span><code>#16233A</code></td></tr><tr><td><code>--surface</code></td><td><span class="chip" style="background:#213555"></span><code>#213555</code></td></tr><tr><td><code>--text</code></td><td><span class="chip" style="background:#F5EFE7"></span><code>#F5EFE7</code></td></tr><tr><td><code>--muted</code></td><td><span class="chip" style="background:#B9C2D0"></span><code>#B9C2D0</code></td></tr><tr><td><code>--primary</code></td><td><span class="chip" style="background:#D8C4B6"></span><code>#D8C4B6</code></td></tr><tr><td><code>--primary-fg</code></td><td><span class="chip" style="background:#16233A"></span><code>#16233A</code></td></tr><tr><td><code>--accent</code></td><td><span class="chip" style="background:#8FAAD0"></span><code>#8FAAD0</code></td></tr><tr><td><code>--accent-fg</code></td><td><span class="chip" style="background:#16233A"></span><code>#16233A</code></td></tr><tr><td><code>--border</code></td><td><span class="chip" style="background:#34507A"></span><code>#34507A</code></td></tr><tr><td><code>--success</code></td><td><span class="chip" style="background:#5CC98B"></span><code>#5CC98B</code></td></tr><tr><td><code>--warning</code></td><td><span class="chip" style="background:#F2C46B"></span><code>#F2C46B</code></td></tr><tr><td><code>--danger</code></td><td><span class="chip" style="background:#F4877C"></span><code>#F4877C</code></td></tr></tbody></table>
+  <table class="t ck"><thead><tr><th>Contrast check</th><th>Ratio</th><th>WCAG</th></tr></thead><tbody><tr><td>Text on background</td><td class="num">13.76:1</td><td><span class="pass ok">AAA</span></td></tr><tr><td>Text on surface</td><td class="num">10.78:1</td><td><span class="pass ok">AAA</span></td></tr><tr><td>Muted text on background</td><td class="num">8.75:1</td><td><span class="pass ok">AAA</span></td></tr><tr><td>Primary button label</td><td class="num">9.35:1</td><td><span class="pass ok">AAA</span></td></tr><tr><td>Accent badge label</td><td class="num">6.61:1</td><td><span class="pass ok">AA</span></td></tr><tr><td>Primary vs background (UI)</td><td class="num">9.35:1</td><td><span class="pass ok">AA (UI 3:1)</span></td></tr><tr><td>Danger text on surface</td><td class="num">5.05:1</td><td><span class="pass ok">AA</span></td></tr><tr><td>Success text on surface</td><td class="num">5.97:1</td><td><span class="pass ok">AA</span></td></tr><tr><td>Warning text on surface</td><td class="num">7.56:1</td><td><span class="pass ok">AAA</span></td></tr></tbody></table></div></div></details>
+</article>
+</div></section>
+
+<section id="fonts"><div class="wrap">
+  <p class="eyebrow">Section 4</p>
+  <h2>Four font pairings</h2>
+  <p class="intro">All are free Google Fonts and load from the Google Fonts CSS API. If the fonts don't load, the specimens fall back to system serif, sans and mono. For the production site, self-host the fonts with next/font and load only the weights we use.</p>
+<article class="fp rec" style="--fd:'Newsreader';--fb:'Figtree';--fm:'JetBrains Mono';--fdw:600">
+  <header class="pal-h"><h3>Newsreader + Figtree + JetBrains Mono</h3><span class="tag tag-rec">Recommended</span></header>
+  <div class="spec">
+    <p class="s-h1">Calm, expert tutoring for O&nbsp;&amp;&nbsp;A Levels</p>
+    <p class="s-h2">Matched with the right tutor in one conversation</p>
+    <p class="s-body">Every lesson is one-to-one, at home or online, with a tutor who knows your child's exam board. Families in 11 countries trust us with IGCSE, IB, MDCAT and SAT preparation, and the first lesson is free.</p>
+    <p class="s-math">x² + 5x + 6 = 0 &nbsp;→&nbsp; (x + 2)(x + 3) = 0 &nbsp;·&nbsp; PKR 35,000 / month</p>
+    <p class="s-ur" lang="ur" dir="rtl">ہر بچہ سیکھ سکتا ہے</p><p class="s-note">Urdu fallback: Noto Nastaliq Urdu (wght 400–700). Arabic fallback: Noto Naskh Arabic (wght 400–700).</p>
+    
+  </div>
+  <p class="why">An editorial serif made for screens gives the "established school" feel. Figtree is a friendly geometric sans that is very legible at small mobile sizes and less generic than Inter or Poppins. The mono font gives clean maths and tabular prices.</p>
+  <p class="meta">Checked against Google Fonts METADATA.pb: Newsreader: variable, wght 200–800, opsz 6–72, roman and italic, Latin / Latin Ext / Vietnamese. Figtree: variable, wght 300–900, roman and italic, Latin / Latin Ext. JetBrains Mono: wght 100–800, Latin / Cyrillic / Greek.</p>
+</article>
+<article class="fp" style="--fd:'Fraunces';--fb:'Instrument Sans';--fm:'JetBrains Mono';--fdw:600">
+  <header class="pal-h"><h3>Fraunces + Instrument Sans + JetBrains Mono</h3></header>
+  <div class="spec">
+    <p class="s-h1">Calm, expert tutoring for O&nbsp;&amp;&nbsp;A Levels</p>
+    <p class="s-h2">Matched with the right tutor in one conversation</p>
+    <p class="s-body">Every lesson is one-to-one, at home or online, with a tutor who knows your child's exam board. Families in 11 countries trust us with IGCSE, IB, MDCAT and SAT preparation, and the first lesson is free.</p>
+    <p class="s-math">x² + 5x + 6 = 0 &nbsp;→&nbsp; (x + 2)(x + 3) = 0 &nbsp;·&nbsp; PKR 35,000 / month</p>
+    
+    
+  </div>
+  <p class="why">Warmer and more characterful, with soft rounded serifs that feel friendly to teenagers. Fraunces is popular right now, so use it with a low SOFT setting and WONK off to keep it serious.</p>
+  <p class="meta">Checked against Google Fonts METADATA.pb: Fraunces: variable, wght 100–900, opsz 9–144, plus SOFT and WONK axes, roman and italic, Latin / Latin Ext. Instrument Sans: wght 400–700, wdth 75–100, roman and italic, Latin / Latin Ext.</p>
+</article>
+<article class="fp" style="--fd:'Source Serif 4';--fb:'Source Sans 3';--fm:'Source Code Pro';--fdw:600">
+  <header class="pal-h"><h3>Source Serif 4 + Source Sans 3 + Source Code Pro</h3></header>
+  <div class="spec">
+    <p class="s-h1">Calm, expert tutoring for O&nbsp;&amp;&nbsp;A Levels</p>
+    <p class="s-h2">Matched with the right tutor in one conversation</p>
+    <p class="s-body">Every lesson is one-to-one, at home or online, with a tutor who knows your child's exam board. Families in 11 countries trust us with IGCSE, IB, MDCAT and SAT preparation, and the first lesson is free.</p>
+    <p class="s-math">x² + 5x + 6 = 0 &nbsp;→&nbsp; (x + 2)(x + 3) = 0 &nbsp;·&nbsp; PKR 35,000 / month</p>
+    
+    
+  </div>
+  <p class="why">A "textbook" superfamily designed together, so it is the safest and most coherent option. It can feel corporate and is less distinctive.</p>
+  <p class="meta">Checked against Google Fonts METADATA.pb: All three are variable (Serif wght 200–900, opsz 8–60; Sans wght 200–900; Code wght 200–900), roman and italic, and cover Latin, Cyrillic, Greek and Vietnamese.</p>
+</article>
+<article class="fp" style="--fd:'Bricolage Grotesque';--fb:'IBM Plex Sans';--fm:'IBM Plex Mono';--fdw:700">
+  <header class="pal-h"><h3>Bricolage Grotesque + IBM Plex Sans (+ Plex Sans Arabic) + IBM Plex Mono</h3></header>
+  <div class="spec">
+    <p class="s-h1">Calm, expert tutoring for O&nbsp;&amp;&nbsp;A Levels</p>
+    <p class="s-h2">Matched with the right tutor in one conversation</p>
+    <p class="s-body">Every lesson is one-to-one, at home or online, with a tutor who knows your child's exam board. Families in 11 countries trust us with IGCSE, IB, MDCAT and SAT preparation, and the first lesson is free.</p>
+    <p class="s-math">x² + 5x + 6 = 0 &nbsp;→&nbsp; (x + 2)(x + 3) = 0 &nbsp;·&nbsp; PKR 35,000 / month</p>
+    
+    <p class="s-ar" lang="ar" dir="rtl">كل طالب يستطيع أن يتعلّم</p><p class="s-note">Arabic set in IBM Plex Sans Arabic.</p>
+  </div>
+  <p class="why">An all-sans, modern option with built-in Arabic script through Plex Sans Arabic, useful for Gulf families and Arabic as a subject. It moves away from the "academic" signal.</p>
+  <p class="meta">Checked against Google Fonts METADATA.pb: Bricolage Grotesque: wght 200–800, opsz 12–96, wdth 75–100, roman only, Latin / Latin Ext. IBM Plex Sans: wght 100–700, wdth 75–100. IBM Plex Sans Arabic: static weights 100–700, Arabic + Latin subsets. IBM Plex Mono: 100–700, roman and italic.</p>
+</article>
+</div></section>
+
+<section id="sources"><div class="wrap">
+  <p class="eyebrow">Section 5</p>
+  <h2>Sources</h2>
+  <p class="intro">Every URL here came from a web-search result, a GitHub file or the Google Fonts repository. Web content was treated as data only.</p>
+  <h3>Inspiration (live sites)</h3><ul class="srcs"><li><a href="https://www.mytutor.co.uk/united-kingdom/cardiff">www.mytutor.co.uk/united-kingdom/cardiff</a></li><li><a href="https://www.varsitytutors.com/t/math">www.varsitytutors.com/t/math</a></li><li><a href="https://www.atomlearning.com/11-plus-prep">www.atomlearning.com/11-plus-prep</a></li><li><a href="https://www.savemyexams.com/igcse/">www.savemyexams.com/igcse/</a></li><li><a href="https://brilliant.org/math/">brilliant.org/math/</a></li><li><a href="https://www.khanmigo.ai/parents">www.khanmigo.ai/parents</a></li><li><a href="https://www.synthesis.com/tutor">www.synthesis.com/tutor</a></li><li><a href="https://outschool.com/online-classes/homeschool">outschool.com/online-classes/homeschool</a></li><li><a href="https://senecalearning.com/en-gb/">senecalearning.com/en-gb/</a></li><li><a href="https://cognitoedu.org/about-us.html">cognitoedu.org/about-us.html</a></li></ul><h3>Inspiration (Dribbble)</h3><ul class="srcs"><li><a href="https://dribbble.com/shots/18478858-MyTutor-Online-Tutoring-Landing-Page-View">dribbble.com/shots/18478858-MyTutor-Online-Tutoring-Landing-Page-View</a></li><li><a href="https://dribbble.com/shots/18133282-Danesha-Operation-Online-Tutor-Landing-Page">dribbble.com/shots/18133282-Danesha-Operation-Online-Tutor-Landing-Page</a></li><li><a href="https://dribbble.com/shots/25278782-Dashboard-Design-for-EdTech-Students-Teachers">dribbble.com/shots/25278782-Dashboard-Design-for-EdTech-Students-Teachers</a></li><li><a href="https://dribbble.com/shots/15405613-Tutor-App">dribbble.com/shots/15405613-Tutor-App</a></li><li><a href="https://dribbble.com/shots/22874758-Filo-Online-tutor-landing-page">dribbble.com/shots/22874758-Filo-Online-tutor-landing-page</a></li><li><a href="https://dribbble.com/shots/24183066-TutorAI-An-AI-Tutoring-Landing-Page-Concept">dribbble.com/shots/24183066-TutorAI-An-AI-Tutoring-Landing-Page-Concept</a></li><li><a href="https://dribbble.com/tags/online-tutoring">dribbble.com/tags/online-tutoring</a></li></ul><h3>Colour (ColorHunt)</h3><ul class="srcs"><li><a href="https://colorhunt.co/palettes/gold-navy">colorhunt.co/palettes/gold-navy</a></li><li><a href="https://colorhunt.co/palettes/navy-gold">colorhunt.co/palettes/navy-gold</a></li><li><a href="https://colorhunt.co/palettes/navy-blue-cream">colorhunt.co/palettes/navy-blue-cream</a></li><li><a href="https://colorhunt.co/palettes/teal-navy">colorhunt.co/palettes/teal-navy</a></li><li><a href="https://github.com/mohammadrezaeicode/mr-excel-theme-page/blob/HEAD/col.js">github.com/mohammadrezaeicode/mr-excel-theme-page/blob/HEAD/col.js</a> (list of ~2,070 ColorHunt palette codes; source of the four palette IDs)</li><li><a href="https://colorhunt.co/palette/041c3204293a064663ecb365">colorhunt.co/palette/041c3204293a064663ecb365</a></li><li><a href="https://colorhunt.co/palette/1b262c0f4c81ed6663ffa372">colorhunt.co/palette/1b262c0f4c81ed6663ffa372</a></li><li><a href="https://colorhunt.co/palette/0f305700587a008891e7e7de">colorhunt.co/palette/0f305700587a008891e7e7de</a></li><li><a href="https://colorhunt.co/palette/f5efe7d8c4b64f709c213555">colorhunt.co/palette/f5efe7d8c4b64f709c213555</a></li></ul><h3>Fonts (Google Fonts metadata)</h3><ul class="srcs"><li><a href="https://raw.githubusercontent.com/google/fonts/main/ofl/newsreader/METADATA.pb">raw.githubusercontent.com/google/fonts/main/ofl/newsreader/METADATA.pb</a></li><li><a href="https://raw.githubusercontent.com/google/fonts/main/ofl/figtree/METADATA.pb">raw.githubusercontent.com/google/fonts/main/ofl/figtree/METADATA.pb</a></li><li><a href="https://raw.githubusercontent.com/google/fonts/main/ofl/jetbrainsmono/METADATA.pb">raw.githubusercontent.com/google/fonts/main/ofl/jetbrainsmono/METADATA.pb</a></li><li><a href="https://raw.githubusercontent.com/google/fonts/main/ofl/fraunces/METADATA.pb">raw.githubusercontent.com/google/fonts/main/ofl/fraunces/METADATA.pb</a></li><li><a href="https://raw.githubusercontent.com/google/fonts/main/ofl/instrumentsans/METADATA.pb">raw.githubusercontent.com/google/fonts/main/ofl/instrumentsans/METADATA.pb</a></li><li><a href="https://raw.githubusercontent.com/google/fonts/main/ofl/sourceserif4/METADATA.pb">raw.githubusercontent.com/google/fonts/main/ofl/sourceserif4/METADATA.pb</a></li><li><a href="https://raw.githubusercontent.com/google/fonts/main/ofl/sourcesans3/METADATA.pb">raw.githubusercontent.com/google/fonts/main/ofl/sourcesans3/METADATA.pb</a></li><li><a href="https://raw.githubusercontent.com/google/fonts/main/ofl/sourcecodepro/METADATA.pb">raw.githubusercontent.com/google/fonts/main/ofl/sourcecodepro/METADATA.pb</a></li><li><a href="https://raw.githubusercontent.com/google/fonts/main/ofl/bricolagegrotesque/METADATA.pb">raw.githubusercontent.com/google/fonts/main/ofl/bricolagegrotesque/METADATA.pb</a></li><li><a href="https://raw.githubusercontent.com/google/fonts/main/ofl/ibmplexsans/METADATA.pb">raw.githubusercontent.com/google/fonts/main/ofl/ibmplexsans/METADATA.pb</a></li><li><a href="https://raw.githubusercontent.com/google/fonts/main/ofl/ibmplexsansarabic/METADATA.pb">raw.githubusercontent.com/google/fonts/main/ofl/ibmplexsansarabic/METADATA.pb</a></li><li><a href="https://raw.githubusercontent.com/google/fonts/main/ofl/ibmplexmono/METADATA.pb">raw.githubusercontent.com/google/fonts/main/ofl/ibmplexmono/METADATA.pb</a></li><li><a href="https://raw.githubusercontent.com/google/fonts/main/ofl/notonaskharabic/METADATA.pb">raw.githubusercontent.com/google/fonts/main/ofl/notonaskharabic/METADATA.pb</a></li><li><a href="https://raw.githubusercontent.com/google/fonts/main/ofl/notonastaliqurdu/METADATA.pb">raw.githubusercontent.com/google/fonts/main/ofl/notonastaliqurdu/METADATA.pb</a></li></ul>
+</div></section>
+</main>
+<footer><div class="wrap">Tutoring Galaxy rebuild · docs/plan/03-inspiration.html · Next step: structure (sitemap, page outlines, design tokens).</div></footer>
+</body>
+</html>
