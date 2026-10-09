@@ -104,6 +104,9 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // Local tooling (screenshots, QA) talks to the dev server via 127.0.0.1.
+  allowedDevOrigins: ["127.0.0.1"],
+  devIndicators: false,
   // Only set for the GitHub Pages preview build (served under /tutoringgalaxy); empty in production.
   basePath: process.env.NEXT_PUBLIC_BASE_PATH || undefined,
   /* config options here */

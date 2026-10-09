@@ -9,6 +9,8 @@ const twMerge = extendTailwindMerge({
       "font-size": [
         { text: ["micro", "label", "small", "button", "body", "note", "lead", "h3", "h2-sm", "h2", "h1-sm", "h1", "display"] },
       ],
+      shadow: [{ shadow: ["float", "card", "lift"] }],
+      rounded: [{ rounded: ["control", "container", "panel", "pill"] }],
     },
   },
 });
