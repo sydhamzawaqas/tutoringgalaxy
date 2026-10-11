@@ -8,7 +8,7 @@ It replaces the old Lovable site, the Google AI Studio practice app and the Manu
   Supabase (Auth + Postgres), Google Gemini (`@google/genai`).
 - **Design:** "The Exam Paper" design language. The rules are in [`docs/design/DESIGN.md`](docs/design/DESIGN.md)
   and the logo is in [`docs/brand/logo`](docs/brand/logo).
-- **Planning docs:** [audit](docs/audit/01-current-state-audit.md), [site structure](docs/plan/02-site-structure.html),
+- **Planning docs:** [**feature-parity plan (start here)**](docs/plan/05-feature-parity-plan.md), [audit](docs/audit/01-current-state-audit.md), [site structure](docs/plan/02-site-structure.html),
   [inspiration](docs/plan/03-inspiration.html) and [components](docs/plan/04-components.html).
 
 ## Run it
