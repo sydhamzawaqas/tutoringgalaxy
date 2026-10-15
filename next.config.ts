@@ -4,33 +4,28 @@ import type { NextConfig } from "next";
  * Old Lovable routes → new pages (docs/plan/02-site-structure.html, "Old routes → new pages").
  * `permanent: true` sends 308, which search engines treat like a 301. Query strings pass through.
  * Order matters: the first matching rule wins, so specific rules come before catch-alls.
- * The slug lists mirror `page: true` in src/data/content/curricula.ts and subjects.ts; update them
- * when a new curriculum or subject page is published.
  */
-const CURRICULUM_PAGES = "o-level|a-level|igcse|gcse|ib|matric|fsc|mdcat|ecat|sat";
-const SUBJECT_PAGES = "mathematics|physics|chemistry|biology|english|economics|accounting|computer-science";
 const HOME_CITIES = "islamabad|rawalpindi";
 // Old top-level /$city/$curriculum pages for cities without home tutors go to online tutoring.
 const ONLINE_CITIES =
   "lahore|karachi|peshawar|faisalabad|multan|quetta|dubai|abu-dhabi|sharjah|riyadh|jeddah|dammam|doha|muscat|manama|kuwait-city|london|toronto|new-york|sydney";
 
 const legacyRedirects = [
-  // Tutors (filters become query parameters on /tutors)
+  // Tutors: the old "teachers" network is merged into /tutors (same slugs)
   { source: "/teachers", destination: "/tutors" },
-  { source: "/teachers/:path*", destination: "/tutors" },
-  { source: "/tutors/subject/:path*", destination: "/tutors" },
-  { source: "/tutors/curriculum/:path*", destination: "/tutors" },
-  { source: "/tutors/country/:path*", destination: "/tutors" },
+  { source: "/teachers/country/:c", destination: "/tutors/country/:c" },
+  { source: "/teachers/curriculum/:c", destination: "/tutors/curriculum/:c" },
+  { source: "/teachers/subject/:s", destination: "/tutors/subject/:s" },
+  { source: "/teachers/:curriculum/:subject", destination: "/tutors/curriculum/:curriculum" },
+  { source: "/teachers/:slug", destination: "/tutors/:slug" },
 
-  // Curricula and syllabus outlines
-  { source: `/curriculum/:slug(${CURRICULUM_PAGES})`, destination: "/curricula/:slug" },
-  { source: "/curriculum/:path*", destination: "/curricula" },
-  { source: `/syllabus/:slug(${CURRICULUM_PAGES})/:rest*`, destination: "/curricula/:slug" },
-  { source: "/syllabus/:path*", destination: "/curricula" },
-
-  // Subjects
-  { source: `/subject/:slug(${SUBJECT_PAGES})`, destination: "/subjects/:slug" },
-  { source: "/subject/:path*", destination: "/subjects" },
+  // Curricula and subjects (legacy slugs are kept; unknown slugs 404 on the new page)
+  { source: "/curriculum/:slug", destination: "/curricula/:slug" },
+  { source: "/syllabus", destination: "/curricula" },
+  { source: "/syllabus/:slug/:rest*", destination: "/curricula/:slug" },
+  { source: "/subject/:slug", destination: "/subjects/:slug" },
+  { source: "/prep", destination: "/exam-prep" },
+  { source: "/prep/:slug", destination: "/exam-prep/:slug" },
 
   // Places: only Islamabad has a page; everywhere else goes to home or online tutoring
   { source: `/city/:city(${HOME_CITIES})`, destination: "/locations/islamabad" },
@@ -40,24 +35,17 @@ const legacyRedirects = [
   { source: "/locations", destination: "/tutoring/home" },
   { source: "/locations/rawalpindi/:rest*", destination: "/locations/islamabad" },
   { source: "/locations/:place((?!islamabad$).*)", destination: "/tutoring/home" },
+  // TODO(phase 2): region, city, area and world pages replace these temporary redirects.
   { source: "/regions/:path*", destination: "/tutoring/online" },
+  { source: "/areas/:path*", destination: "/locations/islamabad" },
   { source: "/world/:path*", destination: "/tutoring/online" },
   { source: `/:city(${HOME_CITIES})/:rest*`, destination: "/locations/islamabad" },
   { source: `/:city(${ONLINE_CITIES})/:rest*`, destination: "/tutoring/online" },
 
   // Content library
-  { source: "/blog/:path*", destination: "/resources" },
-  { source: "/academy/:path*", destination: "/resources" },
-  { source: "/prep/:path*", destination: "/resources" },
   { source: "/resources/curriculum/:path*", destination: "/resources" },
   { source: "/resources/subject/:path*", destination: "/resources" },
   { source: "/resources/:a/:b/:rest*", destination: "/resources" },
-
-  // Booking and services
-  { source: "/match/:path*", destination: "/book" },
-  { source: "/growing-stars/:path*", destination: "/book" },
-  { source: "/services/:path*", destination: "/tutoring/online" },
-  { source: "/results", destination: "/about" },
 
   // Assessments and practice (login required now)
   { source: "/assessments/about", destination: "/about" },
@@ -68,7 +56,6 @@ const legacyRedirects = [
   { source: "/quiz/:path*", destination: "/app/practice" },
   { source: "/practice/:path*", destination: "/app/practice" },
   { source: "/learn/:path*", destination: "/app/practice" },
-  { source: "/leaderboard/:path*", destination: "/app/practice" },
 
   // Dashboards: one /app URL, content depends on role
   { source: "/dashboard/:path*", destination: "/app" },

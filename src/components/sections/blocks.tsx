@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge, Container, Mark, Panel, QNum, Section, SectionHeading, SheetCard } from "@/components/ui/primitives";
+import { Container, Mark, Panel, QNum, Section, SectionHeading, SheetCard } from "@/components/ui/primitives";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { WhatsAppIcon } from "@/components/brand/marks";
 import { whatsappLink } from "@/data/content/site";
@@ -9,7 +9,7 @@ import type { Curriculum } from "@/data/content/curricula";
 import type { Plan } from "@/data/content/pricing";
 import type { Faq } from "@/data/content/faqs";
 import type { Tutor } from "@/data/content/tutors";
-import { getCurriculum } from "@/data/content/curricula";
+import { TutorProfileCard } from "@/components/tutors/tutor-card";
 
 /** The two calls to action used everywhere. Same labels on every page. */
 export function PrimaryActions({ trialHref = "/book", message }: { trialHref?: string; message?: string }) {
@@ -85,37 +85,9 @@ export function CurriculumCard({ c }: { c: Curriculum }) {
   );
 }
 
-export function TutorCard({ t }: { t: Tutor }) {
-  return (
-    <SheetCard className="flex h-full flex-col">
-      <div className="flex gap-4">
-        <div aria-hidden className="grid size-16 shrink-0 place-items-center rounded-container border border-border bg-surface text-lead font-bold">
-          {t.initials}
-        </div>
-        <div className="min-w-0">
-          <h3 className="text-lead font-bold">{t.name}</h3>
-          <p className="text-small text-muted-foreground">{t.headline}</p>
-          <p className="text-small text-muted-foreground">
-            {t.qualifications.join(", ")}, {t.experienceYears} years teaching
-          </p>
-        </div>
-      </div>
-      <div className="mt-4 flex flex-wrap gap-1.5">
-        {t.curricula.map((c) => (
-          <Badge key={c}>{getCurriculum(c)?.short ?? c}</Badge>
-        ))}
-        <Badge>Online</Badge>
-        {t.modes.includes("home") && t.city ? <Badge>Home: {t.city}</Badge> : null}
-      </div>
-      <p className="mt-4 text-small">{t.bio}</p>
-      <div className="mt-auto flex items-center justify-between gap-3 border-t border-dashed border-rule pt-4">
-        {t.example ? <span className="text-label text-muted-foreground">Example profile</span> : <span />}
-        <Button asChild variant="secondary" size="sm">
-          <Link href={`/tutors/${t.slug}`}>View profile</Link>
-        </Button>
-      </div>
-    </SheetCard>
-  );
+/** Tutor card for curriculum, subject and location pages. Same rich card as the /tutors directory. */
+export function TutorCard({ t, i = 0 }: { t: Tutor; i?: number }) {
+  return <TutorProfileCard t={t} i={i} />;
 }
 
 export function PricingCards({ plans }: { plans: Plan[] }) {
