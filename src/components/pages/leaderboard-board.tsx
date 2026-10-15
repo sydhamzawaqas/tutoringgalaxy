@@ -134,7 +134,7 @@ export function LeaderboardBoard({
                 <p className={cn("mt-1 text-lead font-bold", i === 0 && "text-on-dark")}>{e.firstName}</p>
                 <p className={cn("text-label", i === 0 ? "text-on-dark-muted" : "text-muted-foreground")}>{e.handle} · {e.city}</p>
                 <p className={cn("mt-3 text-h2-sm font-bold tabular-nums", i === 0 && "text-gold")}>{e.score}</p>
-                <TierBadge tier={e.tier} className="mt-2" />
+                <TierBadge tier={e.tier} className={cn("mt-2", i === 0 && "ring-1 ring-on-dark/30")} />
               </li>
             ))}
           </ol>
