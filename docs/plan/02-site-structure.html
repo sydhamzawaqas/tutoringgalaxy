@@ -1,0 +1,1395 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tutoring Galaxy — Site Structure</title>
+<meta name="description" content="Proposed sitemap, user flows, roles, Next.js folder structure and homepage outline for the Tutoring Galaxy rebuild.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f6f3; --surface:#ffffff; --surface-2:#fbfbf9; --text:#1a1e24; --muted:#5a636e; --border:#e2e2dc; --line:#7d8590;
+  --accent:#1f3f7a; --accent-soft:#e8eefb;
+  --pub-bg:#e9f0fd; --pub-bd:#3a6bd1; --pub-tx:#163672;
+  --app-bg:#e3f4eb; --app-bd:#2b915c; --app-tx:#11492f;
+  --adm-bg:#fcefda; --adm-bd:#c27d17; --adm-tx:#5f3a06;
+  --api-bg:#efe9fb; --api-bd:#7652c4; --api-tx:#3a2378;
+  --ext-bg:#f0f0ee; --ext-bd:#85857f; --ext-tx:#36362f;
+  --dec-bg:#fff7d1; --dec-bd:#ad9415; --dec-tx:#463c05;
+  --stp-bg:#ffffff; --stp-bd:#9aa1aa; --stp-tx:#1a1e24;
+  --start-bg:#1f2a37; --start-tx:#ffffff;
+  --role-bg:#ffffff; --role-bd:#1f2a37; --role-tx:#1a1e24;
+  --hdr-tx:#ffffff;
+  --zone:#00000006; --zone-bd:#d6d6cf;
+  --font:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#111316; --surface:#191c20; --surface-2:#1d2025; --text:#e7e9ec; --muted:#9aa3ad; --border:#2b3037; --line:#7f8894;
+    --accent:#9db8ff; --accent-soft:#1d2840;
+    --pub-bg:#172844; --pub-bd:#6e98ee; --pub-tx:#d3e2ff;
+    --app-bg:#12322a; --app-bd:#4cc287; --app-tx:#cbf1dc;
+    --adm-bg:#38290f; --adm-bd:#dd9f45; --adm-tx:#fbe3b9;
+    --api-bg:#281f45; --api-bd:#a587ee; --api-tx:#e4dbff;
+    --ext-bg:#23262a; --ext-bd:#8a9099; --ext-tx:#dfe2e6;
+    --dec-bg:#363112; --dec-bd:#d5bf47; --dec-tx:#f6eaa8;
+    --stp-bg:#1d2025; --stp-bd:#6f7782; --stp-tx:#e7e9ec;
+    --start-bg:#e7e9ec; --start-tx:#111316;
+    --role-bg:#1d2025; --role-bd:#c9ced6; --role-tx:#e7e9ec;
+    --hdr-tx:#0f1114;
+    --zone:#ffffff07; --zone-bd:#343a42;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+    --bg:#111316; --surface:#191c20; --surface-2:#1d2025; --text:#e7e9ec; --muted:#9aa3ad; --border:#2b3037; --line:#7f8894;
+    --accent:#9db8ff; --accent-soft:#1d2840;
+    --pub-bg:#172844; --pub-bd:#6e98ee; --pub-tx:#d3e2ff;
+    --app-bg:#12322a; --app-bd:#4cc287; --app-tx:#cbf1dc;
+    --adm-bg:#38290f; --adm-bd:#dd9f45; --adm-tx:#fbe3b9;
+    --api-bg:#281f45; --api-bd:#a587ee; --api-tx:#e4dbff;
+    --ext-bg:#23262a; --ext-bd:#8a9099; --ext-tx:#dfe2e6;
+    --dec-bg:#363112; --dec-bd:#d5bf47; --dec-tx:#f6eaa8;
+    --stp-bg:#1d2025; --stp-bd:#6f7782; --stp-tx:#e7e9ec;
+    --start-bg:#e7e9ec; --start-tx:#111316;
+    --role-bg:#1d2025; --role-bd:#c9ced6; --role-tx:#e7e9ec;
+    --hdr-tx:#0f1114;
+    --zone:#ffffff07; --zone-bd:#343a42;
+    color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);font-size:15px;line-height:1.55;}
+code{font-family:var(--mono);font-size:.86em;background:var(--surface-2);border:1px solid var(--border);border-radius:5px;padding:.05em .35em;overflow-wrap:anywhere}
+.wrap{max-width:1240px;margin:0 auto;padding:0 16px}
+header.top{padding:40px 0 18px;border-bottom:1px solid var(--border);background:var(--surface)}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:0 0 6px}
+h1{font-size:clamp(26px,4vw,36px);line-height:1.15;margin:0 0 12px;letter-spacing:-.01em}
+.summary{max-width:860px;color:var(--text);margin:0 0 16px}
+.summary p{margin:0 0 6px}
+.meta{font-size:13px;color:var(--muted)}
+nav.tabs{position:sticky;top:0;z-index:5;background:var(--surface);border-bottom:1px solid var(--border)}
+nav.tabs .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:thin}
+nav.tabs a{flex:none;padding:12px 12px;color:var(--muted);text-decoration:none;font-weight:600;font-size:14px;border-bottom:2px solid transparent;white-space:nowrap}
+nav.tabs a:hover{color:var(--text)}
+nav.tabs a[aria-current="true"]{color:var(--accent);border-bottom-color:var(--accent)}
+nav.tabs a span{display:inline-block;min-width:20px;height:20px;line-height:20px;text-align:center;border-radius:10px;background:var(--accent-soft);color:var(--accent);font-size:12px;margin-right:6px}
+main.wrap{padding:28px 16px 60px}
+section.panel{margin:0 0 56px}
+.js section.panel{display:none;margin:0}
+.js section.panel.on{display:block}
+h2{font-size:24px;margin:0 0 6px;letter-spacing:-.01em}
+h3{font-size:17px;margin:30px 0 8px}
+.lede{color:var(--muted);max-width:860px;margin:0 0 18px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:10px;font-size:13px;margin:0 0 18px}
+.lg{display:inline-flex;align-items:center;gap:7px;color:var(--text)}
+.sw{display:inline-block;width:18px;height:13px;border-radius:3px;border:1.5px solid}
+.sw-public{background:var(--pub-bg);border-color:var(--pub-bd)}
+.sw-public-cond{background:var(--pub-bg);border-color:var(--pub-bd);border-style:dashed}
+.sw-app{background:var(--app-bg);border-color:var(--app-bd)}
+.sw-admin{background:var(--adm-bg);border-color:var(--adm-bd)}
+.sw-api{background:var(--api-bg);border-color:var(--api-bd)}
+.sw-ext{background:var(--ext-bg);border-color:var(--ext-bd);border-style:dashed}
+.sw-decision{width:13px;height:13px;transform:rotate(45deg);background:var(--dec-bg);border-color:var(--dec-bd);margin:0 3px}
+.sw-start{background:var(--start-bg);border-color:var(--start-bg);border-radius:7px}
+.ln{display:inline-block;width:24px;border-top:2px solid var(--line)}
+.ln-d{border-top-style:dashed}
+.fig{margin:0 0 22px;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.fig figcaption{padding:10px 16px;border-top:1px solid var(--border);font-size:13px;color:var(--muted)}
+.scroll{overflow-x:auto;padding:12px 12px 8px;-webkit-overflow-scrolling:touch}
+.scroll:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+svg.dg{display:block;width:100%;height:auto;margin:0 auto;font-family:var(--font)}
+/* svg node styles */
+.nd{stroke-width:1.5}
+.k-public{fill:var(--pub-bg);stroke:var(--pub-bd)}
+.k-public-cond{fill:var(--pub-bg);stroke:var(--pub-bd);stroke-dasharray:5 4}
+.k-app{fill:var(--app-bg);stroke:var(--app-bd)}
+.k-admin{fill:var(--adm-bg);stroke:var(--adm-bd)}
+.k-api{fill:var(--api-bg);stroke:var(--api-bd)}
+.k-ext{fill:var(--ext-bg);stroke:var(--ext-bd);stroke-dasharray:5 4}
+.k-decision{fill:var(--dec-bg);stroke:var(--dec-bd)}
+.k-step{fill:var(--stp-bg);stroke:var(--stp-bd)}
+.k-start,.k-end{fill:var(--start-bg);stroke:none}
+.k-role{fill:var(--role-bg);stroke:var(--role-bd);stroke-width:2}
+.k-hdr-public{fill:var(--pub-bd);stroke:none}
+.k-hdr-app{fill:var(--app-bd);stroke:none}
+.k-hdr-admin{fill:var(--adm-bd);stroke:none}
+svg .t{font-size:13px;font-weight:600;text-anchor:middle}
+svg .s{font-size:11.25px;font-family:var(--mono);text-anchor:middle;opacity:.85}
+.t-public,.s-public,.t-public-cond,.s-public-cond{fill:var(--pub-tx)}
+.t-app,.s-app{fill:var(--app-tx)}
+.t-admin,.s-admin{fill:var(--adm-tx)}
+.t-api,.s-api{fill:var(--api-tx)}
+.t-ext,.s-ext{fill:var(--ext-tx)}
+.t-decision,.s-decision{fill:var(--dec-tx)}
+.t-step,.s-step,.t-role,.s-role{fill:var(--text)}
+.t-start,.s-start,.t-end,.s-end{fill:var(--start-tx)}
+.t-hdr-public,.t-hdr-app,.t-hdr-admin{fill:var(--hdr-tx)}
+.edge{fill:none;stroke:var(--line);stroke-width:1.5;stroke-linejoin:round}
+.edge.dashed{stroke-dasharray:5 4}
+.edge.back{stroke-dasharray:2 3}
+.ahp{fill:var(--line)}
+.lbl-bg{fill:var(--surface);stroke:var(--border)}
+.lbl{font-size:11.5px;font-weight:600;fill:var(--muted);text-anchor:middle}
+.zone{fill:var(--zone);stroke:var(--zone-bd);stroke-dasharray:4 4}
+.zone.gate{fill:var(--accent-soft);stroke:var(--accent);opacity:.9}
+.zone-lbl{font-size:12px;font-weight:700;fill:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.zone-sm{font-size:12px;fill:var(--text);font-family:var(--mono)}
+/* tables */
+.tablewrap{overflow-x:auto;background:var(--surface);border:1px solid var(--border);border-radius:12px}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:13.5px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--border)}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);background:var(--surface-2)}
+tr:last-child td{border-bottom:0}
+td:nth-child(1){width:38%} td:nth-child(2){width:28%}
+.matrix td,.matrix th{text-align:center}
+.matrix td:first-child,.matrix th:first-child{text-align:left}
+.matrix td{width:auto !important}
+.y{color:var(--app-bd);font-weight:700}
+.n{color:var(--muted)}
+.p{color:var(--adm-bd);font-weight:600}
+/* folder tree */
+.treebox{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 16px;overflow-x:auto}
+ul.tree,ul.tree ul{list-style:none;margin:0;padding:0}
+ul.tree{min-width:760px}
+ul.tree ul{margin-left:14px;padding-left:16px;border-left:1.5px solid var(--border)}
+ul.tree li{position:relative;padding:3px 0 3px 0;display:block}
+ul.tree ul>li::before{content:"";position:absolute;left:-16px;top:15px;width:12px;border-top:1.5px solid var(--border)}
+.f{display:inline-block;font-family:var(--mono);font-size:13px;font-weight:500;padding:1px 8px;border-radius:6px;border:1px solid var(--border);background:var(--surface-2);min-width:0}
+.f.dir{color:var(--text)}
+.f.file{color:var(--muted)}
+.f.key{color:var(--api-tx);background:var(--api-bg);border-color:var(--api-bd)}
+.f.seo{color:var(--pub-tx);background:var(--pub-bg);border-color:var(--pub-bd)}
+.f.grp{color:var(--accent);background:var(--accent-soft);border-color:var(--accent);font-weight:600}
+.f.slot{color:var(--app-tx);background:var(--app-bg);border-color:var(--app-bd)}
+.f.api{color:var(--api-tx);background:var(--api-bg);border-color:var(--api-bd)}
+.note{color:var(--muted);font-size:13px;margin-left:10px}
+.tree-legend{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:13px;margin:0 0 14px;color:var(--muted)}
+/* homepage flow */
+.homegrid{display:grid;grid-template-columns:minmax(0,560px) minmax(0,1fr);gap:28px;align-items:start}
+.hflow{display:flex;flex-direction:column;align-items:stretch}
+.hs{background:var(--surface);border:1.5px solid var(--pub-bd);border-radius:10px;padding:12px 14px}
+.hs-chrome{background:var(--surface-2);border:1.5px dashed var(--border)}
+.hs-name{font-weight:700;font-size:15px;color:var(--pub-tx)}
+.hs-chrome .hs-name{color:var(--muted)}
+.hs-desc{font-size:13.5px;color:var(--text);margin-top:2px}
+.harrow{height:22px;position:relative}
+.harrow::before{content:"";position:absolute;left:50%;top:2px;bottom:6px;border-left:1.5px solid var(--line)}
+.harrow::after{content:"";position:absolute;left:calc(50% - 5px);bottom:2px;border:5px solid transparent;border-top:6px solid var(--line);border-bottom:0}
+.ctas{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.cta{font-size:12.5px;font-weight:600;padding:4px 10px;border-radius:999px}
+.cta-p{background:var(--accent);color:var(--surface)}
+.cta-w{background:var(--app-bg);color:var(--app-tx);border:1px solid var(--app-bd)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px}
+.card h3{margin-top:0}
+.card ul{margin:0;padding-left:18px}
+.card li{margin:0 0 6px}
+.qbox{background:var(--dec-bg);border:1.5px solid var(--dec-bd);border-radius:12px;padding:16px 20px;color:var(--dec-tx)}
+.qbox h2{color:var(--dec-tx)}
+.qbox ol{margin:8px 0 0;padding-left:22px}
+.qbox li{margin:0 0 8px}
+.why{margin-top:22px}
+.why li{font-size:13.5px}
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.kv{font-size:13.5px}
+@media (max-width:860px){
+  .homegrid,.cols2{grid-template-columns:1fr}
+}
+@media (max-width:520px){
+  body{font-size:14.5px}
+  header.top{padding-top:26px}
+  .note{display:block;margin:2px 0 4px 0}
+  ul.tree{min-width:0}
+  ul.tree ul{margin-left:6px;padding-left:12px}
+  ul.tree ul>li::before{left:-12px;width:9px}
+  .f{white-space:normal;overflow-wrap:anywhere}
+}
+@media print{ .js section.panel{display:block !important} nav.tabs{display:none} }
+</style>
+</head>
+<body>
+<header class="top">
+ <div class="wrap">
+  <p class="eyebrow">Phase 3 · Structure · 8 Oct 2026</p>
+  <h1>Tutoring Galaxy — Site Structure</h1>
+  <div class="summary">
+   <p>One website on <strong>tutoringgalaxy.com</strong> replaces the Lovable site, the AI Studio Practice Engine and the Manus lab: public marketing pages, a tutor directory, a logged-in area for students, parents and tutors, AI practice and an admin area, all in one Next.js 16 app.</p>
+   <p>The public sitemap shrinks from about 100 overlapping routes to 23 URLs. City, region and filter pages stop being generated; a location page exists only where there is real local content.</p>
+   <p>Every path leads to one action, <strong>Book a free trial</strong>, with WhatsApp as the second option. Sign-in is checked on the server, and Gemini is only called from server routes with rate limits and quotas.</p>
+  </div>
+  <p class="meta">Based on <code>docs/audit/01-current-state-audit.md</code> and the bundled Next.js 16.4 docs. Proposal for review, not final.</p>
+ </div>
+</header>
+<nav class="tabs" aria-label="Sections">
+ <div class="wrap" role="tablist">
+  <a href="#sitemap" data-tab="sitemap"><span>1</span>Sitemap</a>
+  <a href="#flows" data-tab="flows"><span>2</span>User flows</a>
+  <a href="#roles" data-tab="roles"><span>3</span>Roles &amp; access</a>
+  <a href="#folders" data-tab="folders"><span>4</span>Folder structure</a>
+  <a href="#homepage" data-tab="homepage"><span>5</span>Homepage</a>
+  <a href="#questions" data-tab="questions"><span>6</span>Open questions</a>
+ </div>
+</nav>
+<main class="wrap">
+
+<section class="panel" id="sitemap" aria-labelledby="h-sitemap">
+ <h2 id="h-sitemap">1 · Unified sitemap</h2>
+ <p class="lede">Three areas on one domain. Public pages are indexable; the login pages, the app and the admin area are not. Scroll a diagram sideways on small screens.</p>
+ <div class="legend" aria-label="Legend">
+<span class="lg"><i class="sw sw-public"></i>Public page</span>
+<span class="lg"><i class="sw sw-public-cond"></i>Public, only if real content exists</span>
+<span class="lg"><i class="sw sw-app"></i>Logged-in page</span>
+<span class="lg"><i class="sw sw-admin"></i>Admin page / admin task</span>
+<span class="lg"><i class="sw sw-api"></i>Server code (API route, Server Action, check)</span>
+<span class="lg"><i class="sw sw-ext"></i>External service (WhatsApp, Gemini, email, DB)</span>
+<span class="lg"><i class="sw sw-decision"></i>Decision</span>
+<span class="lg"><i class="sw sw-start"></i>Start / end</span>
+<span class="lg"><i class="ln"></i>Next step</span>
+<span class="lg"><i class="ln ln-d"></i>Message / async</span>
+</div>
+ <figure class="fig"><div class="scroll" tabindex="0"><svg class="dg" viewBox="0 0 1180 290" style="max-width:1180px;min-width:760px" role="img" aria-label="One domain overview" xmlns="http://www.w3.org/2000/svg"><title>One domain overview</title><defs><marker id="ah-one-domain-overview" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ahp" d="M0,0 L10,5 L0,10 z"/></marker></defs><path class="edge" d="M590.0,62.0 L590.0,96.0 L120.0,96.0 L120.0,124.0" marker-end="url(#ah-one-domain-overview)"/>
+<path class="edge" d="M590.0,62.0 L590.0,96.0 L355.0,96.0 L355.0,124.0" marker-end="url(#ah-one-domain-overview)"/>
+<path class="edge" d="M590.0,62.0 L590.0,124.0" marker-end="url(#ah-one-domain-overview)"/>
+<path class="edge" d="M590.0,62.0 L590.0,96.0 L825.0,96.0 L825.0,124.0" marker-end="url(#ah-one-domain-overview)"/>
+<path class="edge" d="M590.0,62.0 L590.0,96.0 L1060.0,96.0 L1060.0,124.0" marker-end="url(#ah-one-domain-overview)"/>
+<path class="edge dashed" d="M120.0,176.0 L120.0,224.0" marker-end="url(#ah-one-domain-overview)"/>
+<path class="edge dashed" d="M590.0,176.0 L590.0,212.0 L707.0,212.0 L707.0,224.0" marker-end="url(#ah-one-domain-overview)"/>
+<path class="edge dashed" d="M825.0,176.0 L825.0,212.0 L707.0,212.0 L707.0,224.0" marker-end="url(#ah-one-domain-overview)"/>
+<path class="edge dashed" d="M1060.0,176.0 L1060.0,224.0" marker-end="url(#ah-one-domain-overview)"/>
+<rect class="nd k-start" x="430.0" y="10.0" width="320.0" height="52.0" rx="26.0"/>
+<text class="t t-start" x="590" y="32.0">tutoringgalaxy.com</text>
+<text class="s s-start" x="590" y="49.0">one Next.js app · one login · one brand</text>
+<rect class="nd k-public" x="15.0" y="124.0" width="210.0" height="52.0" rx="9"/>
+<text class="t t-public" x="120" y="146.0">Public site</text>
+<text class="s s-public" x="120" y="163.0">(marketing) · indexable</text>
+<rect class="nd k-public" x="250.0" y="124.0" width="210.0" height="52.0" rx="9"/>
+<text class="t t-public" x="355" y="146.0">Log in / sign up</text>
+<text class="s s-public" x="355" y="163.0">(auth) · noindex</text>
+<rect class="nd k-app" x="485.0" y="124.0" width="210.0" height="52.0" rx="9"/>
+<text class="t t-app" x="590" y="146.0">Logged-in app</text>
+<text class="s s-app" x="590" y="163.0">/app/* · noindex</text>
+<rect class="nd k-admin" x="720.0" y="124.0" width="210.0" height="52.0" rx="9"/>
+<text class="t t-admin" x="825" y="146.0">Admin</text>
+<text class="s s-admin" x="825" y="163.0">/admin/* · noindex</text>
+<rect class="nd k-api" x="955.0" y="124.0" width="210.0" height="52.0" rx="9"/>
+<text class="t t-api" x="1060" y="146.0">Server endpoints</text>
+<text class="s s-api" x="1060" y="163.0">/api/* route handlers</text>
+<rect class="nd k-ext" x="15.0" y="224.0" width="210.0" height="52.0" rx="9"/>
+<text class="t t-ext" x="120" y="246.0">WhatsApp</text>
+<text class="s s-ext" x="120" y="263.0">wa.me deep links</text>
+<rect class="nd k-ext" x="592.0" y="224.0" width="230.0" height="52.0" rx="9"/>
+<text class="t t-ext" x="707" y="246.0">Database + auth</text>
+<text class="s s-ext" x="707" y="263.0">Postgres · sessions · files</text>
+<rect class="nd k-ext" x="955.0" y="224.0" width="210.0" height="52.0" rx="9"/>
+<text class="t t-ext" x="1060" y="246.0">Google Gemini</text>
+<text class="s s-ext" x="1060" y="263.0">called from server only</text></svg></div><figcaption>Everything is one Next.js app on one domain. External services sit behind the server.</figcaption></figure>
+ <h3>Public site</h3>
+ <figure class="fig"><div class="scroll" tabindex="0"><svg class="dg" viewBox="0 0 1412 502" style="max-width:1412px;min-width:1000px" role="img" aria-label="Public site sitemap" xmlns="http://www.w3.org/2000/svg"><title>Public site sitemap</title><defs><marker id="ah-public-site-sitemap" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ahp" d="M0,0 L10,5 L0,10 z"/></marker></defs><path class="edge" d="M706.0,59 L706.0,84"/>
+<path class="edge" d="M123.5,84 L1288.5,84"/>
+<path class="edge" d="M123.5,84 L123.5,106" marker-end="url(#ah-public-site-sitemap)"/>
+<path class="edge" d="M28.0,196 L42.0,196" marker-end="url(#ah-public-site-sitemap)"/>
+<path class="edge" d="M28.0,256 L42.0,256" marker-end="url(#ah-public-site-sitemap)"/>
+<path class="edge" d="M28.0,316 L42.0,316" marker-end="url(#ah-public-site-sitemap)"/>
+<path class="edge" d="M28.0,376 L42.0,376" marker-end="url(#ah-public-site-sitemap)"/>
+<path class="edge" d="M28.0,436 L42.0,436" marker-end="url(#ah-public-site-sitemap)"/>
+<path class="edge" d="M28.0,145 L28.0,436"/>
+<path class="edge" d="M356.5,84 L356.5,106" marker-end="url(#ah-public-site-sitemap)"/>
+<path class="edge" d="M261.0,196 L275.0,196" marker-end="url(#ah-public-site-sitemap)"/>
+<path class="edge" d="M261.0,256 L275.0,256" marker-end="url(#ah-public-site-sitemap)"/>
+<path class="edge" d="M261.0,316 L275.0,316" marker-end="url(#ah-public-site-sitemap)"/>
+<path class="edge" d="M261.0,145 L261.0,316"/>
+<path class="edge" d="M589.5,84 L589.5,106" marker-end="url(#ah-public-site-sitemap)"/>
+<path class="edge" d="M494.0,196 L508.0,196" marker-end="url(#ah-public-site-sitemap)"/>
+<path class="edge" d="M494.0,256 L508.0,256" marker-end="url(#ah-public-site-sitemap)"/>
+<path class="edge" d="M494.0,316 L508.0,316" marker-end="url(#ah-public-site-sitemap)"/>
+<path class="edge" d="M494.0,376 L508.0,376" marker-end="url(#ah-public-site-sitemap)"/>
+<path class="edge" d="M494.0,145 L494.0,376"/>
+<path class="edge" d="M822.5,84 L822.5,106" marker-end="url(#ah-public-site-sitemap)"/>
+<path class="edge" d="M727.0,196 L741.0,196" marker-end="url(#ah-public-site-sitemap)"/>
+<path class="edge" d="M727.0,256 L741.0,256" marker-end="url(#ah-public-site-sitemap)"/>
+<path class="edge" d="M727.0,316 L741.0,316" marker-end="url(#ah-public-site-sitemap)"/>
+<path class="edge" d="M727.0,145 L727.0,316"/>
+<path class="edge" d="M1055.5,84 L1055.5,106" marker-end="url(#ah-public-site-sitemap)"/>
+<path class="edge" d="M960.0,196 L974.0,196" marker-end="url(#ah-public-site-sitemap)"/>
+<path class="edge" d="M960.0,256 L974.0,256" marker-end="url(#ah-public-site-sitemap)"/>
+<path class="edge" d="M960.0,316 L974.0,316" marker-end="url(#ah-public-site-sitemap)"/>
+<path class="edge" d="M960.0,145 L960.0,316"/>
+<path class="edge" d="M1288.5,84 L1288.5,106" marker-end="url(#ah-public-site-sitemap)"/>
+<path class="edge" d="M1193.0,196 L1207.0,196" marker-end="url(#ah-public-site-sitemap)"/>
+<path class="edge" d="M1193.0,256 L1207.0,256" marker-end="url(#ah-public-site-sitemap)"/>
+<path class="edge" d="M1193.0,316 L1207.0,316" marker-end="url(#ah-public-site-sitemap)"/>
+<path class="edge" d="M1193.0,376 L1207.0,376" marker-end="url(#ah-public-site-sitemap)"/>
+<path class="edge" d="M1193.0,436 L1207.0,436" marker-end="url(#ah-public-site-sitemap)"/>
+<path class="edge" d="M1193.0,145 L1193.0,436"/>
+<rect class="nd k-start" x="537.5" y="9.0" width="337.0" height="50.0" rx="25.0"/>
+<text class="t t-start" x="706.0" y="30.0">Public site</text>
+<text class="s s-start" x="706.0" y="47.0">src/app/(marketing) · shared header + footer</text>
+<rect class="nd k-hdr-public" x="16.0" y="107.0" width="215.0" height="38.0" rx="4"/>
+<text class="t t-hdr-public" x="123.5" y="130.0">Core</text>
+<rect class="nd k-public" x="42.0" y="172.0" width="189.0" height="48.0" rx="9"/>
+<text class="t t-public" x="136.5" y="192.0">Home</text>
+<text class="s s-public" x="136.5" y="209.0">/</text>
+<rect class="nd k-public" x="42.0" y="232.0" width="189.0" height="48.0" rx="9"/>
+<text class="t t-public" x="136.5" y="252.0">How it works</text>
+<text class="s s-public" x="136.5" y="269.0">/how-it-works</text>
+<rect class="nd k-public" x="42.0" y="292.0" width="189.0" height="48.0" rx="9"/>
+<text class="t t-public" x="136.5" y="312.0">Pricing</text>
+<text class="s s-public" x="136.5" y="329.0">/pricing</text>
+<rect class="nd k-public" x="42.0" y="352.0" width="189.0" height="48.0" rx="9"/>
+<text class="t t-public" x="136.5" y="372.0">About</text>
+<text class="s s-public" x="136.5" y="389.0">/about</text>
+<rect class="nd k-public" x="42.0" y="412.0" width="189.0" height="48.0" rx="9"/>
+<text class="t t-public" x="136.5" y="432.0">FAQ</text>
+<text class="s s-public" x="136.5" y="449.0">/faq</text>
+<rect class="nd k-hdr-public" x="249.0" y="107.0" width="215.0" height="38.0" rx="4"/>
+<text class="t t-hdr-public" x="356.5" y="130.0">Tutoring</text>
+<rect class="nd k-public" x="275.0" y="172.0" width="189.0" height="48.0" rx="9"/>
+<text class="t t-public" x="369.5" y="192.0">Online tutoring</text>
+<text class="s s-public" x="369.5" y="209.0">/tutoring/online</text>
+<rect class="nd k-public" x="275.0" y="232.0" width="189.0" height="48.0" rx="9"/>
+<text class="t t-public" x="369.5" y="252.0">Home tutoring</text>
+<text class="s s-public" x="369.5" y="269.0">/tutoring/home</text>
+<rect class="nd k-public-cond" x="275.0" y="292.0" width="189.0" height="48.0" rx="9"/>
+<text class="t t-public-cond" x="369.5" y="312.0">Location page *</text>
+<text class="s s-public-cond" x="369.5" y="329.0">/locations/[place]</text>
+<rect class="nd k-hdr-public" x="482.0" y="107.0" width="215.0" height="38.0" rx="4"/>
+<text class="t t-hdr-public" x="589.5" y="130.0">Curricula &amp; subjects</text>
+<rect class="nd k-public" x="508.0" y="172.0" width="189.0" height="48.0" rx="9"/>
+<text class="t t-public" x="602.5" y="192.0">All curricula</text>
+<text class="s s-public" x="602.5" y="209.0">/curricula</text>
+<rect class="nd k-public" x="508.0" y="232.0" width="189.0" height="48.0" rx="9"/>
+<text class="t t-public" x="602.5" y="252.0">Curriculum</text>
+<text class="s s-public" x="602.5" y="269.0">/curricula/[curriculum]</text>
+<rect class="nd k-public" x="508.0" y="292.0" width="189.0" height="48.0" rx="9"/>
+<text class="t t-public" x="602.5" y="312.0">All subjects</text>
+<text class="s s-public" x="602.5" y="329.0">/subjects</text>
+<rect class="nd k-public" x="508.0" y="352.0" width="189.0" height="48.0" rx="9"/>
+<text class="t t-public" x="602.5" y="372.0">Subject</text>
+<text class="s s-public" x="602.5" y="389.0">/subjects/[subject]</text>
+<rect class="nd k-hdr-public" x="715.0" y="107.0" width="215.0" height="38.0" rx="4"/>
+<text class="t t-hdr-public" x="822.5" y="130.0">Tutors</text>
+<rect class="nd k-public" x="741.0" y="172.0" width="189.0" height="48.0" rx="9"/>
+<text class="t t-public" x="835.5" y="192.0">Find a tutor</text>
+<text class="s s-public" x="835.5" y="209.0">/tutors</text>
+<rect class="nd k-public" x="741.0" y="232.0" width="189.0" height="48.0" rx="9"/>
+<text class="t t-public" x="835.5" y="252.0">Tutor profile</text>
+<text class="s s-public" x="835.5" y="269.0">/tutors/[tutor]</text>
+<rect class="nd k-public" x="741.0" y="292.0" width="189.0" height="48.0" rx="9"/>
+<text class="t t-public" x="835.5" y="312.0">Join as a tutor</text>
+<text class="s s-public" x="835.5" y="329.0">/join-as-tutor</text>
+<rect class="nd k-hdr-public" x="948.0" y="107.0" width="215.0" height="38.0" rx="4"/>
+<text class="t t-hdr-public" x="1055.5" y="130.0">Book &amp; contact</text>
+<rect class="nd k-public" x="974.0" y="172.0" width="189.0" height="48.0" rx="9"/>
+<text class="t t-public" x="1068.5" y="192.0">Book a free trial</text>
+<text class="s s-public" x="1068.5" y="209.0">/book</text>
+<rect class="nd k-public" x="974.0" y="232.0" width="189.0" height="48.0" rx="9"/>
+<text class="t t-public" x="1068.5" y="252.0">Booking received</text>
+<text class="s s-public" x="1068.5" y="269.0">/book/thanks</text>
+<rect class="nd k-public" x="974.0" y="292.0" width="189.0" height="48.0" rx="9"/>
+<text class="t t-public" x="1068.5" y="312.0">Contact</text>
+<text class="s s-public" x="1068.5" y="329.0">/contact</text>
+<rect class="nd k-hdr-public" x="1181.0" y="107.0" width="215.0" height="38.0" rx="4"/>
+<text class="t t-hdr-public" x="1288.5" y="130.0">Resources &amp; legal</text>
+<rect class="nd k-public" x="1207.0" y="172.0" width="189.0" height="48.0" rx="9"/>
+<text class="t t-public" x="1301.5" y="192.0">Resources</text>
+<text class="s s-public" x="1301.5" y="209.0">/resources</text>
+<rect class="nd k-public" x="1207.0" y="232.0" width="189.0" height="48.0" rx="9"/>
+<text class="t t-public" x="1301.5" y="252.0">Article</text>
+<text class="s s-public" x="1301.5" y="269.0">/resources/[slug]</text>
+<rect class="nd k-public" x="1207.0" y="292.0" width="189.0" height="48.0" rx="9"/>
+<text class="t t-public" x="1301.5" y="312.0">Privacy</text>
+<text class="s s-public" x="1301.5" y="329.0">/legal/privacy</text>
+<rect class="nd k-public" x="1207.0" y="352.0" width="189.0" height="48.0" rx="9"/>
+<text class="t t-public" x="1301.5" y="372.0">Terms</text>
+<text class="s s-public" x="1301.5" y="389.0">/legal/terms</text>
+<rect class="nd k-public" x="1207.0" y="412.0" width="189.0" height="48.0" rx="9"/>
+<text class="t t-public" x="1301.5" y="432.0">Refund policy</text>
+<text class="s s-public" x="1301.5" y="449.0">/legal/refunds</text></svg></div><figcaption>23 public URLs (about 20 templates). * Location pages are created only for places with real local tutors and reviews.</figcaption></figure>
+ <h3>Logged-in app</h3>
+ <figure class="fig"><div class="scroll" tabindex="0"><svg class="dg" viewBox="0 0 1286 502" style="max-width:1286px;min-width:900px" role="img" aria-label="Logged-in app sitemap" xmlns="http://www.w3.org/2000/svg"><title>Logged-in app sitemap</title><defs><marker id="ah-logged-in-app-sitemap" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ahp" d="M0,0 L10,5 L0,10 z"/></marker></defs><path class="edge" d="M643.0,59 L643.0,84"/>
+<path class="edge" d="M166.0,84 L1120.0,84"/>
+<path class="edge" d="M166.0,84 L166.0,106" marker-end="url(#ah-logged-in-app-sitemap)"/>
+<path class="edge" d="M28.0,196 L42.0,196" marker-end="url(#ah-logged-in-app-sitemap)"/>
+<path class="edge" d="M28.0,256 L42.0,256" marker-end="url(#ah-logged-in-app-sitemap)"/>
+<path class="edge" d="M28.0,316 L42.0,316" marker-end="url(#ah-logged-in-app-sitemap)"/>
+<path class="edge" d="M28.0,145 L28.0,316"/>
+<path class="edge" d="M484.0,84 L484.0,106" marker-end="url(#ah-logged-in-app-sitemap)"/>
+<path class="edge" d="M346.0,196 L360.0,196" marker-end="url(#ah-logged-in-app-sitemap)"/>
+<path class="edge" d="M346.0,256 L360.0,256" marker-end="url(#ah-logged-in-app-sitemap)"/>
+<path class="edge" d="M346.0,316 L360.0,316" marker-end="url(#ah-logged-in-app-sitemap)"/>
+<path class="edge" d="M346.0,145 L346.0,316"/>
+<path class="edge" d="M802.0,84 L802.0,106" marker-end="url(#ah-logged-in-app-sitemap)"/>
+<path class="edge" d="M664.0,196 L678.0,196" marker-end="url(#ah-logged-in-app-sitemap)"/>
+<path class="edge" d="M664.0,256 L678.0,256" marker-end="url(#ah-logged-in-app-sitemap)"/>
+<path class="edge" d="M664.0,316 L678.0,316" marker-end="url(#ah-logged-in-app-sitemap)"/>
+<path class="edge" d="M664.0,376 L678.0,376" marker-end="url(#ah-logged-in-app-sitemap)"/>
+<path class="edge" d="M664.0,145 L664.0,376"/>
+<path class="edge" d="M1120.0,84 L1120.0,106" marker-end="url(#ah-logged-in-app-sitemap)"/>
+<path class="edge" d="M982.0,196 L996.0,196" marker-end="url(#ah-logged-in-app-sitemap)"/>
+<path class="edge" d="M982.0,256 L996.0,256" marker-end="url(#ah-logged-in-app-sitemap)"/>
+<path class="edge" d="M982.0,316 L996.0,316" marker-end="url(#ah-logged-in-app-sitemap)"/>
+<path class="edge" d="M982.0,376 L996.0,376" marker-end="url(#ah-logged-in-app-sitemap)"/>
+<path class="edge" d="M982.0,436 L996.0,436" marker-end="url(#ah-logged-in-app-sitemap)"/>
+<path class="edge" d="M982.0,145 L982.0,436"/>
+<rect class="nd k-start" x="477.9" y="9.0" width="330.2" height="50.0" rx="25.0"/>
+<text class="t t-start" x="643.0" y="30.0">Logged-in app</text>
+<text class="s s-start" x="643.0" y="47.0">src/app/(app)/app · sidebar shell · noindex</text>
+<rect class="nd k-hdr-app" x="16.0" y="107.0" width="300.0" height="38.0" rx="4"/>
+<text class="t t-hdr-app" x="166.0" y="130.0">Before login · (auth)</text>
+<rect class="nd k-public" x="42.0" y="172.0" width="274.0" height="48.0" rx="9"/>
+<text class="t t-public" x="179.0" y="192.0">Log in</text>
+<text class="s s-public" x="179.0" y="209.0">/login</text>
+<rect class="nd k-public" x="42.0" y="232.0" width="274.0" height="48.0" rx="9"/>
+<text class="t t-public" x="179.0" y="252.0">Sign up (by invite)</text>
+<text class="s s-public" x="179.0" y="269.0">/signup</text>
+<rect class="nd k-public" x="42.0" y="292.0" width="274.0" height="48.0" rx="9"/>
+<text class="t t-public" x="179.0" y="312.0">Reset password</text>
+<text class="s s-public" x="179.0" y="329.0">/reset-password</text>
+<rect class="nd k-hdr-app" x="334.0" y="107.0" width="300.0" height="38.0" rx="4"/>
+<text class="t t-hdr-app" x="484.0" y="130.0">All roles</text>
+<rect class="nd k-app" x="360.0" y="172.0" width="274.0" height="48.0" rx="9"/>
+<text class="t t-app" x="497.0" y="192.0">Dashboard</text>
+<text class="s s-app" x="497.0" y="209.0">/app  (role-based slots)</text>
+<rect class="nd k-app" x="360.0" y="232.0" width="274.0" height="48.0" rx="9"/>
+<text class="t t-app" x="497.0" y="252.0">Schedule</text>
+<text class="s s-app" x="497.0" y="269.0">/app/schedule</text>
+<rect class="nd k-app" x="360.0" y="292.0" width="274.0" height="48.0" rx="9"/>
+<text class="t t-app" x="497.0" y="312.0">Settings</text>
+<text class="s s-app" x="497.0" y="329.0">/app/settings</text>
+<rect class="nd k-hdr-app" x="652.0" y="107.0" width="300.0" height="38.0" rx="4"/>
+<text class="t t-hdr-app" x="802.0" y="130.0">Student</text>
+<rect class="nd k-app" x="678.0" y="172.0" width="274.0" height="48.0" rx="9"/>
+<text class="t t-app" x="815.0" y="192.0">Practice home</text>
+<text class="s s-app" x="815.0" y="209.0">/app/practice</text>
+<rect class="nd k-app" x="678.0" y="232.0" width="274.0" height="48.0" rx="9"/>
+<text class="t t-app" x="815.0" y="252.0">Topics</text>
+<text class="s s-app" x="815.0" y="269.0">/app/practice/[curriculum]/[subject]</text>
+<rect class="nd k-app" x="678.0" y="292.0" width="274.0" height="48.0" rx="9"/>
+<text class="t t-app" x="815.0" y="312.0">Practice session</text>
+<text class="s s-app" x="815.0" y="329.0">/app/practice/session/[sessionId]</text>
+<rect class="nd k-app" x="678.0" y="352.0" width="274.0" height="48.0" rx="9"/>
+<text class="t t-app" x="815.0" y="372.0">Progress</text>
+<text class="s s-app" x="815.0" y="389.0">/app/progress</text>
+<rect class="nd k-hdr-app" x="970.0" y="107.0" width="300.0" height="38.0" rx="4"/>
+<text class="t t-hdr-app" x="1120.0" y="130.0">Parent &amp; tutor</text>
+<rect class="nd k-app" x="996.0" y="172.0" width="274.0" height="48.0" rx="9"/>
+<text class="t t-app" x="1133.0" y="192.0">Child overview (parent)</text>
+<text class="s s-app" x="1133.0" y="209.0">/app/children/[studentId]</text>
+<rect class="nd k-app" x="996.0" y="232.0" width="274.0" height="48.0" rx="9"/>
+<text class="t t-app" x="1133.0" y="252.0">Progress report</text>
+<text class="s s-app" x="1133.0" y="269.0">/app/reports/[reportId]</text>
+<rect class="nd k-app" x="996.0" y="292.0" width="274.0" height="48.0" rx="9"/>
+<text class="t t-app" x="1133.0" y="312.0">My students (tutor)</text>
+<text class="s s-app" x="1133.0" y="329.0">/app/students</text>
+<rect class="nd k-app" x="996.0" y="352.0" width="274.0" height="48.0" rx="9"/>
+<text class="t t-app" x="1133.0" y="372.0">Student detail (tutor)</text>
+<text class="s s-app" x="1133.0" y="389.0">/app/students/[studentId]</text>
+<rect class="nd k-app" x="996.0" y="412.0" width="274.0" height="48.0" rx="9"/>
+<text class="t t-app" x="1133.0" y="432.0">Profile editor (tutor)</text>
+<text class="s s-app" x="1133.0" y="449.0">/app/profile</text></svg></div><figcaption>Every /app page re-checks role and ownership on the server. Admin is a separate area below.</figcaption></figure>
+ <h3>Admin</h3>
+ <figure class="fig"><div class="scroll" tabindex="0"><svg class="dg" viewBox="0 0 788 382" style="max-width:788px;min-width:760px" role="img" aria-label="Admin sitemap" xmlns="http://www.w3.org/2000/svg"><title>Admin sitemap</title><defs><marker id="ah-admin-sitemap" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ahp" d="M0,0 L10,5 L0,10 z"/></marker></defs><path class="edge" d="M394.0,59 L394.0,84"/>
+<path class="edge" d="M136.0,84 L652.0,84"/>
+<path class="edge" d="M136.0,84 L136.0,106" marker-end="url(#ah-admin-sitemap)"/>
+<path class="edge" d="M28.0,196 L42.0,196" marker-end="url(#ah-admin-sitemap)"/>
+<path class="edge" d="M28.0,256 L42.0,256" marker-end="url(#ah-admin-sitemap)"/>
+<path class="edge" d="M28.0,316 L42.0,316" marker-end="url(#ah-admin-sitemap)"/>
+<path class="edge" d="M28.0,145 L28.0,316"/>
+<path class="edge" d="M394.0,84 L394.0,106" marker-end="url(#ah-admin-sitemap)"/>
+<path class="edge" d="M286.0,196 L300.0,196" marker-end="url(#ah-admin-sitemap)"/>
+<path class="edge" d="M286.0,256 L300.0,256" marker-end="url(#ah-admin-sitemap)"/>
+<path class="edge" d="M286.0,316 L300.0,316" marker-end="url(#ah-admin-sitemap)"/>
+<path class="edge" d="M286.0,145 L286.0,316"/>
+<path class="edge" d="M652.0,84 L652.0,106" marker-end="url(#ah-admin-sitemap)"/>
+<path class="edge" d="M544.0,196 L558.0,196" marker-end="url(#ah-admin-sitemap)"/>
+<path class="edge" d="M544.0,256 L558.0,256" marker-end="url(#ah-admin-sitemap)"/>
+<path class="edge" d="M544.0,316 L558.0,316" marker-end="url(#ah-admin-sitemap)"/>
+<path class="edge" d="M544.0,145 L544.0,316"/>
+<rect class="nd k-start" x="242.4" y="9.0" width="303.2" height="50.0" rx="25.0"/>
+<text class="t t-start" x="394.0" y="30.0">Admin</text>
+<text class="s s-start" x="394.0" y="47.0">src/app/(admin)/admin · admin role only</text>
+<rect class="nd k-hdr-admin" x="16.0" y="107.0" width="240.0" height="38.0" rx="4"/>
+<text class="t t-hdr-admin" x="136.0" y="130.0">Sales</text>
+<rect class="nd k-admin" x="42.0" y="172.0" width="214.0" height="48.0" rx="9"/>
+<text class="t t-admin" x="149.0" y="192.0">Overview</text>
+<text class="s s-admin" x="149.0" y="209.0">/admin</text>
+<rect class="nd k-admin" x="42.0" y="232.0" width="214.0" height="48.0" rx="9"/>
+<text class="t t-admin" x="149.0" y="252.0">Leads pipeline</text>
+<text class="s s-admin" x="149.0" y="269.0">/admin/leads</text>
+<rect class="nd k-admin" x="42.0" y="292.0" width="214.0" height="48.0" rx="9"/>
+<text class="t t-admin" x="149.0" y="312.0">Lead detail</text>
+<text class="s s-admin" x="149.0" y="329.0">/admin/leads/[leadId]</text>
+<rect class="nd k-hdr-admin" x="274.0" y="107.0" width="240.0" height="38.0" rx="4"/>
+<text class="t t-hdr-admin" x="394.0" y="130.0">People</text>
+<rect class="nd k-admin" x="300.0" y="172.0" width="214.0" height="48.0" rx="9"/>
+<text class="t t-admin" x="407.0" y="192.0">Tutors &amp; applications</text>
+<text class="s s-admin" x="407.0" y="209.0">/admin/tutors</text>
+<rect class="nd k-admin" x="300.0" y="232.0" width="214.0" height="48.0" rx="9"/>
+<text class="t t-admin" x="407.0" y="252.0">Tutor detail</text>
+<text class="s s-admin" x="407.0" y="269.0">/admin/tutors/[tutorId]</text>
+<rect class="nd k-admin" x="300.0" y="292.0" width="214.0" height="48.0" rx="9"/>
+<text class="t t-admin" x="407.0" y="312.0">Families &amp; students</text>
+<text class="s s-admin" x="407.0" y="329.0">/admin/users</text>
+<rect class="nd k-hdr-admin" x="532.0" y="107.0" width="240.0" height="38.0" rx="4"/>
+<text class="t t-hdr-admin" x="652.0" y="130.0">Content &amp; AI</text>
+<rect class="nd k-admin" x="558.0" y="172.0" width="214.0" height="48.0" rx="9"/>
+<text class="t t-admin" x="665.0" y="192.0">Content</text>
+<text class="s s-admin" x="665.0" y="209.0">/admin/content</text>
+<rect class="nd k-admin" x="558.0" y="232.0" width="214.0" height="48.0" rx="9"/>
+<text class="t t-admin" x="665.0" y="252.0">Question bank</text>
+<text class="s s-admin" x="665.0" y="269.0">/admin/questions</text>
+<rect class="nd k-admin" x="558.0" y="292.0" width="214.0" height="48.0" rx="9"/>
+<text class="t t-admin" x="665.0" y="312.0">AI usage &amp; quotas</text>
+<text class="s s-admin" x="665.0" y="329.0">/admin/ai</text></svg></div><figcaption>Seven admin screens instead of about 20.</figcaption></figure>
+ <h3>Old routes → new pages</h3>
+ <p class="lede">Every old URL gets a 301 redirect in <code>next.config.ts</code>, so links and rankings carry over. <code>$x</code> is the old TanStack param syntax; <code>[x]</code> is the new Next.js one.</p>
+ <div class="tablewrap"><table>
+  <thead><tr><th>Old route(s)</th><th>New page</th><th>Why</th></tr></thead>
+  <tbody><tr><td><code>/</code></td><td><code>/</code></td><td>Homepage cut from 19 sections to 8. One CTA label.</td></tr>
+<tr><td><code>/services</code></td><td><code>/tutoring/online, /tutoring/home</code></td><td>Split by how lessons happen: that is how parents search.</td></tr>
+<tr><td><code>/tutors, /teachers, /tutors/$slug, /teachers/$slug</code></td><td><code>/tutors, /tutors/[tutor]</code></td><td>One tutor list, one profile template, one data source.</td></tr>
+<tr><td><code>/teachers/subject/*, /teachers/curriculum/*, /teachers/country/*, /teachers/$curriculum/$subject, /tutors/subject/*</code></td><td><code>/tutors?subject=…&curriculum=…</code></td><td>Filters become query parameters. Canonical stays /tutors, so no thin pages.</td></tr>
+<tr><td><code>/curriculum/$slug, /syllabus, /syllabus/$curriculum</code></td><td><code>/curricula/[curriculum]</code></td><td>Syllabus outline becomes a section on the curriculum page.</td></tr>
+<tr><td><code>/subject/$slug, /subjects/$subject</code></td><td><code>/subjects/[subject]</code></td><td>Removes the duplicate subject templates.</td></tr>
+<tr><td><code>/city/$slug, /cities, /cities/$city, /locations/$area, /regions/*, /world/*, /$city/$curriculum, /$city/$curriculum/$subject</code></td><td><code>/locations/[place] (only with real content), else /tutoring/home or /tutoring/online</code></td><td>Hundreds of generated city pages go. A place page exists only when it has its own tutors, reviews and details.</td></tr>
+<tr><td><code>/blog/*, /resources/*, /academy/*, /prep/*, /resources/curriculum/*, /resources/subject/*, /resources/$c/$s/$topic</code></td><td><code>/resources, /resources/[slug]</code></td><td>One content library. Good topic notes become articles; the rest redirect to /resources.</td></tr>
+<tr><td><code>/match, /growing-stars</code></td><td><code>/book</code></td><td>Matching is a step in booking, not a separate product name.</td></tr>
+<tr><td><code>/assessment, /assessment/*, /assessments/*, /quiz/$slug, /practice/*, /learn, /leaderboard</code></td><td><code>/app/practice (diagnostic inside)</code></td><td>Practice and tests need a login. /how-it-works explains them publicly. Leaderboard dropped.</td></tr>
+<tr><td><code>/assessments/about, /assessments/pricing, /assessments/contact</code></td><td><code>/about, /pricing, /contact</code></td><td>Duplicate copies of core pages.</td></tr>
+<tr><td><code>/dashboard, /app, /app/student, /app/parent, /parent, /app/tutor, /app/tutor/$studentId, /progress</code></td><td><code>/app (role dashboard), /app/students/[studentId], /app/progress</code></td><td>One dashboard URL; content depends on role.</td></tr>
+<tr><td><code>/progress/report</code></td><td><code>/app/reports/[reportId]</code></td><td>Reports get real, linkable URLs.</td></tr>
+<tr><td><code>/app/school</code></td><td><code>(not at launch)</code></td><td>Schools are a separate offer. Revisit later.</td></tr>
+<tr><td><code>/results</code></td><td><code>Home “Results” section + /about</code></td><td>Only results that can be proven.</td></tr>
+<tr><td><code>/join-as-tutor</code></td><td><code>/join-as-tutor</code></td><td>Same URL kept: it may already rank.</td></tr>
+<tr><td><code>/auth</code></td><td><code>/login, /signup, /reset-password</code></td><td>Clear names. Sign up is by invite after a trial.</td></tr>
+<tr><td><code>/admin/* (about 20 screens: content-factory, content-pilot, growth, gap-analysis, exams, mcqs, ai-quality…)</code></td><td><code>/admin, /admin/leads, /admin/tutors, /admin/users, /admin/content, /admin/questions, /admin/ai</code></td><td>Seven screens built around daily jobs.</td></tr>
+<tr><td><code>tutoringgalaxy.ai.studio (whole Practice Engine)</code></td><td><code>/app/practice</code></td><td>Rebuilt inside the main site. Shut down the Cloud Run app after launch.</td></tr>
+<tr><td><code>Manus “Interactive Lab”</code></td><td><code>(retired)</code></td><td>The best simulations can be rebuilt inside /app/practice in phase 2.</td></tr>
+<tr><td><code>/sitemap.xml route</code></td><td><code>src/app/sitemap.ts</code></td><td>Lists only public, indexable pages.</td></tr></tbody>
+ </table></div>
+</section>
+
+<section class="panel" id="flows" aria-labelledby="h-flows">
+ <h2 id="h-flows">2 · Key user flows</h2>
+ <p class="lede">Five journeys, with decision points. Purple boxes run on the server; dashed boxes are outside services.</p>
+ <div class="legend" aria-label="Legend">
+<span class="lg"><i class="sw sw-public"></i>Public page</span>
+<span class="lg"><i class="sw sw-public-cond"></i>Public, only if real content exists</span>
+<span class="lg"><i class="sw sw-app"></i>Logged-in page</span>
+<span class="lg"><i class="sw sw-admin"></i>Admin page / admin task</span>
+<span class="lg"><i class="sw sw-api"></i>Server code (API route, Server Action, check)</span>
+<span class="lg"><i class="sw sw-ext"></i>External service (WhatsApp, Gemini, email, DB)</span>
+<span class="lg"><i class="sw sw-decision"></i>Decision</span>
+<span class="lg"><i class="sw sw-start"></i>Start / end</span>
+<span class="lg"><i class="ln"></i>Next step</span>
+<span class="lg"><i class="ln ln-d"></i>Message / async</span>
+</div>
+ <h3>a · A parent books a free trial</h3>
+ <figure class="fig"><div class="scroll" tabindex="0"><svg class="dg" viewBox="0 0 1000 1500" style="max-width:1000px;min-width:780px" role="img" aria-label="Flow: parent books a free trial" xmlns="http://www.w3.org/2000/svg"><title>Flow: parent books a free trial</title><defs><marker id="ah-flow-parent-books-a-free-trial" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ahp" d="M0,0 L10,5 L0,10 z"/></marker></defs><path class="edge" d="M460.0,66.0 L460.0,104.0" marker-end="url(#ah-flow-parent-books-a-free-trial)"/>
+<path class="edge" d="M460.0,156.0 L460.0,199.0" marker-end="url(#ah-flow-parent-books-a-free-trial)"/>
+<path class="edge" d="M460.0,291.0 L460.0,334.0" marker-end="url(#ah-flow-parent-books-a-free-trial)"/>
+<rect class="lbl-bg" x="444.1" y="302.5" width="31.8" height="20" rx="10"/>
+<text class="lbl" x="460.0" y="316.5">Yes</text>
+<path class="edge" d="M575.8,245.0 L685.0,245.0" marker-end="url(#ah-flow-parent-books-a-free-trial)"/>
+<rect class="lbl-bg" x="593.2" y="235.0" width="25.2" height="20" rx="10"/>
+<text class="lbl" x="605.8" y="249.0">No</text>
+<path class="edge" d="M800.0,271.0 L800.0,360.0 L625.0,360.0" marker-end="url(#ah-flow-parent-books-a-free-trial)"/>
+<path class="edge" d="M460.0,386.0 L460.0,429.0" marker-end="url(#ah-flow-parent-books-a-free-trial)"/>
+<path class="edge" d="M569.5,475.0 L680.0,475.0" marker-end="url(#ah-flow-parent-books-a-free-trial)"/>
+<rect class="lbl-bg" x="583.6" y="465.0" width="31.8" height="20" rx="10"/>
+<text class="lbl" x="599.5" y="479.0">Yes</text>
+<path class="edge" d="M460.0,521.0 L460.0,561.0" marker-end="url(#ah-flow-parent-books-a-free-trial)"/>
+<rect class="lbl-bg" x="414.4" y="531.0" width="91.2" height="20" rx="10"/>
+<text class="lbl" x="460.0" y="545.0">No, match me</text>
+<path class="edge" d="M800.0,501.0 L800.0,595.0 L630.0,595.0" marker-end="url(#ah-flow-parent-books-a-free-trial)"/>
+<path class="edge" d="M460.0,629.0 L460.0,684.0" marker-end="url(#ah-flow-parent-books-a-free-trial)"/>
+<path class="edge" d="M460.0,736.0 L460.0,780.0" marker-end="url(#ah-flow-parent-books-a-free-trial)"/>
+<path class="edge dashed" d="M625.0,710.0 L680.0,710.0" marker-end="url(#ah-flow-parent-books-a-free-trial)"/>
+<path class="edge" d="M385.0,820.0 L250.0,820.0" marker-end="url(#ah-flow-parent-books-a-free-trial)"/>
+<rect class="lbl-bg" x="342.4" y="810.0" width="25.2" height="20" rx="10"/>
+<text class="lbl" x="355.0" y="824.0">No</text>
+<path class="edge back" d="M150.0,794.0 L150.0,595.0 L290.0,595.0" marker-end="url(#ah-flow-parent-books-a-free-trial)"/>
+<path class="edge" d="M460.0,860.0 L460.0,904.0" marker-end="url(#ah-flow-parent-books-a-free-trial)"/>
+<rect class="lbl-bg" x="444.1" y="872.0" width="31.8" height="20" rx="10"/>
+<text class="lbl" x="460.0" y="886.0">Yes</text>
+<path class="edge dashed" d="M620.0,930.0 L675.0,930.0" marker-end="url(#ah-flow-parent-books-a-free-trial)"/>
+<path class="edge dashed" d="M800.0,956.0 L800.0,1040.0 L610.0,1040.0" marker-end="url(#ah-flow-parent-books-a-free-trial)"/>
+<path class="edge dashed" d="M800.0,736.0 L800.0,904.0" marker-end="url(#ah-flow-parent-books-a-free-trial)"/>
+<path class="edge" d="M460.0,956.0 L460.0,1014.0" marker-end="url(#ah-flow-parent-books-a-free-trial)"/>
+<path class="edge" d="M460.0,1066.0 L460.0,1114.0" marker-end="url(#ah-flow-parent-books-a-free-trial)"/>
+<path class="edge" d="M460.0,1166.0 L460.0,1208.0" marker-end="url(#ah-flow-parent-books-a-free-trial)"/>
+<path class="edge" d="M460.0,1292.0 L460.0,1339.0" marker-end="url(#ah-flow-parent-books-a-free-trial)"/>
+<rect class="lbl-bg" x="444.1" y="1305.5" width="31.8" height="20" rx="10"/>
+<text class="lbl" x="460.0" y="1319.5">Yes</text>
+<path class="edge" d="M563.2,1250.0 L680.0,1250.0" marker-end="url(#ah-flow-parent-books-a-free-trial)"/>
+<rect class="lbl-bg" x="580.6" y="1240.0" width="25.2" height="20" rx="10"/>
+<text class="lbl" x="593.2" y="1254.0">No</text>
+<path class="edge" d="M460.0,1391.0 L460.0,1437.0" marker-end="url(#ah-flow-parent-books-a-free-trial)"/>
+<rect class="nd k-start" x="320.0" y="14.0" width="280.0" height="52.0" rx="26.0"/>
+<text class="t t-start" x="460" y="36.0">Parent arrives</text>
+<text class="s s-start" x="460" y="53.0">Google · referral · social · ad</text>
+<rect class="nd k-public" x="280.0" y="104.0" width="360.0" height="52.0" rx="9"/>
+<text class="t t-public" x="460" y="126.0">Lands on a page</text>
+<text class="s s-public" x="460" y="143.0">/ · /tutoring/* · /curricula/[c] · /subjects/[s]</text>
+<polygon class="nd k-decision" points="460,199.0 575.8,245 460,291.0 344.2,245"/>
+<text class="t t-decision" x="460" y="240.0">Knows curriculum</text>
+<text class="t t-decision" x="460" y="258.0">&amp; subject?</text>
+<rect class="nd k-public" x="685.0" y="219.0" width="230.0" height="52.0" rx="9"/>
+<text class="t t-public" x="800" y="241.0">Browse options</text>
+<text class="s s-public" x="800" y="258.0">/curricula · /subjects</text>
+<rect class="nd k-public" x="295.0" y="334.0" width="330.0" height="52.0" rx="9"/>
+<text class="t t-public" x="460" y="356.0">Pick curriculum + subject</text>
+<text class="s s-public" x="460" y="373.0">pre-fills /book?curriculum=…&amp;subject=…</text>
+<polygon class="nd k-decision" points="460,429.0 569.5,475 460,521.0 350.5,475"/>
+<text class="t t-decision" x="460" y="470.0">Wants to choose</text>
+<text class="t t-decision" x="460" y="488.0">a tutor?</text>
+<rect class="nd k-public" x="680.0" y="449.0" width="240.0" height="52.0" rx="9"/>
+<text class="t t-public" x="800" y="471.0">Browse tutors</text>
+<text class="s s-public" x="800" y="488.0">/tutors → /tutors/[tutor]</text>
+<rect class="nd k-public" x="290.0" y="561.0" width="340.0" height="68.0" rx="9"/>
+<text class="t t-public" x="460" y="583.0">Free-trial form</text>
+<text class="s s-public" x="460" y="600.0">/book · child, level, online or home,</text>
+<text class="s s-public" x="460" y="616.0">country, preferred times, WhatsApp no.</text>
+<rect class="nd k-api" x="295.0" y="684.0" width="330.0" height="52.0" rx="9"/>
+<text class="t t-api" x="460" y="706.0">Server Action: check + save lead</text>
+<text class="s s-api" x="460" y="723.0">zod validation · honeypot · rate limit</text>
+<rect class="nd k-ext" x="680.0" y="684.0" width="240.0" height="52.0" rx="9"/>
+<text class="t t-ext" x="800" y="706.0">Team alert</text>
+<text class="s s-ext" x="800" y="723.0">email + WhatsApp to admin</text>
+<polygon class="nd k-decision" points="460,780.0 535.0,820 460,860.0 385.0,820"/>
+<text class="t t-decision" x="460" y="824.0">Valid?</text>
+<rect class="nd k-public" x="50.0" y="794.0" width="200.0" height="52.0" rx="9"/>
+<text class="t t-public" x="150" y="816.0">Show field errors</text>
+<text class="s s-public" x="150" y="833.0">keeps what was typed</text>
+<rect class="nd k-public" x="300.0" y="904.0" width="320.0" height="52.0" rx="9"/>
+<text class="t t-public" x="460" y="926.0">Booking received</text>
+<text class="s s-public" x="460" y="943.0">/book/thanks · “Continue on WhatsApp”</text>
+<rect class="nd k-ext" x="675.0" y="904.0" width="250.0" height="52.0" rx="9"/>
+<text class="t t-ext" x="800" y="926.0">WhatsApp chat</text>
+<text class="s s-ext" x="800" y="943.0">wa.me link with prefilled text</text>
+<rect class="nd k-admin" x="310.0" y="1014.0" width="300.0" height="52.0" rx="9"/>
+<text class="t t-admin" x="460" y="1036.0">Team confirms tutor + time</text>
+<text class="s s-admin" x="460" y="1053.0">/admin/leads/[leadId]</text>
+<rect class="nd k-step" x="345.0" y="1114.0" width="230.0" height="52.0" rx="9"/>
+<text class="t t-step" x="460" y="1136.0">Free trial class</text>
+<text class="s s-step" x="460" y="1153.0">online or at home</text>
+<polygon class="nd k-decision" points="460,1208.0 563.2,1250 460,1292.0 356.8,1250"/>
+<text class="t t-decision" x="460" y="1254.0">Parent enrols?</text>
+<rect class="nd k-admin" x="680.0" y="1224.0" width="240.0" height="52.0" rx="9"/>
+<text class="t t-admin" x="800" y="1246.0">Follow up later</text>
+<text class="s s-admin" x="800" y="1263.0">lead status: nurture / lost</text>
+<rect class="nd k-app" x="295.0" y="1339.0" width="330.0" height="52.0" rx="9"/>
+<text class="t t-app" x="460" y="1361.0">Onboarding</text>
+<text class="s s-app" x="460" y="1378.0">parent invite → add child → choose plan</text>
+<rect class="nd k-end" x="300.0" y="1437.0" width="320.0" height="46.0" rx="23.0"/>
+<text class="t t-end" x="460" y="1464.0">Parent &amp; student dashboards live</text></svg></div></figure>
+ <h3>b · A student practises with AI</h3>
+ <figure class="fig"><div class="scroll" tabindex="0"><svg class="dg" viewBox="0 0 1000 1640" style="max-width:1000px;min-width:780px" role="img" aria-label="Flow: student practice with AI" xmlns="http://www.w3.org/2000/svg"><title>Flow: student practice with AI</title><defs><marker id="ah-flow-student-practice-with-ai" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ahp" d="M0,0 L10,5 L0,10 z"/></marker></defs><path class="edge" d="M470.0,63.0 L470.0,100.0" marker-end="url(#ah-flow-student-practice-with-ai)"/>
+<path class="edge" d="M385.0,140.0 L265.0,140.0" marker-end="url(#ah-flow-student-practice-with-ai)"/>
+<rect class="lbl-bg" x="342.4" y="130.0" width="25.2" height="20" rx="10"/>
+<text class="lbl" x="355.0" y="144.0">No</text>
+<path class="edge" d="M470.0,180.0 L470.0,224.0" marker-end="url(#ah-flow-student-practice-with-ai)"/>
+<rect class="lbl-bg" x="454.1" y="192.0" width="31.8" height="20" rx="10"/>
+<text class="lbl" x="470.0" y="206.0">Yes</text>
+<path class="edge" d="M150.0,166.0 L150.0,250.0 L290.0,250.0" marker-end="url(#ah-flow-student-practice-with-ai)"/>
+<path class="edge" d="M470.0,276.0 L470.0,329.0" marker-end="url(#ah-flow-student-practice-with-ai)"/>
+<path class="edge" d="M470.0,381.0 L470.0,420.0" marker-end="url(#ah-flow-student-practice-with-ai)"/>
+<path class="edge" d="M570.0,465.0 L690.0,465.0" marker-end="url(#ah-flow-student-practice-with-ai)"/>
+<rect class="lbl-bg" x="584.1" y="455.0" width="31.8" height="20" rx="10"/>
+<text class="lbl" x="600.0" y="469.0">Yes</text>
+<path class="edge" d="M470.0,510.0 L470.0,549.0" marker-end="url(#ah-flow-student-practice-with-ai)"/>
+<rect class="lbl-bg" x="457.4" y="519.5" width="25.2" height="20" rx="10"/>
+<text class="lbl" x="470.0" y="533.5">No</text>
+<path class="edge" d="M810.0,491.0 L810.0,680.0 L630.0,680.0" marker-end="url(#ah-flow-student-practice-with-ai)"/>
+<path class="edge" d="M470.0,601.0 L470.0,654.0" marker-end="url(#ah-flow-student-practice-with-ai)"/>
+<path class="edge" d="M470.0,706.0 L470.0,759.0" marker-end="url(#ah-flow-student-practice-with-ai)"/>
+<path class="edge" d="M470.0,811.0 L470.0,848.0" marker-end="url(#ah-flow-student-practice-with-ai)"/>
+<path class="edge" d="M592.1,895.0 L675.0,895.0" marker-end="url(#ah-flow-student-practice-with-ai)"/>
+<rect class="lbl-bg" x="609.5" y="885.0" width="25.2" height="20" rx="10"/>
+<text class="lbl" x="622.1" y="899.0">No</text>
+<path class="edge" d="M470.0,942.0 L470.0,979.0" marker-end="url(#ah-flow-student-practice-with-ai)"/>
+<rect class="lbl-bg" x="454.1" y="950.5" width="31.8" height="20" rx="10"/>
+<text class="lbl" x="470.0" y="964.5">Yes</text>
+<path class="edge dashed" d="M620.0,1005.0 L690.0,1005.0" marker-end="url(#ah-flow-student-practice-with-ai)"/>
+<path class="edge dashed" d="M810.0,1031.0 L810.0,1110.0 L625.0,1110.0" marker-end="url(#ah-flow-student-practice-with-ai)"/>
+<path class="edge" d="M470.0,1031.0 L470.0,1084.0" marker-end="url(#ah-flow-student-practice-with-ai)"/>
+<path class="edge" d="M470.0,1136.0 L470.0,1184.0" marker-end="url(#ah-flow-student-practice-with-ai)"/>
+<path class="edge" d="M470.0,1236.0 L470.0,1278.0" marker-end="url(#ah-flow-student-practice-with-ai)"/>
+<path class="edge back" d="M373.1,1320.0 L250.0,1320.0 L250.0,680.0 L310.0,680.0" marker-end="url(#ah-flow-student-practice-with-ai)"/>
+<rect class="lbl-bg" x="187.9" y="990.0" width="124.2" height="20" rx="10"/>
+<text class="lbl" x="250.0" y="1004.0">No: next question</text>
+<path class="edge" d="M470.0,1362.0 L470.0,1404.0" marker-end="url(#ah-flow-student-practice-with-ai)"/>
+<rect class="lbl-bg" x="454.1" y="1373.0" width="31.8" height="20" rx="10"/>
+<text class="lbl" x="470.0" y="1387.0">Yes</text>
+<path class="edge" d="M470.0,1456.0 L470.0,1499.0" marker-end="url(#ah-flow-student-practice-with-ai)"/>
+<path class="edge" d="M470.0,1551.0 L470.0,1588.0" marker-end="url(#ah-flow-student-practice-with-ai)"/>
+<rect class="nd k-start" x="330.0" y="17.0" width="280.0" height="46.0" rx="23.0"/>
+<text class="t t-start" x="470" y="44.0">Student opens AI practice</text>
+<polygon class="nd k-decision" points="470,100.0 555.0,140 470,180.0 385.0,140"/>
+<text class="t t-decision" x="470" y="144.0">Signed in?</text>
+<rect class="nd k-public" x="35.0" y="114.0" width="230.0" height="52.0" rx="9"/>
+<text class="t t-public" x="150" y="136.0">Log in</text>
+<text class="s s-public" x="150" y="153.0">/login?next=/app/practice</text>
+<rect class="nd k-api" x="290.0" y="224.0" width="360.0" height="52.0" rx="9"/>
+<text class="t t-api" x="470" y="246.0">Server: session + student role</text>
+<text class="s s-api" x="470" y="263.0">proxy.ts cookie check → DAL verifySession()</text>
+<rect class="nd k-app" x="300.0" y="329.0" width="340.0" height="52.0" rx="9"/>
+<text class="t t-app" x="470" y="351.0">Pick curriculum → subject → topic</text>
+<text class="s s-app" x="470" y="368.0">/app/practice/[curriculum]/[subject]</text>
+<polygon class="nd k-decision" points="470,420.0 570.0,465 470,510.0 370.0,465"/>
+<text class="t t-decision" x="470" y="460.0">First time on</text>
+<text class="t t-decision" x="470" y="478.0">this subject?</text>
+<rect class="nd k-app" x="690.0" y="439.0" width="240.0" height="52.0" rx="9"/>
+<text class="t t-app" x="810" y="461.0">Diagnostic set</text>
+<text class="s s-app" x="810" y="478.0">10–15 mixed-level questions</text>
+<rect class="nd k-app" x="320.0" y="549.0" width="300.0" height="52.0" rx="9"/>
+<text class="t t-app" x="470" y="571.0">Practice set</text>
+<text class="s s-app" x="470" y="588.0">weak topics first + spaced review</text>
+<rect class="nd k-app" x="310.0" y="654.0" width="320.0" height="52.0" rx="9"/>
+<text class="t t-app" x="470" y="676.0">Answer a question</text>
+<text class="s s-app" x="470" y="693.0">/app/practice/session/[sessionId]</text>
+<rect class="nd k-api" x="330.0" y="759.0" width="280.0" height="52.0" rx="9"/>
+<text class="t t-api" x="470" y="781.0">POST /api/ai/feedback</text>
+<text class="s s-api" x="470" y="798.0">route handler · server only</text>
+<polygon class="nd k-decision" points="470,848.0 592.1,895 470,942.0 347.9,895"/>
+<text class="t t-decision" x="470" y="890.0">Within rate limit</text>
+<text class="t t-decision" x="470" y="908.0">&amp; daily quota?</text>
+<rect class="nd k-app" x="675.0" y="869.0" width="270.0" height="52.0" rx="9"/>
+<text class="t t-app" x="810" y="891.0">Limit reached</text>
+<text class="s s-app" x="810" y="908.0">message + “Book a tutor session”</text>
+<rect class="nd k-api" x="320.0" y="979.0" width="300.0" height="52.0" rx="9"/>
+<text class="t t-api" x="470" y="1001.0">Build prompt + call Gemini</text>
+<text class="s s-api" x="470" y="1018.0">API key in server env only</text>
+<rect class="nd k-ext" x="690.0" y="979.0" width="240.0" height="52.0" rx="9"/>
+<text class="t t-ext" x="810" y="1001.0">Google Gemini</text>
+<text class="s s-ext" x="810" y="1018.0">structured JSON response</text>
+<rect class="nd k-api" x="315.0" y="1084.0" width="310.0" height="52.0" rx="9"/>
+<text class="t t-api" x="470" y="1106.0">Validate JSON + save attempt</text>
+<text class="s s-api" x="470" y="1123.0">schema check · attempts table</text>
+<rect class="nd k-app" x="305.0" y="1184.0" width="330.0" height="52.0" rx="9"/>
+<text class="t t-app" x="470" y="1206.0">Show feedback</text>
+<text class="s s-app" x="470" y="1223.0">correct? · error type · step-by-step hint</text>
+<polygon class="nd k-decision" points="470,1278.0 566.9,1320 470,1362.0 373.1,1320"/>
+<text class="t t-decision" x="470" y="1324.0">Set finished?</text>
+<rect class="nd k-api" x="340.0" y="1404.0" width="260.0" height="52.0" rx="9"/>
+<text class="t t-api" x="470" y="1426.0">Update topic mastery</text>
+<text class="s s-api" x="470" y="1443.0">per student, per topic</text>
+<rect class="nd k-app" x="310.0" y="1499.0" width="320.0" height="52.0" rx="9"/>
+<text class="t t-app" x="470" y="1521.0">Progress page</text>
+<text class="s s-app" x="470" y="1538.0">/app/progress · mastery · next topic</text>
+<rect class="nd k-end" x="325.0" y="1588.0" width="290.0" height="44.0" rx="22.0"/>
+<text class="t t-end" x="470" y="1614.0">Visible to parent and tutor</text></svg></div></figure>
+ <h3>c · A parent views a progress report</h3>
+ <figure class="fig"><div class="scroll" tabindex="0"><svg class="dg" viewBox="0 0 1000 1270" style="max-width:1000px;min-width:780px" role="img" aria-label="Flow: parent views a progress report" xmlns="http://www.w3.org/2000/svg"><title>Flow: parent views a progress report</title><defs><marker id="ah-flow-parent-views-a-progress-report" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ahp" d="M0,0 L10,5 L0,10 z"/></marker></defs><rect class="zone" x="640" y="8" width="345" height="405" rx="14"/><text class="zone-lbl" x="654" y="30">Background · every week</text>
+<path class="edge dashed" d="M810.0,96.0 L810.0,139.0" marker-end="url(#ah-flow-parent-views-a-progress-report)"/>
+<path class="edge dashed" d="M810.0,191.0 L810.0,239.0" marker-end="url(#ah-flow-parent-views-a-progress-report)"/>
+<path class="edge" d="M810.0,291.0 L810.0,334.0" marker-end="url(#ah-flow-parent-views-a-progress-report)"/>
+<path class="edge dashed" d="M665.0,360.0 L585.0,360.0" marker-end="url(#ah-flow-parent-views-a-progress-report)"/>
+<path class="edge" d="M470.0,386.0 L470.0,430.0" marker-end="url(#ah-flow-parent-views-a-progress-report)"/>
+<path class="edge" d="M385.0,470.0 L260.0,470.0" marker-end="url(#ah-flow-parent-views-a-progress-report)"/>
+<rect class="lbl-bg" x="342.4" y="460.0" width="25.2" height="20" rx="10"/>
+<text class="lbl" x="355.0" y="474.0">No</text>
+<path class="edge" d="M470.0,510.0 L470.0,554.0" marker-end="url(#ah-flow-parent-views-a-progress-report)"/>
+<rect class="lbl-bg" x="454.1" y="522.0" width="31.8" height="20" rx="10"/>
+<text class="lbl" x="470.0" y="536.0">Yes</text>
+<path class="edge" d="M160.0,496.0 L160.0,580.0 L280.0,580.0" marker-end="url(#ah-flow-parent-views-a-progress-report)"/>
+<path class="edge" d="M470.0,606.0 L470.0,646.0" marker-end="url(#ah-flow-parent-views-a-progress-report)"/>
+<path class="edge" d="M560.0,690.0 L675.0,690.0" marker-end="url(#ah-flow-parent-views-a-progress-report)"/>
+<rect class="lbl-bg" x="574.1" y="680.0" width="31.8" height="20" rx="10"/>
+<text class="lbl" x="590.0" y="694.0">Yes</text>
+<path class="edge" d="M470.0,734.0 L470.0,773.0" marker-end="url(#ah-flow-parent-views-a-progress-report)"/>
+<rect class="lbl-bg" x="457.4" y="743.5" width="25.2" height="20" rx="10"/>
+<text class="lbl" x="470.0" y="757.5">No</text>
+<path class="edge" d="M810.0,716.0 L810.0,800.0 L630.0,800.0" marker-end="url(#ah-flow-parent-views-a-progress-report)"/>
+<path class="edge" d="M470.0,827.0 L470.0,870.0" marker-end="url(#ah-flow-parent-views-a-progress-report)"/>
+<path class="edge" d="M395.0,910.0 L260.0,910.0" marker-end="url(#ah-flow-parent-views-a-progress-report)"/>
+<rect class="lbl-bg" x="352.4" y="900.0" width="25.2" height="20" rx="10"/>
+<text class="lbl" x="365.0" y="914.0">No</text>
+<path class="edge" d="M470.0,950.0 L470.0,991.0" marker-end="url(#ah-flow-parent-views-a-progress-report)"/>
+<rect class="lbl-bg" x="454.1" y="960.5" width="31.8" height="20" rx="10"/>
+<text class="lbl" x="470.0" y="974.5">Yes</text>
+<path class="edge" d="M470.0,1059.0 L470.0,1098.0" marker-end="url(#ah-flow-parent-views-a-progress-report)"/>
+<path class="edge" d="M560.6,1140.0 L675.0,1140.0" marker-end="url(#ah-flow-parent-views-a-progress-report)"/>
+<rect class="lbl-bg" x="574.7" y="1130.0" width="31.8" height="20" rx="10"/>
+<text class="lbl" x="590.6" y="1144.0">Yes</text>
+<path class="edge" d="M470.0,1182.0 L470.0,1214.0" marker-end="url(#ah-flow-parent-views-a-progress-report)"/>
+<rect class="lbl-bg" x="457.4" y="1188.0" width="25.2" height="20" rx="10"/>
+<text class="lbl" x="470.0" y="1202.0">No</text>
+<rect class="nd k-api" x="665.0" y="44.0" width="290.0" height="52.0" rx="9"/>
+<text class="t t-api" x="810" y="66.0">Weekly job builds reports</text>
+<text class="s s-api" x="810" y="83.0">/api/cron/weekly-reports</text>
+<rect class="nd k-ext" x="660.0" y="139.0" width="300.0" height="52.0" rx="9"/>
+<text class="t t-ext" x="810" y="161.0">Gemini: plain-language summary</text>
+<text class="s s-ext" x="810" y="178.0">from attendance + mastery data</text>
+<rect class="nd k-app" x="665.0" y="239.0" width="290.0" height="52.0" rx="9"/>
+<text class="t t-app" x="810" y="261.0">Tutor reviews + approves</text>
+<text class="s s-app" x="810" y="278.0">/app/students/[studentId]</text>
+<rect class="nd k-ext" x="665.0" y="334.0" width="290.0" height="52.0" rx="9"/>
+<text class="t t-ext" x="810" y="356.0">Email / WhatsApp to parent</text>
+<text class="s s-ext" x="810" y="373.0">“This week’s report is ready”</text>
+<rect class="nd k-start" x="355.0" y="334.0" width="230.0" height="52.0" rx="26.0"/>
+<text class="t t-start" x="470" y="356.0">Parent opens link</text>
+<text class="s s-start" x="470" y="373.0">or logs in directly</text>
+<polygon class="nd k-decision" points="470,430.0 555.0,470 470,510.0 385.0,470"/>
+<text class="t t-decision" x="470" y="474.0">Signed in?</text>
+<rect class="nd k-public" x="60.0" y="444.0" width="200.0" height="52.0" rx="9"/>
+<text class="t t-public" x="160" y="466.0">Log in</text>
+<text class="s s-public" x="160" y="483.0">/login?next=…</text>
+<rect class="nd k-app" x="280.0" y="554.0" width="380.0" height="52.0" rx="9"/>
+<text class="t t-app" x="470" y="576.0">Parent dashboard</text>
+<text class="s s-app" x="470" y="593.0">/app (@parent slot) · children, next sessions</text>
+<polygon class="nd k-decision" points="470,646.0 560.0,690 470,734.0 380.0,690"/>
+<text class="t t-decision" x="470" y="685.0">More than</text>
+<text class="t t-decision" x="470" y="703.0">one child?</text>
+<rect class="nd k-app" x="675.0" y="664.0" width="270.0" height="52.0" rx="9"/>
+<text class="t t-app" x="810" y="686.0">Choose a child</text>
+<text class="s s-app" x="810" y="703.0">/app/children/[studentId]</text>
+<rect class="nd k-api" x="310.0" y="773.0" width="320.0" height="54.0" rx="9"/>
+<text class="t t-api" x="470" y="795.0">Server: is this parent linked</text>
+<text class="t t-api" x="470" y="813.0">to this student?</text>
+<polygon class="nd k-decision" points="470,870.0 545.0,910 470,950.0 395.0,910"/>
+<text class="t t-decision" x="470" y="914.0">Linked?</text>
+<rect class="nd k-app" x="60.0" y="884.0" width="200.0" height="52.0" rx="9"/>
+<text class="t t-app" x="160" y="906.0">Not found (404)</text>
+<text class="s s-app" x="160" y="923.0">no data revealed</text>
+<rect class="nd k-app" x="280.0" y="991.0" width="380.0" height="68.0" rx="9"/>
+<text class="t t-app" x="470" y="1013.0">Progress report</text>
+<text class="s s-app" x="470" y="1030.0">/app/reports/[reportId]</text>
+<text class="s s-app" x="470" y="1046.0">sessions · topics · mastery change · notes</text>
+<polygon class="nd k-decision" points="470,1098.0 560.6,1140 470,1182.0 379.4,1140"/>
+<text class="t t-decision" x="470" y="1144.0">Any concern?</text>
+<rect class="nd k-ext" x="675.0" y="1114.0" width="270.0" height="52.0" rx="9"/>
+<text class="t t-ext" x="810" y="1136.0">Message the team</text>
+<text class="s s-ext" x="810" y="1153.0">WhatsApp button on the report</text>
+<rect class="nd k-end" x="345.0" y="1214.0" width="250.0" height="42.0" rx="21.0"/>
+<text class="t t-end" x="470" y="1239.0">Download PDF or share</text></svg></div></figure>
+ <h3>d · A tutor applies, then uses the dashboard</h3>
+ <figure class="fig"><div class="scroll" tabindex="0"><svg class="dg" viewBox="0 0 1120 1190" style="max-width:1120px;min-width:860px" role="img" aria-label="Flow: tutor applies and uses the dashboard" xmlns="http://www.w3.org/2000/svg"><title>Flow: tutor applies and uses the dashboard</title><defs><marker id="ah-flow-tutor-applies-and-uses-the-dashboard" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ahp" d="M0,0 L10,5 L0,10 z"/></marker></defs><rect class="zone" x="620" y="8" width="490" height="800" rx="14"/><text class="zone-lbl" x="634" y="30">B · Day to day (approved tutor)</text>
+<rect class="zone" x="10" y="8" width="590" height="1172" rx="14"/><text class="zone-lbl" x="24" y="30">A · Applying</text>
+<path class="edge" d="M340.0,93.0 L340.0,136.0" marker-end="url(#ah-flow-tutor-applies-and-uses-the-dashboard)"/>
+<path class="edge" d="M340.0,204.0 L340.0,259.0" marker-end="url(#ah-flow-tutor-applies-and-uses-the-dashboard)"/>
+<path class="edge" d="M340.0,311.0 L340.0,359.0" marker-end="url(#ah-flow-tutor-applies-and-uses-the-dashboard)"/>
+<path class="edge" d="M340.0,411.0 L340.0,453.0" marker-end="url(#ah-flow-tutor-applies-and-uses-the-dashboard)"/>
+<path class="edge" d="M249.4,495.0 L200.0,495.0" marker-end="url(#ah-flow-tutor-applies-and-uses-the-dashboard)"/>
+<rect class="lbl-bg" x="212.1" y="485.0" width="25.2" height="20" rx="10"/>
+<text class="lbl" x="224.7" y="499.0">No</text>
+<path class="edge" d="M340.0,537.0 L340.0,587.0" marker-end="url(#ah-flow-tutor-applies-and-uses-the-dashboard)"/>
+<rect class="lbl-bg" x="324.1" y="552.0" width="31.8" height="20" rx="10"/>
+<text class="lbl" x="340.0" y="566.0">Yes</text>
+<path class="edge" d="M340.0,623.0 L340.0,670.0" marker-end="url(#ah-flow-tutor-applies-and-uses-the-dashboard)"/>
+<path class="edge" d="M255.0,710.0 L200.0,710.0" marker-end="url(#ah-flow-tutor-applies-and-uses-the-dashboard)"/>
+<rect class="lbl-bg" x="214.9" y="700.0" width="25.2" height="20" rx="10"/>
+<text class="lbl" x="227.5" y="714.0">No</text>
+<path class="edge" d="M340.0,750.0 L340.0,789.0" marker-end="url(#ah-flow-tutor-applies-and-uses-the-dashboard)"/>
+<rect class="lbl-bg" x="324.1" y="759.5" width="31.8" height="20" rx="10"/>
+<text class="lbl" x="340.0" y="773.5">Yes</text>
+<path class="edge" d="M340.0,841.0 L340.0,889.0" marker-end="url(#ah-flow-tutor-applies-and-uses-the-dashboard)"/>
+<path class="edge" d="M340.0,941.0 L340.0,980.0" marker-end="url(#ah-flow-tutor-applies-and-uses-the-dashboard)"/>
+<path class="edge" d="M236.8,1025.0 L200.0,1025.0" marker-end="url(#ah-flow-tutor-applies-and-uses-the-dashboard)"/>
+<rect class="lbl-bg" x="205.8" y="1015.0" width="25.2" height="20" rx="10"/>
+<text class="lbl" x="218.4" y="1029.0">No</text>
+<path class="edge back" d="M115.0,1007.0 L115.0,915.0 L190.0,915.0" marker-end="url(#ah-flow-tutor-applies-and-uses-the-dashboard)"/>
+<path class="edge" d="M340.0,1070.0 L340.0,1109.0" marker-end="url(#ah-flow-tutor-applies-and-uses-the-dashboard)"/>
+<rect class="lbl-bg" x="324.1" y="1079.5" width="31.8" height="20" rx="10"/>
+<text class="lbl" x="340.0" y="1093.5">Yes</text>
+<path class="edge" d="M850.0,93.0 L850.0,144.0" marker-end="url(#ah-flow-tutor-applies-and-uses-the-dashboard)"/>
+<path class="edge" d="M850.0,196.0 L850.0,249.0" marker-end="url(#ah-flow-tutor-applies-and-uses-the-dashboard)"/>
+<path class="edge" d="M850.0,301.0 L850.0,351.0" marker-end="url(#ah-flow-tutor-applies-and-uses-the-dashboard)"/>
+<path class="edge" d="M850.0,419.0 L850.0,474.0" marker-end="url(#ah-flow-tutor-applies-and-uses-the-dashboard)"/>
+<path class="edge" d="M850.0,526.0 L850.0,579.0" marker-end="url(#ah-flow-tutor-applies-and-uses-the-dashboard)"/>
+<path class="edge" d="M850.0,631.0 L850.0,687.0" marker-end="url(#ah-flow-tutor-applies-and-uses-the-dashboard)"/>
+<rect class="nd k-start" x="200.0" y="47.0" width="280.0" height="46.0" rx="23.0"/>
+<text class="t t-start" x="340" y="74.0">Teacher opens /join-as-tutor</text>
+<rect class="nd k-public" x="180.0" y="136.0" width="320.0" height="68.0" rx="9"/>
+<text class="t t-public" x="340" y="158.0">Application form</text>
+<text class="s s-public" x="340" y="175.0">subjects · curricula · qualifications</text>
+<text class="s s-public" x="340" y="191.0">CV upload · demo-lesson video link</text>
+<rect class="nd k-api" x="180.0" y="259.0" width="320.0" height="52.0" rx="9"/>
+<text class="t t-api" x="340" y="281.0">Server Action saves application</text>
+<text class="s s-api" x="340" y="298.0">status: new · CV to private storage</text>
+<rect class="nd k-admin" x="230.0" y="359.0" width="220.0" height="52.0" rx="9"/>
+<text class="t t-admin" x="340" y="381.0">Admin reviews</text>
+<text class="s s-admin" x="340" y="398.0">/admin/tutors</text>
+<polygon class="nd k-decision" points="340,453.0 430.6,495 340,537.0 249.39999999999998,495"/>
+<text class="t t-decision" x="340" y="499.0">Shortlisted?</text>
+<rect class="nd k-admin" x="30.0" y="469.0" width="170.0" height="52.0" rx="9"/>
+<text class="t t-admin" x="115" y="491.0">Polite decline</text>
+<text class="s s-admin" x="115" y="508.0">email, kept on file</text>
+<rect class="nd k-admin" x="210.0" y="587.0" width="260.0" height="36.0" rx="9"/>
+<text class="t t-admin" x="340" y="609.0">Interview + demo lesson</text>
+<polygon class="nd k-decision" points="340,670.0 425.0,710 340,750.0 255.0,710"/>
+<text class="t t-decision" x="340" y="714.0">Approved?</text>
+<rect class="nd k-admin" x="30.0" y="684.0" width="170.0" height="52.0" rx="9"/>
+<text class="t t-admin" x="115" y="706.0">Decline</text>
+<text class="s s-admin" x="115" y="723.0">email with reason</text>
+<rect class="nd k-api" x="210.0" y="789.0" width="260.0" height="52.0" rx="9"/>
+<text class="t t-api" x="340" y="811.0">Invite email</text>
+<text class="s s-api" x="340" y="828.0">set password → tutor role</text>
+<rect class="nd k-app" x="190.0" y="889.0" width="300.0" height="52.0" rx="9"/>
+<text class="t t-app" x="340" y="911.0">Complete public profile</text>
+<text class="s s-app" x="340" y="928.0">/app/profile · photo, bio, subjects</text>
+<polygon class="nd k-decision" points="340,980.0 443.2,1025 340,1070.0 236.8,1025"/>
+<text class="t t-decision" x="340" y="1020.0">Admin approves</text>
+<text class="t t-decision" x="340" y="1038.0">profile?</text>
+<rect class="nd k-admin" x="30.0" y="1007.0" width="170.0" height="36.0" rx="9"/>
+<text class="t t-admin" x="115" y="1029.0">Request edits</text>
+<rect class="nd k-public" x="190.0" y="1109.0" width="300.0" height="52.0" rx="9"/>
+<text class="t t-public" x="340" y="1131.0">Profile goes live</text>
+<text class="s s-public" x="340" y="1148.0">/tutors/[tutor] · in sitemap.xml</text>
+<rect class="nd k-start" x="750.0" y="47.0" width="200.0" height="46.0" rx="23.0"/>
+<text class="t t-start" x="850" y="74.0">Tutor logs in</text>
+<rect class="nd k-app" x="685.0" y="144.0" width="330.0" height="52.0" rx="9"/>
+<text class="t t-app" x="850" y="166.0">Tutor dashboard</text>
+<text class="s s-app" x="850" y="183.0">/app (@tutor slot) · today’s sessions</text>
+<rect class="nd k-app" x="735.0" y="249.0" width="230.0" height="52.0" rx="9"/>
+<text class="t t-app" x="850" y="271.0">My students</text>
+<text class="s s-app" x="850" y="288.0">/app/students</text>
+<rect class="nd k-app" x="695.0" y="351.0" width="310.0" height="68.0" rx="9"/>
+<text class="t t-app" x="850" y="373.0">Student detail</text>
+<text class="s s-app" x="850" y="390.0">/app/students/[studentId]</text>
+<text class="s s-app" x="850" y="406.0">practice results · weak topics</text>
+<rect class="nd k-app" x="690.0" y="474.0" width="320.0" height="52.0" rx="9"/>
+<text class="t t-app" x="850" y="496.0">Plan + log the session</text>
+<text class="s s-app" x="850" y="513.0">notes · homework · assign practice</text>
+<rect class="nd k-app" x="685.0" y="579.0" width="330.0" height="52.0" rx="9"/>
+<text class="t t-app" x="850" y="601.0">Review weekly report draft</text>
+<text class="s s-app" x="850" y="618.0">edit or approve the Gemini summary</text>
+<rect class="nd k-end" x="710.0" y="687.0" width="280.0" height="46.0" rx="23.0"/>
+<text class="t t-end" x="850" y="714.0">Report sent to the parent</text></svg></div></figure>
+ <h3>e · An admin manages leads, tutors and content</h3>
+ <figure class="fig"><div class="scroll" tabindex="0"><svg class="dg" viewBox="0 0 1240 930" style="max-width:1240px;min-width:980px" role="img" aria-label="Flow: admin manages leads, tutors and content" xmlns="http://www.w3.org/2000/svg"><title>Flow: admin manages leads, tutors and content</title><defs><marker id="ah-flow-admin-manages-leads-tutors-and-content" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ahp" d="M0,0 L10,5 L0,10 z"/></marker></defs><path class="edge" d="M620.0,63.0 L620.0,109.0" marker-end="url(#ah-flow-admin-manages-leads-tutors-and-content)"/>
+<path class="edge" d="M620.0,161.0 L620.0,214.0" marker-end="url(#ah-flow-admin-manages-leads-tutors-and-content)"/>
+<path class="edge" d="M620.0,266.0 L620.0,305.0 L160.0,305.0 L160.0,344.0" marker-end="url(#ah-flow-admin-manages-leads-tutors-and-content)"/>
+<path class="edge" d="M620.0,266.0 L620.0,305.0 L470.0,305.0 L470.0,344.0" marker-end="url(#ah-flow-admin-manages-leads-tutors-and-content)"/>
+<path class="edge" d="M620.0,266.0 L620.0,305.0 L780.0,305.0 L780.0,344.0" marker-end="url(#ah-flow-admin-manages-leads-tutors-and-content)"/>
+<path class="edge" d="M620.0,266.0 L620.0,305.0 L1085.0,305.0 L1085.0,344.0" marker-end="url(#ah-flow-admin-manages-leads-tutors-and-content)"/>
+<path class="edge" d="M160.0,396.0 L160.0,444.0" marker-end="url(#ah-flow-admin-manages-leads-tutors-and-content)"/>
+<path class="edge" d="M160.0,496.0 L160.0,544.0" marker-end="url(#ah-flow-admin-manages-leads-tutors-and-content)"/>
+<path class="edge" d="M160.0,596.0 L160.0,640.0" marker-end="url(#ah-flow-admin-manages-leads-tutors-and-content)"/>
+<path class="edge" d="M160.0,720.0 L160.0,764.0" marker-end="url(#ah-flow-admin-manages-leads-tutors-and-content)"/>
+<rect class="lbl-bg" x="144.1" y="732.0" width="31.8" height="20" rx="10"/>
+<text class="lbl" x="160.0" y="746.0">Yes</text>
+<path class="edge" d="M80.0,680.0 L22.0,680.0 L22.0,885.0 L40.0,885.0" marker-end="url(#ah-flow-admin-manages-leads-tutors-and-content)"/>
+<rect class="lbl-bg" x="38.4" y="670.0" width="25.2" height="20" rx="10"/>
+<text class="lbl" x="51.0" y="684.0">No</text>
+<path class="edge" d="M470.0,396.0 L470.0,445.0" marker-end="url(#ah-flow-admin-manages-leads-tutors-and-content)"/>
+<path class="edge" d="M470.0,525.0 L470.0,574.0" marker-end="url(#ah-flow-admin-manages-leads-tutors-and-content)"/>
+<rect class="lbl-bg" x="454.1" y="539.5" width="31.8" height="20" rx="10"/>
+<text class="lbl" x="470.0" y="553.5">Yes</text>
+<path class="edge" d="M550.0,485.0 L610.0,485.0 L610.0,710.0 L585.0,710.0" marker-end="url(#ah-flow-admin-manages-leads-tutors-and-content)"/>
+<rect class="lbl-bg" x="567.4" y="475.0" width="25.2" height="20" rx="10"/>
+<text class="lbl" x="580.0" y="489.0">No</text>
+<path class="edge" d="M780.0,396.0 L780.0,442.0" marker-end="url(#ah-flow-admin-manages-leads-tutors-and-content)"/>
+<path class="edge" d="M780.0,538.0 L780.0,592.0" marker-end="url(#ah-flow-admin-manages-leads-tutors-and-content)"/>
+<rect class="lbl-bg" x="764.1" y="555.0" width="31.8" height="20" rx="10"/>
+<text class="lbl" x="780.0" y="569.0">Yes</text>
+<path class="edge" d="M780.0,628.0 L780.0,684.0" marker-end="url(#ah-flow-admin-manages-leads-tutors-and-content)"/>
+<path class="edge" d="M895.8,490.0 L935.0,490.0 L935.0,810.0 L895.0,810.0" marker-end="url(#ah-flow-admin-manages-leads-tutors-and-content)"/>
+<rect class="lbl-bg" x="902.8" y="480.0" width="25.2" height="20" rx="10"/>
+<text class="lbl" x="915.4" y="494.0">No</text>
+<path class="edge" d="M1085.0,396.0 L1085.0,444.0" marker-end="url(#ah-flow-admin-manages-leads-tutors-and-content)"/>
+<path class="edge dashed" d="M1205.0,370.0 L1225.0,370.0 L1225.0,570.0 L1210.0,570.0" marker-end="url(#ah-flow-admin-manages-leads-tutors-and-content)"/>
+<rect class="nd k-start" x="520.0" y="17.0" width="200.0" height="46.0" rx="23.0"/>
+<text class="t t-start" x="620" y="44.0">Admin signs in</text>
+<rect class="nd k-api" x="455.0" y="109.0" width="330.0" height="52.0" rx="9"/>
+<text class="t t-api" x="620" y="131.0">proxy.ts + requireRole(&#x27;admin&#x27;)</text>
+<text class="s s-api" x="620" y="148.0">checked again in every page and action</text>
+<rect class="nd k-admin" x="420.0" y="214.0" width="400.0" height="52.0" rx="9"/>
+<text class="t t-admin" x="620" y="236.0">Admin overview</text>
+<text class="s s-admin" x="620" y="253.0">/admin · new leads · trials this week · AI spend</text>
+<rect class="nd k-admin" x="40.0" y="344.0" width="240.0" height="52.0" rx="9"/>
+<text class="t t-admin" x="160" y="366.0">Leads pipeline</text>
+<text class="s s-admin" x="160" y="383.0">/admin/leads</text>
+<rect class="nd k-admin" x="40.0" y="444.0" width="240.0" height="52.0" rx="9"/>
+<text class="t t-admin" x="160" y="466.0">Contact on WhatsApp</text>
+<text class="s s-admin" x="160" y="483.0">status: new → contacted</text>
+<rect class="nd k-admin" x="35.0" y="544.0" width="250.0" height="52.0" rx="9"/>
+<text class="t t-admin" x="160" y="566.0">Assign tutor + trial slot</text>
+<text class="s s-admin" x="160" y="583.0">/admin/leads/[leadId]</text>
+<polygon class="nd k-decision" points="160,640.0 240.0,680 160,720.0 80.0,680"/>
+<text class="t t-decision" x="160" y="684.0">Enrolled?</text>
+<rect class="nd k-app" x="40.0" y="764.0" width="240.0" height="52.0" rx="9"/>
+<text class="t t-app" x="160" y="786.0">Create family account</text>
+<text class="s s-app" x="160" y="803.0">parent invite + student</text>
+<rect class="nd k-admin" x="40.0" y="867.0" width="240.0" height="36.0" rx="9"/>
+<text class="t t-admin" x="160" y="889.0">Mark lost + reason</text>
+<rect class="nd k-admin" x="350.0" y="344.0" width="240.0" height="52.0" rx="9"/>
+<text class="t t-admin" x="470" y="366.0">Tutor applications</text>
+<text class="s s-admin" x="470" y="383.0">/admin/tutors</text>
+<polygon class="nd k-decision" points="470,445.0 550.0,485 470,525.0 390.0,485"/>
+<text class="t t-decision" x="470" y="489.0">Approve?</text>
+<rect class="nd k-admin" x="350.0" y="574.0" width="240.0" height="52.0" rx="9"/>
+<text class="t t-admin" x="470" y="596.0">Publish profile</text>
+<text class="s s-admin" x="470" y="613.0">/tutors/[tutor] refreshes</text>
+<rect class="nd k-admin" x="355.0" y="692.0" width="230.0" height="36.0" rx="9"/>
+<text class="t t-admin" x="470" y="714.0">Decline with email</text>
+<rect class="nd k-admin" x="660.0" y="344.0" width="240.0" height="52.0" rx="9"/>
+<text class="t t-admin" x="780" y="366.0">Content</text>
+<text class="s s-admin" x="780" y="383.0">/admin/content</text>
+<polygon class="nd k-decision" points="780,442.0 895.8,490 780,538.0 664.2,490"/>
+<text class="t t-decision" x="780" y="485.0">Proof or written</text>
+<text class="t t-decision" x="780" y="503.0">consent on file?</text>
+<rect class="nd k-admin" x="650.0" y="592.0" width="260.0" height="36.0" rx="9"/>
+<text class="t t-admin" x="780" y="614.0">Publish testimonial / post</text>
+<rect class="nd k-api" x="665.0" y="684.0" width="230.0" height="52.0" rx="9"/>
+<text class="t t-api" x="780" y="706.0">revalidatePath()</text>
+<text class="s s-api" x="780" y="723.0">public pages refresh</text>
+<rect class="nd k-admin" x="665.0" y="792.0" width="230.0" height="36.0" rx="9"/>
+<text class="t t-admin" x="780" y="814.0">Stays a draft</text>
+<rect class="nd k-admin" x="965.0" y="344.0" width="240.0" height="52.0" rx="9"/>
+<text class="t t-admin" x="1085" y="366.0">AI usage &amp; quotas</text>
+<text class="s s-admin" x="1085" y="383.0">/admin/ai</text>
+<rect class="nd k-admin" x="965.0" y="444.0" width="240.0" height="52.0" rx="9"/>
+<text class="t t-admin" x="1085" y="466.0">Question bank</text>
+<text class="s s-admin" x="1085" y="483.0">/admin/questions</text>
+<rect class="nd k-ext" x="960.0" y="544.0" width="250.0" height="52.0" rx="9"/>
+<text class="t t-ext" x="1085" y="566.0">Budget alert</text>
+<text class="s s-ext" x="1085" y="583.0">email when spend nears limit</text></svg></div></figure>
+</section>
+
+<section class="panel" id="roles" aria-labelledby="h-roles">
+ <h2 id="h-roles">3 · Roles &amp; access</h2>
+ <p class="lede">Five roles. Each logged-in request passes two checks: a quick cookie check in <code>proxy.ts</code>, then the real check on the server, next to the data (the Data Access Layer). Hiding a link in the browser is never treated as security.</p>
+ <div class="legend" aria-label="Legend">
+<span class="lg"><i class="sw sw-public"></i>Public page</span>
+<span class="lg"><i class="sw sw-public-cond"></i>Public, only if real content exists</span>
+<span class="lg"><i class="sw sw-app"></i>Logged-in page</span>
+<span class="lg"><i class="sw sw-admin"></i>Admin page / admin task</span>
+<span class="lg"><i class="sw sw-api"></i>Server code (API route, Server Action, check)</span>
+<span class="lg"><i class="sw sw-ext"></i>External service (WhatsApp, Gemini, email, DB)</span>
+<span class="lg"><i class="sw sw-decision"></i>Decision</span>
+<span class="lg"><i class="sw sw-start"></i>Start / end</span>
+<span class="lg"><i class="ln"></i>Next step</span>
+<span class="lg"><i class="ln ln-d"></i>Message / async</span>
+</div>
+ <figure class="fig"><div class="scroll" tabindex="0"><svg class="dg" viewBox="0 0 1200 560" style="max-width:1200px;min-width:900px" role="img" aria-label="Roles and the areas they reach" xmlns="http://www.w3.org/2000/svg"><title>Roles and the areas they reach</title><defs><marker id="ah-roles-and-the-areas-they-reach" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ahp" d="M0,0 L10,5 L0,10 z"/></marker></defs><rect class="zone gate" x="380" y="150" width="230" height="400" rx="14"/><text class="zone-lbl" x="394" y="172">Auth gate (server)</text>
+<text class="zone-sm" x="395" y="196" text-anchor="start">1. proxy.ts: session cookie?</text>
+<text class="zone-sm" x="395" y="216" text-anchor="start">   no → /login or 401</text>
+<text class="zone-sm" x="395" y="520" text-anchor="start">2. DAL: verifySession()</text>
+<text class="zone-sm" x="395" y="540" text-anchor="start">   role + ownership in DB</text>
+<path class="edge" d="M235.0,70.0 L300.0,70.0 L300.0,40.0 L680.0,40.0" marker-end="url(#ah-roles-and-the-areas-they-reach)"/>
+<path class="edge" d="M235.0,70.0 L320.0,70.0 L320.0,105.0 L680.0,105.0" marker-end="url(#ah-roles-and-the-areas-they-reach)"/>
+<path class="edge" d="M235.0,240.0 L660.0,240.0 L660.0,205.0 L680.0,205.0" marker-end="url(#ah-roles-and-the-areas-they-reach)"/>
+<path class="edge" d="M235.0,240.0 L640.0,240.0 L640.0,275.0 L680.0,275.0" marker-end="url(#ah-roles-and-the-areas-they-reach)"/>
+<path class="edge" d="M235.0,320.0 L660.0,320.0 L660.0,345.0 L680.0,345.0" marker-end="url(#ah-roles-and-the-areas-they-reach)"/>
+<path class="edge" d="M235.0,400.0 L660.0,400.0 L660.0,415.0 L680.0,415.0" marker-end="url(#ah-roles-and-the-areas-they-reach)"/>
+<path class="edge" d="M235.0,480.0 L660.0,480.0 L660.0,495.0 L680.0,495.0" marker-end="url(#ah-roles-and-the-areas-they-reach)"/>
+<path class="edge dashed" d="M980.0,275.0 L1030.0,275.0" marker-end="url(#ah-roles-and-the-areas-they-reach)"/>
+<rect class="nd k-role" x="45.0" y="44.0" width="190.0" height="52.0" rx="9"/>
+<text class="t t-role" x="140" y="66.0">Visitor</text>
+<text class="s s-role" x="140" y="83.0">not signed in</text>
+<rect class="nd k-role" x="45.0" y="218.0" width="190.0" height="44.0" rx="9"/>
+<text class="t t-role" x="140" y="244.0">Student</text>
+<rect class="nd k-role" x="45.0" y="298.0" width="190.0" height="44.0" rx="9"/>
+<text class="t t-role" x="140" y="324.0">Parent</text>
+<rect class="nd k-role" x="45.0" y="378.0" width="190.0" height="44.0" rx="9"/>
+<text class="t t-role" x="140" y="404.0">Tutor</text>
+<rect class="nd k-role" x="45.0" y="454.0" width="190.0" height="52.0" rx="9"/>
+<text class="t t-role" x="140" y="476.0">Admin</text>
+<text class="s s-role" x="140" y="493.0">staff only</text>
+<rect class="nd k-public" x="680.0" y="14.0" width="300.0" height="52.0" rx="9"/>
+<text class="t t-public" x="830" y="36.0">Public pages</text>
+<text class="s s-public" x="830" y="53.0">(marketing) · indexable</text>
+<rect class="nd k-public" x="680.0" y="79.0" width="300.0" height="52.0" rx="9"/>
+<text class="t t-public" x="830" y="101.0">Log in · sign up · reset</text>
+<text class="s s-public" x="830" y="118.0">(auth) · noindex</text>
+<rect class="nd k-app" x="680.0" y="179.0" width="300.0" height="52.0" rx="9"/>
+<text class="t t-app" x="830" y="201.0">Student pages</text>
+<text class="s s-app" x="830" y="218.0">/app/practice · /app/progress</text>
+<rect class="nd k-api" x="680.0" y="249.0" width="300.0" height="52.0" rx="9"/>
+<text class="t t-api" x="830" y="271.0">AI endpoints</text>
+<text class="s s-api" x="830" y="288.0">/api/ai/* · rate-limited</text>
+<rect class="nd k-app" x="680.0" y="319.0" width="300.0" height="52.0" rx="9"/>
+<text class="t t-app" x="830" y="341.0">Parent pages</text>
+<text class="s s-app" x="830" y="358.0">/app/children · /app/reports</text>
+<rect class="nd k-app" x="680.0" y="389.0" width="300.0" height="52.0" rx="9"/>
+<text class="t t-app" x="830" y="411.0">Tutor pages</text>
+<text class="s s-app" x="830" y="428.0">/app/students · /app/profile</text>
+<rect class="nd k-admin" x="680.0" y="469.0" width="300.0" height="52.0" rx="9"/>
+<text class="t t-admin" x="830" y="491.0">Admin</text>
+<text class="s s-admin" x="830" y="508.0">/admin/*</text>
+<rect class="nd k-ext" x="1030.0" y="249.0" width="140.0" height="52.0" rx="9"/>
+<text class="t t-ext" x="1100" y="271.0">Gemini</text>
+<text class="s s-ext" x="1100" y="288.0">server key</text></svg></div><figcaption>Logged-in users can also see every public page. Parents see their child’s progress inside the parent pages (read-only); see the matrix below.</figcaption></figure>
+ <h3>Access matrix</h3>
+ <div class="tablewrap"><table class="matrix">
+  <thead><tr><th>Area</th><th>Visitor</th><th>Student</th><th>Parent</th><th>Tutor</th><th>Admin</th></tr></thead>
+  <tbody>
+   <tr><td>Public pages, /book, /join-as-tutor</td><td class="y">Yes</td><td class="y">Yes</td><td class="y">Yes</td><td class="y">Yes</td><td class="y">Yes</td></tr>
+   <tr><td>/app dashboard, schedule, settings</td><td class="n">No</td><td class="y">Own</td><td class="y">Own</td><td class="y">Own</td><td class="p">Support view</td></tr>
+   <tr><td>/app/practice, /app/progress</td><td class="n">No</td><td class="y">Own</td><td class="p">Child, read-only</td><td class="p">Assigned students</td><td class="p">Read-only</td></tr>
+   <tr><td>/app/children, /app/reports</td><td class="n">No</td><td class="p">Own reports</td><td class="y">Linked children</td><td class="p">Assigned students</td><td class="y">All</td></tr>
+   <tr><td>/app/students, /app/profile</td><td class="n">No</td><td class="n">No</td><td class="n">No</td><td class="y">Own</td><td class="y">All</td></tr>
+   <tr><td>/api/ai/*</td><td class="n">No</td><td class="y">Quota</td><td class="n">No</td><td class="p">Quota (preview)</td><td class="y">Quota</td></tr>
+   <tr><td>/admin/*</td><td class="n">No</td><td class="n">No</td><td class="n">No</td><td class="n">No</td><td class="y">Yes</td></tr>
+  </tbody>
+ </table></div>
+ <h3>How a request is checked</h3>
+ <figure class="fig"><div class="scroll" tabindex="0"><svg class="dg" viewBox="0 0 1180 430" style="max-width:1180px;min-width:900px" role="img" aria-label="Request check order" xmlns="http://www.w3.org/2000/svg"><title>Request check order</title><defs><marker id="ah-request-check-order" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ahp" d="M0,0 L10,5 L0,10 z"/></marker></defs><text class="zone-lbl" x="20" y="290" text-anchor="start">AI requests add three more server steps:</text>
+<path class="edge" d="M125.0,70.0 L142.5,70.0" marker-end="url(#ah-request-check-order)"/>
+<path class="edge" d="M357.5,70.0 L375.0,70.0" marker-end="url(#ah-request-check-order)"/>
+<path class="edge" d="M445.0,112.0 L445.0,174.0" marker-end="url(#ah-request-check-order)"/>
+<rect class="lbl-bg" x="432.4" y="133.0" width="25.2" height="20" rx="10"/>
+<text class="lbl" x="445.0" y="147.0">No</text>
+<path class="edge" d="M515.0,70.0 L545.0,70.0" marker-end="url(#ah-request-check-order)"/>
+<rect class="lbl-bg" x="514.1" y="60.0" width="31.8" height="20" rx="10"/>
+<text class="lbl" x="530.0" y="74.0">Yes</text>
+<path class="edge" d="M765.0,70.0 L784.4,70.0" marker-end="url(#ah-request-check-order)"/>
+<path class="edge" d="M875.0,115.0 L875.0,174.0" marker-end="url(#ah-request-check-order)"/>
+<rect class="lbl-bg" x="862.4" y="134.5" width="25.2" height="20" rx="10"/>
+<text class="lbl" x="875.0" y="148.5">No</text>
+<path class="edge" d="M965.6,70.0 L1005.0,70.0" marker-end="url(#ah-request-check-order)"/>
+<rect class="lbl-bg" x="969.4" y="60.0" width="31.8" height="20" rx="10"/>
+<text class="lbl" x="985.3" y="74.0">Yes</text>
+<path class="edge" d="M220.0,360.0 L255.0,360.0" marker-end="url(#ah-request-check-order)"/>
+<path class="edge" d="M445.0,360.0 L465.0,360.0" marker-end="url(#ah-request-check-order)"/>
+<path class="edge dashed" d="M675.0,360.0 L695.0,360.0" marker-end="url(#ah-request-check-order)"/>
+<path class="edge dashed" d="M905.0,360.0 L935.0,360.0" marker-end="url(#ah-request-check-order)"/>
+<rect class="nd k-start" x="15.0" y="48.0" width="110.0" height="44.0" rx="22.0"/>
+<text class="t t-start" x="70" y="74.0">Request</text>
+<rect class="nd k-api" x="142.5" y="44.0" width="215.0" height="52.0" rx="9"/>
+<text class="t t-api" x="250" y="66.0">proxy.ts</text>
+<text class="s s-api" x="250" y="83.0">matcher: /app, /admin, /api</text>
+<polygon class="nd k-decision" points="445,28.0 515.0,70 445,112.0 375.0,70"/>
+<text class="t t-decision" x="445" y="65.0">Session</text>
+<text class="t t-decision" x="445" y="83.0">cookie?</text>
+<rect class="nd k-public" x="330.0" y="174.0" width="230.0" height="52.0" rx="9"/>
+<text class="t t-public" x="445" y="196.0">Pages → /login?next=…</text>
+<text class="s s-public" x="445" y="213.0">API → 401 JSON</text>
+<rect class="nd k-api" x="545.0" y="44.0" width="220.0" height="52.0" rx="9"/>
+<text class="t t-api" x="655" y="66.0">verifySession()</text>
+<text class="s s-api" x="655" y="83.0">lib/auth/dal.ts · DB lookup</text>
+<polygon class="nd k-decision" points="875,25.0 965.6,70 875,115.0 784.4,70"/>
+<text class="t t-decision" x="875" y="65.0">Role + owner</text>
+<text class="t t-decision" x="875" y="83.0">OK?</text>
+<rect class="nd k-app" x="760.0" y="174.0" width="230.0" height="52.0" rx="9"/>
+<text class="t t-app" x="875" y="196.0">notFound() / redirect</text>
+<text class="s s-app" x="875" y="213.0">nothing leaks</text>
+<rect class="nd k-end" x="1005.0" y="48.0" width="160.0" height="44.0" rx="22.0"/>
+<text class="t t-end" x="1085" y="74.0">Render / respond</text>
+<rect class="nd k-api" x="20.0" y="334.0" width="200.0" height="52.0" rx="9"/>
+<text class="t t-api" x="120" y="356.0">/api/ai/* handler</text>
+<text class="s s-api" x="120" y="373.0">after the checks above</text>
+<rect class="nd k-api" x="255.0" y="334.0" width="190.0" height="52.0" rx="9"/>
+<text class="t t-api" x="350" y="356.0">Rate limit</text>
+<text class="s s-api" x="350" y="373.0">per user + per IP</text>
+<rect class="nd k-api" x="465.0" y="334.0" width="210.0" height="52.0" rx="9"/>
+<text class="t t-api" x="570" y="356.0">Daily quota</text>
+<text class="s s-api" x="570" y="373.0">counter in DB per student</text>
+<rect class="nd k-ext" x="695.0" y="334.0" width="210.0" height="52.0" rx="9"/>
+<text class="t t-ext" x="800" y="356.0">Gemini API</text>
+<text class="s s-ext" x="800" y="373.0">key never sent to browser</text>
+<rect class="nd k-api" x="935.0" y="334.0" width="200.0" height="52.0" rx="9"/>
+<text class="t t-api" x="1035" y="356.0">Validate + log</text>
+<text class="s s-api" x="1035" y="373.0">schema · tokens · cost</text></svg></div><figcaption>The same order applies to pages, Server Actions and API routes.</figcaption></figure>
+ <div class="cols2">
+  <div class="card kv"><h3>Auth rules</h3><ul>
+   <li>Sessions live in the database with an http-only, secure cookie. No PINs, no shared master codes.</li>
+   <li><code>proxy.ts</code> only reads the cookie (fast, no DB) and redirects. Pages, Server Actions and API routes all call <code>verifySession()</code> again.</li>
+   <li>Ownership is checked per record: a parent sees a report only if they are linked to that student; a tutor only for assigned students.</li>
+   <li>On a failed check we return 404, so we don’t confirm that a record exists.</li>
+  </ul></div>
+  <div class="card kv"><h3>Gemini rules</h3><ul>
+   <li>Only called from <code>src/app/api/ai/*</code> and server jobs. <code>lib/ai/gemini.ts</code> imports <code>server-only</code>; the key is never in browser code.</li>
+   <li>Signed-in users only. Rate limit per user and per IP, plus a daily quota per student stored in the database.</li>
+   <li>Ask for JSON in a fixed schema, check it before saving or showing it, and log tokens and cost for <code>/admin/ai</code>.</li>
+   <li>Student answers are treated as data in prompts, never as instructions.</li>
+  </ul></div>
+ </div>
+</section>
+
+<section class="panel" id="folders" aria-labelledby="h-folders">
+ <h2 id="h-folders">4 · Next.js App Router folder structure</h2>
+ <p class="lede">Target layout for <code>/home/user/tutoringgalaxy/src</code>. Route groups in brackets keep each area’s layout separate without adding to the URL. Shared code lives outside <code>app/</code>, so <code>app/</code> holds routes only.</p>
+ <div class="tree-legend">
+  <span><span class="f grp">(group)</span> route group, not in URL</span>
+  <span><span class="f slot">@slot</span> parallel-route slot</span>
+  <span><span class="f api">api/</span> route handlers</span>
+  <span><span class="f seo">sitemap.ts</span> metadata / SEO file</span>
+  <span><span class="f key">proxy.ts</span> request proxy</span>
+ </div>
+ <div class="treebox">
+<ul class="tree">
+<li><span class="f dir">src/</span>
+ <ul>
+ <li><span class="f file key">proxy.ts</span><span class="note">Runs before each request to /app, /admin and /api. Reads the session cookie only (fast, no DB) and redirects to /login. Not the only check.</span></li>
+ <li><span class="f dir">app/</span><span class="note">Routes only. Folders become URLs; files that aren’t page/route/layout are never public.</span>
+  <ul>
+  <li><span class="f file">layout.tsx</span><span class="note">Root layout: &lt;html&gt;, fonts, design tokens, analytics. Shared by every area.</span></li>
+  <li><span class="f file">globals.css</span><span class="note">Tailwind v4 + the design tokens (colors, type scale, radius).</span></li>
+  <li><span class="f file">not-found.tsx · error.tsx · global-error.tsx</span><span class="note">Branded 404 and error screens.</span></li>
+  <li><span class="f file seo">sitemap.ts · robots.ts</span><span class="note">Sitemap built from content data (public pages only). Robots blocks /app, /admin, /api.</span></li>
+  <li><span class="f file seo">opengraph-image.tsx · icon.svg · apple-icon.png</span><span class="note">Default share image and icons. Pages like /tutors/[tutor] can have their own.</span></li>
+  <li><span class="f dir grp">(marketing)/</span><span class="note">Public site. Group name is not in the URL.</span>
+   <ul>
+   <li><span class="f file">layout.tsx</span><span class="note">Site header, footer, mobile CTA bar (Book a free trial + WhatsApp).</span></li>
+   <li><span class="f file">page.tsx</span><span class="note">Homepage “/” (8 sections).</span></li>
+   <li><span class="f dir">how-it-works/ · pricing/ · about/ · faq/ · contact/</span><span class="note">One page.tsx each.</span></li>
+   <li><span class="f dir">tutoring/online/ · tutoring/home/</span><span class="note">The two ways we teach.</span></li>
+   <li><span class="f dir">curricula/</span><span class="note">Index + <code>[curriculum]/page.tsx</code>, built with generateStaticParams from data.</span></li>
+   <li><span class="f dir">subjects/</span><span class="note">Index + <code>[subject]/page.tsx</code>.</span></li>
+   <li><span class="f dir">tutors/</span><span class="note">List with filters (query params) + <code>[tutor]/page.tsx</code> profile with its own OG image.</span></li>
+   <li><span class="f dir">locations/[place]/</span><span class="note">Only places listed in content data. Unknown place → notFound().</span></li>
+   <li><span class="f dir">book/ · book/thanks/</span><span class="note">Free-trial form (Server Action) and confirmation with WhatsApp hand-off.</span></li>
+   <li><span class="f dir">resources/</span><span class="note">Index + <code>[slug]/page.tsx</code> articles (MDX or DB).</span></li>
+   <li><span class="f dir">join-as-tutor/</span><span class="note">Tutor application form.</span></li>
+   <li><span class="f dir">legal/privacy · legal/terms · legal/refunds</span><span class="note">Plain legal pages.</span></li>
+   </ul></li>
+  <li><span class="f dir grp">(auth)/</span><span class="note">Small centered layout, noindex.</span>
+   <ul><li><span class="f dir">login/ · signup/ · reset-password/</span><span class="note">Sign up only by invite link (after a trial) or tutor approval.</span></li></ul></li>
+  <li><span class="f dir grp">(app)/</span><span class="note">Logged-in product. Own layout: sidebar, account menu, no marketing chrome.</span>
+   <ul>
+   <li><span class="f file">layout.tsx</span><span class="note">Calls verifySession(); no session → redirect to /login. Renders the app shell.</span></li>
+   <li><span class="f dir">app/</span><span class="note">Gives the “/app” URL prefix (one proxy matcher, one robots rule).</span>
+    <ul>
+    <li><span class="f file">layout.tsx · page.tsx</span><span class="note">/app dashboard. Layout picks a slot by role.</span></li>
+    <li><span class="f dir slot">@student/ · @parent/ · @tutor/</span><span class="note">Parallel-route slots: one dashboard URL, a different view per role.</span></li>
+    <li><span class="f dir">practice/</span><span class="note"><code>[curriculum]/[subject]</code> topic picker, <code>session/[sessionId]</code> question runner.</span></li>
+    <li><span class="f dir">progress/ · reports/[reportId]/ · children/[studentId]/</span><span class="note">Student progress, parent reports. Ownership checked on the server.</span></li>
+    <li><span class="f dir">students/ · students/[studentId]/ · profile/</span><span class="note">Tutor-only pages.</span></li>
+    <li><span class="f dir">schedule/ · settings/</span><span class="note">Shared by all roles.</span></li>
+    </ul></li>
+   </ul></li>
+  <li><span class="f dir grp">(admin)/</span><span class="note">Staff tools. Own dense layout.</span>
+   <ul>
+   <li><span class="f file">layout.tsx</span><span class="note">requireRole('admin') on the server. Wrong role → redirect.</span></li>
+   <li><span class="f dir">admin/</span><span class="note">leads/[leadId] · tutors/[tutorId] · users · content · questions · ai</span></li>
+   </ul></li>
+  <li><span class="f dir api">api/</span><span class="note">Route handlers: only for things a form action can’t do (streaming, webhooks, cron).</span>
+   <ul>
+   <li><span class="f dir api">ai/feedback/ · ai/hint/ · ai/diagnostic/</span><span class="note">route.ts each. Auth + rate limit + quota, then Gemini. POST only.</span></li>
+   <li><span class="f dir api">cron/weekly-reports/</span><span class="note">Builds parent reports. Protected by a secret header.</span></li>
+   <li><span class="f dir api">auth/[...auth]/</span><span class="note">Auth provider callbacks (magic link, OAuth).</span></li>
+   <li><span class="f dir api">webhooks/whatsapp/</span><span class="note">Optional, phase 2: WhatsApp Business API messages into leads.</span></li>
+   </ul></li>
+  </ul></li>
+ <li><span class="f dir">components/</span><span class="note">Shared UI. No data fetching inside ui/.</span>
+  <ul>
+  <li><span class="f dir">ui/</span><span class="note">Design-system pieces: Button, Input, Select, Card, Badge, Dialog, Tabs, Accordion.</span></li>
+  <li><span class="f dir">layout/</span><span class="note">SiteHeader, SiteFooter, MobileCtaBar, AppSidebar, AdminShell.</span></li>
+  <li><span class="f dir">sections/</span><span class="note">Homepage and landing blocks: Hero, TrustBar, HowItWorks, CurriculaGrid, TutorCards, Results, PricingTeaser, FaqList, FinalCta.</span></li>
+  <li><span class="f dir">forms/</span><span class="note">TrialForm, TutorApplicationForm, ContactForm.</span></li>
+  <li><span class="f dir">practice/</span><span class="note">QuestionCard, MathText, FeedbackPanel, MasteryChart.</span></li>
+  </ul></li>
+ <li><span class="f dir">lib/</span><span class="note">Server and shared logic. Files that touch secrets import “server-only”.</span>
+  <ul>
+  <li><span class="f dir">auth/</span><span class="note">session.ts (cookie), dal.ts (verifySession, requireRole, canViewStudent).</span></li>
+  <li><span class="f dir">db/</span><span class="note">Database client, schema, queries.</span></li>
+  <li><span class="f dir">ai/</span><span class="note">gemini.ts (server-only client), prompts/, schemas/ (expected JSON), rate-limit.ts, quota.ts.</span></li>
+  <li><span class="f dir">actions/</span><span class="note">Server Actions: createLead, applyAsTutor, updateLeadStatus, publishContent.</span></li>
+  <li><span class="f file">whatsapp.ts · seo.ts · validation.ts</span><span class="note">wa.me link builder, metadata + JSON-LD helpers, zod schemas.</span></li>
+  </ul></li>
+ <li><span class="f dir">data/content/</span><span class="note">Typed facts kept in git and reviewed like code.</span>
+  <ul>
+  <li><span class="f file">site.ts</span><span class="note">Name, founder, founded 2016, contact, WhatsApp number, socials.</span></li>
+  <li><span class="f file">curricula.ts · subjects.ts · countries.ts · locations.ts</span><span class="note">Content model from the old seo.ts, with a “publish page?” flag.</span></li>
+  <li><span class="f file">pricing.ts · faqs.ts · how-it-works.ts</span><span class="note">One source for pricing and FAQs (fixes the 4 vs 5 sessions conflict).</span></li>
+  </ul></li>
+ </ul></li>
+</ul>
+</div>
+ <div class="card why">
+  <h3>Why this structure</h3>
+  <ul>
+   <li><strong>One root layout, three area layouts.</strong> The root <code>app/layout.tsx</code> holds the html, fonts and tokens, so moving between the site and the app needs no full page reload. Each group adds its own chrome: site header for <code>(marketing)</code>, sidebar for <code>(app)</code>, a dense shell for <code>(admin)</code>.</li>
+   <li><strong>A real <code>/app</code> and <code>/admin</code> prefix</strong> inside the groups makes the proxy matcher, the robots rule and the redirects one line each.</li>
+   <li><strong>Role dashboards use parallel routes</strong> (<code>@student</code>, <code>@parent</code>, <code>@tutor</code>), following the “Conditional Routes” example in the docs: one URL, one view per role.</li>
+   <li><strong>Dynamic pages come from data.</strong> <code>[curriculum]</code>, <code>[subject]</code> and <code>[place]</code> use <code>generateStaticParams</code> over <code>src/data/content</code>, and only entries flagged for publishing get a page. That prevents thin pages being generated at scale.</li>
+   <li><strong>Forms use Server Actions; route handlers</strong> are kept for AI calls, cron and webhooks.</li>
+   <li><strong>Next 16 naming:</strong> the file is <code>src/proxy.ts</code> (it was called <code>middleware.ts</code> before Next 16).</li>
+  </ul>
+  <h3>Docs relied on</h3>
+  <ul><li><code>node_modules/next/dist/docs/01-app/01-getting-started/02-project-structure.md</code>: folder conventions, route groups, private folders, src/, metadata files</li>
+<li><code>node_modules/next/dist/docs/01-app/01-getting-started/03-layouts-and-pages.md</code>: nested layouts per area</li>
+<li><code>node_modules/next/dist/docs/01-app/03-api-reference/03-file-conventions/route-groups.md</code>: (marketing)/(app)/(admin) groups, no path conflicts between groups</li>
+<li><code>node_modules/next/dist/docs/01-app/03-api-reference/03-file-conventions/dynamic-routes.md</code>: [curriculum], [subject], [tutor], [slug], [studentId]</li>
+<li><code>node_modules/next/dist/docs/01-app/03-api-reference/03-file-conventions/parallel-routes.md</code>: “Conditional Routes”: @student/@parent/@tutor slots chosen by role</li>
+<li><code>node_modules/next/dist/docs/01-app/03-api-reference/03-file-conventions/intercepting-routes.md</code>: considered for a tutor-profile modal; left out to keep things simple</li>
+<li><code>node_modules/next/dist/docs/01-app/01-getting-started/16-proxy.md + 03-file-conventions/proxy.md</code>: Next 16 renamed middleware.ts to proxy.ts; only optimistic checks there</li>
+<li><code>node_modules/next/dist/docs/01-app/02-guides/authentication.md</code>: Data Access Layer (verifySession) as the real security check</li>
+<li><code>node_modules/next/dist/docs/01-app/02-guides/data-security.md</code>: server-only modules, keeping secrets out of client code</li>
+<li><code>node_modules/next/dist/docs/01-app/01-getting-started/15-route-handlers.md</code>: api/ai/* and cron as route.ts</li>
+<li><code>node_modules/next/dist/docs/01-app/02-guides/forms.md + server-actions.md</code>: trial and application forms as Server Actions</li>
+<li><code>node_modules/next/dist/docs/01-app/03-api-reference/03-file-conventions/01-metadata/sitemap.md, robots.md, opengraph-image.md</code>: sitemap.ts, robots.ts, OG images</li>
+<li><code>node_modules/next/dist/docs/01-app/02-guides/redirecting.md</code>: old → new 301s in next.config.ts redirects()</li></ul>
+ </div>
+</section>
+
+<section class="panel" id="homepage" aria-labelledby="h-homepage">
+ <h2 id="h-homepage">5 · Homepage outline</h2>
+ <p class="lede">Eight sections instead of nineteen. Each topic appears once. Only two CTAs exist, worded the same everywhere: <span class="cta cta-p">Book a free trial</span> and <span class="cta cta-w">WhatsApp us</span>.</p>
+ <div class="homegrid">
+  <div class="hflow"><div class="hs hs-chrome"><div class="hs-name">Header</div><div class="hs-desc">Logo · Tutoring · Curricula · Tutors · Pricing · Resources · Log in</div><div class="ctas"><span class="cta cta-p">Book a free trial</span></div></div><div class="harrow" aria-hidden="true"></div><div class="hs hs-sec"><div class="hs-name">1 · Hero</div><div class="hs-desc">One promise: 1-to-1 tutoring, at home or online, for O/A Level, IGCSE, IB, MDCAT and more. Curriculum + subject picker that pre-fills the booking form.</div><div class="ctas"><span class="cta cta-p">Book a free trial</span><span class="cta cta-w">WhatsApp us</span></div></div><div class="harrow" aria-hidden="true"></div><div class="hs hs-sec"><div class="hs-name">2 · Trust proof</div><div class="hs-desc">Facts we can prove: since 2016, families in 11 countries, curricula covered, founder name. Real reviews only.</div></div><div class="harrow" aria-hidden="true"></div><div class="hs hs-sec"><div class="hs-name">3 · How it works</div><div class="hs-desc">Four steps: tell us what you need → we match a tutor → free trial → regular lessons + progress reports.</div></div><div class="harrow" aria-hidden="true"></div><div class="hs hs-sec"><div class="hs-name">4 · Curricula & subjects</div><div class="hs-desc">Grid of the main curricula and subjects, linking to /curricula/[curriculum] and /subjects/[subject].</div></div><div class="harrow" aria-hidden="true"></div><div class="hs hs-sec"><div class="hs-name">5 · Tutors</div><div class="hs-desc">4–6 approved tutor cards (real photos, subjects, curricula). “See all tutors” → /tutors.</div></div><div class="harrow" aria-hidden="true"></div><div class="hs hs-sec"><div class="hs-name">6 · Results & testimonials</div><div class="hs-desc">Parent and student quotes with written consent, plus provable results. Hidden until we have them.</div></div><div class="harrow" aria-hidden="true"></div><div class="hs hs-sec"><div class="hs-name">7 · Pricing teaser + FAQ</div><div class="hs-desc">Starter · Growth · Elite in one row (one source of truth) and 5–6 FAQs for all markets.</div></div><div class="harrow" aria-hidden="true"></div><div class="hs hs-sec"><div class="hs-name">8 · Final CTA</div><div class="hs-desc">Short reassurance (first class is free, no commitment) and the two contact options.</div><div class="ctas"><span class="cta cta-p">Book a free trial</span><span class="cta cta-w">WhatsApp us</span></div></div><div class="harrow" aria-hidden="true"></div><div class="hs hs-chrome"><div class="hs-name">Footer</div><div class="hs-desc">Pages, curricula, legal, contact details, socials. Mobile: one sticky bar with both CTAs (replaces the floating button + bottom bar).</div></div></div>
+  <div>
+   <div class="card kv">
+    <h3>Rules for the page</h3>
+    <ul>
+     <li><strong>One primary CTA label</strong>, “Book a free trial”, which always opens <code>/book</code> (pre-filled when a curriculum or subject is known).</li>
+     <li><strong>One WhatsApp CTA</strong>, “WhatsApp us”, which opens a <code>wa.me</code> link with a prefilled message naming the page.</li>
+     <li><strong>Mobile:</strong> one sticky bar with both CTAs. No floating bubble or extra call bar on top of it.</li>
+     <li><strong>Target length:</strong> about 6 desktop screens and 10–12 mobile screens (now 16,000px and 32,700px).</li>
+     <li><strong>No placeholders:</strong> sections 2, 5 and 6 render only with real, approved data. No generated avatars, no invented ratings.</li>
+     <li><strong>FAQ structured data</strong> uses questions for every market, not Islamabad-only ones.</li>
+    </ul>
+   </div>
+   <div class="card kv" style="margin-top:16px">
+    <h3>What the old homepage loses</h3>
+    <ul>
+     <li>Duplicate tutors block (“global teachers”) → one Tutors section.</li>
+     <li>Second regions block and areas list → one line in Trust proof.</li>
+     <li>“Learning journey” → merged into How it works.</li>
+     <li>Comparison table, verification block, services grid → moved to /how-it-works and /tutoring/*.</li>
+     <li>Founder story → /about, with a one-line mention in Trust proof.</li>
+    </ul>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section class="panel" id="questions" aria-labelledby="h-questions">
+ <div class="qbox">
+  <h2 id="h-questions">6 · Open questions</h2>
+  <p style="margin:0">These need an answer from the client before design starts. None of them changes the folder structure.</p>
+  <ol><li><strong>Real people and proof.</strong> Which tutors, testimonials and numbers are real? Do we have photos and written permission? Until confirmed, sections 2, 5 and 6 stay hidden.</li>
+<li><strong>AI practice timing.</strong> Is /app/practice in launch 1, or phase 2 after the marketing site and booking? The structure works either way; (app) can ship later.</li>
+<li><strong>Main market.</strong> Pakistan first with international online lessons, or all 11 countries equally? This decides homepage wording, currency display and whether any /locations pages ship.</li>
+<li><strong>Home tutoring cities.</strong> Which cities really have home tutors today (e.g. Islamabad, Rawalpindi, Lahore)? Only those get a mention or a /locations page.</li>
+<li><strong>Sign-up model.</strong> OK that families get an account only after a trial (invite link), with no open self-sign-up?</li>
+<li><strong>Payments.</strong> Are plans paid online (card / local wallets) or invoiced on WhatsApp? Online payment would add /app/billing.</li>
+<li><strong>Money-back guarantee.</strong> Is it real, and what are the terms? It decides what /legal/refunds says.</li>
+<li><strong>Data to carry over.</strong> Do we import existing leads, enrollments or question banks from Supabase / AI Studio, and does the client own that content?</li></ol>
+ </div>
+ <div class="card kv" style="margin-top:18px">
+  <h3>Assumptions in this proposal</h3>
+  <ul>
+   <li>A single Postgres database with built-in auth (for example the existing Supabase project, if the client owns it) holds users, leads, attempts and reports. Provider still to confirm.</li>
+   <li>Curricula, subjects, pricing and FAQs live as typed files in <code>src/data/content</code> (changed by a developer). Tutors, testimonials, articles and questions live in the database (changed in <code>/admin</code>).</li>
+   <li>English only at launch; prices shown in PKR with “billed in local currency” for other countries.</li>
+   <li>URL names (<code>/book</code>, <code>/resources</code>, <code>/tutoring/home</code>) are proposals and easy to change before launch.</li>
+  </ul>
+ </div>
+</section>
+
+</main>
+<script>
+(function(){
+  var root=document.documentElement; root.classList.add('js');
+  var tabs=[].slice.call(document.querySelectorAll('nav.tabs a'));
+  var panels=[].slice.call(document.querySelectorAll('section.panel'));
+  function show(id,scroll){
+    if(!panels.some(function(p){return p.id===id;})) id=panels[0].id;
+    panels.forEach(function(p){p.classList.toggle('on',p.id===id);});
+    tabs.forEach(function(t){t.setAttribute('aria-current',t.dataset.tab===id?'true':'false');});
+    if(scroll) window.scrollTo({top:0});
+  }
+  tabs.forEach(function(t){t.addEventListener('click',function(e){e.preventDefault();show(t.dataset.tab,true);try{history.replaceState(null,'','#'+t.dataset.tab);}catch(_){}});});
+  window.addEventListener('hashchange',function(){show((location.hash||'').slice(1),false);});
+  show((location.hash||'').slice(1),false);
+})();
+</script>
+</body>
+</html>
