@@ -8,8 +8,78 @@ export const hero = {
   titleAccent: "Grades that open doors.",
   lead: "Expert 1-on-1 tutoring for IGCSE, GCSE, A-Level, IB, SAT & more, online or at home. Join families across Pakistan preparing for O-Level, A-Level & MDCAT with Cambridge-trained tutors.",
   checks: ["Free first lesson", "Qualified teachers", "Cancel any time"],
-  curricula: ["O-Level", "A-Level", "IGCSE", "Matric", "FSc", "MDCAT", "ECAT", "SAT", "GCSE", "IB", "GED", "AP", "HSC", "VCE"],
+  // CONFIRM: money-back guarantee terms (old hero: "100% money-back on first package").
+  guarantee: "100% money-back on first package",
+  /** Old hero "We tutor for" chips (Pakistan ordering first). `slug` maps to /curricula/<slug> when that page exists. */
+  curricula: [
+    { label: "O-Level", slug: "o-level" },
+    { label: "A-Level", slug: "a-level" },
+    { label: "IGCSE", slug: "igcse" },
+    { label: "Matric", slug: "matric" },
+    { label: "FSc", slug: "fsc" },
+    { label: "MDCAT", slug: "mdcat" },
+    { label: "ECAT", slug: "ecat" },
+    { label: "SAT", slug: "sat" },
+    { label: "GCSE", slug: "gcse" },
+    { label: "IB", slug: "ib" },
+    { label: "GED", slug: "ged" },
+    { label: "ACT", slug: "act" },
+    { label: "AP", slug: "ap" },
+    { label: "HSC", slug: "hsc" },
+    { label: "VCE", slug: "vce" },
+  ],
+  /** Featured tutors in the hero carousel (old hero used the first three). */
+  featuredTutorSlugs: ["ayesha-khan", "fatima-malik", "ahmed-saleem", "hassan-raza", "emma-wilson"],
 };
+
+/** Outcome notes from the old "ledger" band. */
+export const outcomeNotes = {
+  countries: "Every region has a published tutor panel.",
+  cities: "Home tutoring in major cities, online everywhere.",
+  match: "Usually while you're still on WhatsApp.",
+  years: "One panel, grown tutor by tutor.",
+};
+
+/** Grade options from the old tutor finder form. */
+export const finderGrades = ["Primary", "Middle School", "O Level / GCSE", "A Level", "University"] as const;
+
+/** Old RegionCurriculumBand: 11 regions with the curricula families ask for there. */
+export const regionCards = [
+  { slug: "pakistan", name: "Pakistan", flag: "🇵🇰", landmark: "🕌", curricula: ["Matric", "FSc", "O-Level", "A-Level", "GED"] },
+  { slug: "uae", name: "UAE", flag: "🇦🇪", landmark: "🏙️", curricula: ["British", "American", "IB", "MoE"] },
+  { slug: "uk", name: "UK", flag: "🇬🇧", landmark: "🕰️", curricula: ["GCSE", "A-Level", "IB"] },
+  { slug: "australia", name: "Australia", flag: "🇦🇺", landmark: "🏛️", curricula: ["HSC", "VCE", "IB"] },
+  { slug: "usa", name: "USA", flag: "🇺🇸", landmark: "🗽", curricula: ["Common Core", "AP", "SAT", "ACT"] },
+  { slug: "canada", name: "Canada", flag: "🇨🇦", landmark: "🍁", curricula: ["Ontario", "BC", "AP", "IB"] },
+  { slug: "saudi-arabia", name: "Saudi Arabia", flag: "🇸🇦", landmark: "🕋", curricula: ["British", "American", "IB", "MoE"] },
+  { slug: "qatar", name: "Qatar", flag: "🇶🇦", landmark: "🏜️", curricula: ["British", "American", "IB"] },
+  { slug: "oman", name: "Oman", flag: "🇴🇲", landmark: "🕌", curricula: ["British", "American", "IB", "MoE"] },
+  { slug: "bahrain", name: "Bahrain", flag: "🇧🇭", landmark: "🌴", curricula: ["British", "American", "IB"] },
+  { slug: "kuwait", name: "Kuwait", flag: "🇰🇼", landmark: "🕌", curricula: ["British", "American", "IB", "MoE"] },
+] as const;
+
+/** Old ServicesGrid ("What we offer"). */
+export const services = [
+  { icon: "brain", t: "AI-powered adaptive tests", d: "Questions adapt to your ability for accurate assessment." },
+  { icon: "compass", t: "Comprehensive skill analysis", d: "Academic, cognitive and aptitude insights." },
+  { icon: "book", t: "Personalised learning path", d: "AI creates a custom plan for your growth." },
+  // CONFIRM: regional leaderboards go live once real assessment results exist (plan §1.3 /leaderboard).
+  { icon: "trophy", t: "Regional leaderboards", d: "Compete with top students in your region." },
+  { icon: "sparkles", t: "Career guidance", d: "Discover the best path for your future." },
+  // CONFIRM: Star Awards & scholarships programme details.
+  { icon: "users", t: "Star Awards & scholarships", d: "Be recognised. Earn. Grow. Shine." },
+] as const;
+
+/** Old ComparisonStrip: [feature, Tutoring Galaxy, typical agencies]. */
+export const comparison: readonly (readonly [string, boolean, boolean])[] = [
+  // CONFIRM: "top-1%" claim.
+  ["Vetted, top-1% tutors", true, false],
+  ["Free first session", true, false],
+  ["AI-matched, human-checked in under 24h", true, false],
+  ["Handwritten weekly progress notes", true, false],
+  ["No long-term commitment", true, true],
+  ["Country-specific syllabi (PK, UAE, UK, AU)", true, false],
+];
 
 export const whyChooseUs = [
   { icon: "sparkles", t: "AI-matched, human-checked", d: "Every match is filtered by our AI, then reviewed by a real person before you meet the tutor." },

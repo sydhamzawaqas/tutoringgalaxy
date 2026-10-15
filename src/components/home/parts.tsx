@@ -55,3 +55,38 @@ export function Heading({ eyebrow, title, lead, dark = false, center = false }: 
     </div>
   );
 }
+
+/** Pill toggle used by the homepage filters (tutors, testimonials). */
+export function FilterChip({
+  active,
+  onClick,
+  children,
+  dark = false,
+  accent = false,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+  dark?: boolean;
+  accent?: boolean;
+}) {
+  const on = accent ? "border-gold bg-gold text-navy-deep" : dark ? "border-on-dark bg-on-dark text-navy-deep" : "border-navy bg-navy text-on-dark";
+  const off = dark
+    ? "border-on-dark/20 bg-on-dark/5 text-on-dark-muted hover:border-on-dark/50 hover:text-on-dark"
+    : "border-border bg-background text-muted-foreground hover:border-navy/40 hover:text-foreground";
+  return (
+    <button
+      type="button"
+      aria-pressed={active}
+      onClick={onClick}
+      className={cn("inline-flex h-9 items-center rounded-pill border px-3.5 text-label font-semibold transition-colors", active ? on : off)}
+    >
+      {children}
+    </button>
+  );
+}
+
+/** Soft colour glows layered behind a section. Purely decorative. */
+export function Glow({ className }: { className: string }) {
+  return <span aria-hidden className={cn("pointer-events-none absolute rounded-pill blur-3xl", className)} />;
+}
