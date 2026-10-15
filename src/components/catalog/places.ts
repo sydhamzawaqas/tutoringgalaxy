@@ -9,7 +9,7 @@ const HOME_CITIES = new Set(["islamabad", "rawalpindi"]);
  */
 export const cityHref = (slug: string) => (HOME_CITIES.has(slug) ? "/locations/islamabad" : "/tutoring/online");
 
-export const citiesForSubject = (slug: string) => CITIES.filter((c) => c.popularSubjects.includes(slug));
-export const citiesForCurriculum = (slug: string) => CITIES.filter((c) => c.curricula.includes(slug));
+export const citiesForSubject = (slug: string, limit = 24) => CITIES.filter((c) => c.popularSubjects.includes(slug)).slice(0, limit);
+export const citiesForCurriculum = (slug: string, limit = 24) => CITIES.filter((c) => c.curricula.includes(slug)).slice(0, limit);
 
 export type { City };

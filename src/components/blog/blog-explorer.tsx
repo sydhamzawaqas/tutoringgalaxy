@@ -64,7 +64,7 @@ export function BlogExplorer({
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search articles, e.g. past papers"
+            placeholder="Search articles"
             className="h-11 w-full rounded-pill border border-border bg-background pr-10 pl-10 text-body shadow-card placeholder:text-muted-foreground focus-visible:border-navy"
           />
           {query ? (
