@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata, Viewport } from "next";
 import { Manrope, Newsreader } from "next/font/google";
 import { site } from "@/data/content/site";
@@ -36,7 +37,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Skip to content
         </a>
         <RegionProvider>{children}</RegionProvider>
-        <Analytics />
+        {/* usePathname inside: keep it out of the static shell so dynamic routes can prerender. */}
+        <Suspense fallback={null}>
+          <Analytics />
+        </Suspense>
       </body>
     </html>
   );

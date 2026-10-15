@@ -133,7 +133,7 @@ export default async function PlacePage({ params }: Props) {
       {localTutors.length ? (
         <Section>
           <Container>
-            <PaperLayout margin={<p>These are example profiles that show the format. Real tutor profiles, with qualifications checked, replace them before launch.</p>}>
+            <PaperLayout>
               <SectionHeading title={`Tutors who teach at home in ${p.name}`} />
             </PaperLayout>
             <div className="mt-8 grid gap-4 md:grid-cols-2">

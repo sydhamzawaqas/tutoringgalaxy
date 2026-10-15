@@ -266,7 +266,7 @@ The first two homepage options were judged "basic". The root causes:
 | Phase | Scope | Rough size |
 |---|---|---|
 | **0. Design direction** | Reference sites → tokens → component kit → homepage sign-off | 1–2 sessions |
-| **1. Marketing parity** | Chrome (region, WhatsApp FAB, exit intent, GA4, attribution); full homepage; services, results, growing-stars, leaderboard, match wizard; all 14 tutors + 24 teachers merged with filters; 64 blog posts; subjects, curricula, prep, academy content | 3–4 sessions |
+| **1. Marketing parity** ✅ | Chrome (region, WhatsApp FAB, exit intent, GA4, attribution); full homepage; services, results, growing-stars, leaderboard, match wizard; all 14 tutors + 24 teachers merged with filters; 64 blog posts; subjects, curricula, prep, academy content | 3–4 sessions |
 | **2. Local SEO pages** | Regions (11), cities (65), areas (65), world (7), combo pages with the quality gate, sitemap, llms.txt, schema | 1–2 sessions |
 | **3. Question DB + assessments** | Import script for all questions; `/assessments` landing + library; quiz runner; results analytics; lead gate | 2–3 sessions |
 | **4. Practice engine core** | Topic practice with hints and AI; mistake bank (Leitner); flashcards; formulas; notes; past papers; mocks; mastery; exam hall; dashboard cards; achievements; reports; planner | 4–6 sessions |
