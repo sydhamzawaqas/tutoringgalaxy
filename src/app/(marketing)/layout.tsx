@@ -1,6 +1,8 @@
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { MobileCtaBar } from "@/components/layout/mobile-cta-bar";
+import { WhatsAppFab } from "@/components/layout/whatsapp-fab";
+import { ExitIntent } from "@/components/layout/exit-intent";
 import { JsonLd, organizationJsonLd } from "@/lib/seo";
 
 export default function MarketingLayout({ children }: { children: React.ReactNode }) {
@@ -13,6 +15,8 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
       </main>
       <SiteFooter />
       <MobileCtaBar />
+      <WhatsAppFab />
+      <ExitIntent />
     </>
   );
 }

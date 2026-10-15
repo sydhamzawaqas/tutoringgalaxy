@@ -38,9 +38,57 @@ export type Lead = {
   sourcePath: string | null;
   plan: string | null; // plan slug
   tutorSlug: string | null;
+  /** First-touch marketing attribution (see parseLeadAttribution). */
+  attribution?: LeadAttribution | null;
 };
 
 export type SavedLead = { id: string; ref: string };
+
+/* ------------------------------------------------------------------------------------------------
+ * Attribution: first-touch UTM / click IDs captured in the browser by src/lib/attribution.ts and
+ * posted as a JSON hidden field. Untrusted input: parsed strictly, unknown keys dropped, every
+ * value capped. A bad value never blocks a lead; it is simply stored as null.
+ * ---------------------------------------------------------------------------------------------- */
+
+const attrValue = z
+  .string()
+  .transform((v) => v.replace(/[\u0000-\u001F\u007F]/g, "").trim().slice(0, 200))
+  .pipe(z.string().min(1))
+  .optional()
+  .catch(undefined);
+
+const leadAttributionSchema = z.object({
+  utm_source: attrValue,
+  utm_medium: attrValue,
+  utm_campaign: attrValue,
+  utm_term: attrValue,
+  utm_content: attrValue,
+  gclid: attrValue,
+  fbclid: attrValue,
+  referrer: attrValue,
+  landing_page: z
+    .string()
+    .transform((v) => v.replace(/[\u0000-\u001F\u007F]/g, "").slice(0, 300))
+    .refine((v) => v.startsWith("/"))
+    .optional()
+    .catch(undefined),
+  ts: z.iso.datetime().optional().catch(undefined),
+});
+
+export type LeadAttribution = z.infer<typeof leadAttributionSchema>;
+
+/** Parse the `attribution` form field. Returns null for anything missing, oversized or malformed. */
+export function parseLeadAttribution(raw: string | null | undefined): LeadAttribution | null {
+  if (!raw || raw.length > 2000) return null;
+  try {
+    const parsed = leadAttributionSchema.safeParse(JSON.parse(raw));
+    if (!parsed.success) return null;
+    const clean = Object.fromEntries(Object.entries(parsed.data).filter(([, v]) => v !== undefined)) as LeadAttribution;
+    return Object.keys(clean).length ? clean : null;
+  } catch {
+    return null;
+  }
+}
 
 export class LeadStorageError extends Error {
   readonly code: "not_configured" | "insert_failed";
@@ -82,6 +130,7 @@ export async function saveLead(lead: Lead): Promise<SavedLead> {
       plan: lead.plan,
       tutorSlug: lead.tutorSlug,
       hasEmail: Boolean(lead.email),
+      attribution: lead.attribution,
     });
     return { id, ref: leadRef(id) };
   }
@@ -90,26 +139,34 @@ export async function saveLead(lead: Lead): Promise<SavedLead> {
     auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
   });
 
-  const { data, error } = await supabase
-    .from("leads")
-    .insert({
-      curriculum: lead.curriculum,
-      subject: lead.subject,
-      level: lead.level,
-      challenge: lead.challenge,
-      mode: lead.mode,
-      city: lead.city,
-      preferred_times: lead.preferredTimes,
-      parent_name: lead.parentName,
-      whatsapp: lead.whatsapp,
-      email: lead.email,
-      consent: lead.consent,
-      source_path: lead.sourcePath,
-      plan: lead.plan,
-      tutor_slug: lead.tutorSlug,
-    })
-    .select("id")
-    .single<{ id: string }>();
+  const row = {
+    curriculum: lead.curriculum,
+    subject: lead.subject,
+    level: lead.level,
+    challenge: lead.challenge,
+    mode: lead.mode,
+    city: lead.city,
+    preferred_times: lead.preferredTimes,
+    parent_name: lead.parentName,
+    whatsapp: lead.whatsapp,
+    email: lead.email,
+    consent: lead.consent,
+    source_path: lead.sourcePath,
+    plan: lead.plan,
+    tutor_slug: lead.tutorSlug,
+    attribution: lead.attribution ?? null,
+  };
+
+  const insert = (values: Record<string, unknown>) => supabase.from("leads").insert(values).select("id").single<{ id: string }>();
+  let { data, error } = await insert(row);
+  // Database not yet migrated with 0003_lead_attribution.sql (PostgREST: unknown column).
+  // Never lose a lead over attribution: retry without it.
+  if (error?.code === "PGRST204" && /attribution/.test(error.message ?? "")) {
+    console.warn("[leads] `attribution` column missing; run supabase/migrations/0003_lead_attribution.sql");
+    const { attribution: _omit, ...withoutAttribution } = row;
+    void _omit;
+    ({ data, error } = await insert(withoutAttribution));
+  }
 
   if (error || !data) {
     // Log the database error code/message only; it never contains the submitted values.

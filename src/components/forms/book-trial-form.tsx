@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Field, Input, Label, Select, Textarea } from "@/components/ui/form";
 import { QNum } from "@/components/ui/primitives";
 import { WhatsAppIcon } from "@/components/brand/marks";
+import { AttributionField } from "./attribution-field";
 import { curricula } from "@/data/content/curricula";
 import { subjects } from "@/data/content/subjects";
 import { tutors } from "@/data/content/tutors";
@@ -119,6 +120,7 @@ export function BookTrialForm() {
         <label htmlFor="bt-website">Leave this empty</label>
         <input id="bt-website" name="website" type="text" tabIndex={-1} autoComplete="off" defaultValue="" />
       </div>
+      <AttributionField />
 
       {/* 1 About the student */}
       <Part n={1} title="About the student">

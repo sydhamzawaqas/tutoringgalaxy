@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Manrope, Newsreader } from "next/font/google";
 import { site } from "@/data/content/site";
 import { brandColors } from "@/lib/brand-colors";
+import { RegionProvider } from "@/lib/region-context";
+import { Analytics } from "@/components/layout/analytics";
 import "./globals.css";
 
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope", display: "swap" });
@@ -33,7 +35,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           Skip to content
         </a>
-        {children}
+        <RegionProvider>{children}</RegionProvider>
+        <Analytics />
       </body>
     </html>
   );

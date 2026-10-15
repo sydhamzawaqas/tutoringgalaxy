@@ -8,7 +8,7 @@ import { subjects } from "@/data/content/subjects";
 import { tutors } from "@/data/content/tutors";
 import { plans } from "@/data/content/pricing";
 import { countries } from "@/data/content/countries";
-import { LEAD_SUMMARY_COOKIE, LeadStorageError, encodeLeadSummary, saveLead, type Lead } from "@/lib/leads";
+import { LEAD_SUMMARY_COOKIE, LeadStorageError, encodeLeadSummary, parseLeadAttribution, saveLead, type Lead } from "@/lib/leads";
 
 /*
  * "Book a free trial" Server Action.
@@ -158,6 +158,12 @@ function field(formData: FormData, name: string, max: number, keepNewlines = fal
   return typeof v === "string" ? clean(v, keepNewlines).slice(0, max + 1) : "";
 }
 
+/** Raw `attribution` field, refused outright when oversized (parsed and capped in lib/leads.ts). */
+function attributionField(formData: FormData) {
+  const v = formData.get("attribution");
+  return typeof v === "string" && v.length <= 2000 ? v : null;
+}
+
 export async function bookTrial(_prev: BookTrialState, formData: FormData): Promise<BookTrialState> {
   // Honeypot: real people never see or fill this field. Pretend it worked and store nothing.
   if (field(formData, "website", 200)) redirect("/book/thanks");
@@ -213,6 +219,8 @@ export async function bookTrial(_prev: BookTrialState, formData: FormData): Prom
     sourcePath: sourcePathFrom(h),
     plan: plans.some((p) => p.slug === d.plan) ? d.plan : null,
     tutorSlug: tutors.some((t) => t.slug === d.tutor) ? d.tutor : null,
+    // First-touch UTM / click IDs from the hidden field. Optional: malformed values become null.
+    attribution: parseLeadAttribution(attributionField(formData)),
   };
 
   let ref: string;
